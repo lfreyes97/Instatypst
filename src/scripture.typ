@@ -10,7 +10,7 @@
 
 #import "font-tokens.typ": family
 #import "articulo.typ": make-theme, fondo-editorial
-#import "Dropcaps/dropcaps.typ": capitular
+#import "dropcaps.typ": capitular
 
 #let scripture(body) = {
   set text(font: family("public-sans"))

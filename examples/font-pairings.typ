@@ -1,7 +1,4 @@
-#import "font-pairings.typ": pairings
-#import "font-tokens.typ": font-tokens
-#import "theme.typ": theme
-#import "social.typ": *
+#import "../src/lib.typ": *
 
 #set page(width: 830pt, height: auto, margin: 18pt, fill: rgb("#fafafa"))
 #set text(font: "Inter", size: 9pt)

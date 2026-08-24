@@ -1,4 +1,4 @@
-#import "dropcaps.typ": capitular
+#import "../src/lib.typ": *
 
 #set page(paper: "a6", margin: 1.8cm)
 #set text(font: "Libertinus Serif", size: 11pt, lang: "es")

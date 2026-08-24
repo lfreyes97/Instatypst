@@ -1,5 +1,4 @@
-#import "palettes.typ": palettes
-#import "theme.typ": theme
+#import "../src/lib.typ": *
 
 #set page(width: 830pt, height: auto, margin: 18pt, fill: rgb("#fafafa"))
 #set text(font: theme.base.fonts.body, size: 9pt)

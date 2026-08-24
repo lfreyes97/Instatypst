@@ -1,4 +1,4 @@
-#import "scripture.typ": pasaje, vs
+#import "../src/lib.typ": *
 
 #set page(paper: "a5", margin: 2cm, fill: rgb("#fafafa"))
 

@@ -1,4 +1,4 @@
-#import "social.typ": *
+#import "../src/lib.typ": *
 
 // Portada de carrusel
 #carousel-cover(

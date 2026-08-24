@@ -17,7 +17,7 @@
 #import "theme.typ": theme
 #import "palettes.typ": palettes
 #import "font-pairings.typ": pairings
-#import "Dropcaps/dropcaps.typ": capitular
+#import "dropcaps.typ": capitular
 
 // Combina una paleta de color (palettes.typ) y/o una pareja tipográfica
 // (font-pairings.typ) en un solo tema. Cualquiera de las dos es opcional —

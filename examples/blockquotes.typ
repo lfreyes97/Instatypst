@@ -1,4 +1,4 @@
-#import "social.typ": *
+#import "../src/lib.typ": *
 
 // Las blockquote-* no son un canvas por sí solas — se insertan dentro de
 // una plantilla o página existente. Aquí, cada una dentro de un canvas en

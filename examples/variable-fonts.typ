@@ -13,8 +13,7 @@
 //
 // Compilar con: typst compile --font-path Fonts examples-variable-fonts.typ
 
-#import "theme.typ": theme
-#import "social.typ": *
+#import "../src/lib.typ": *
 
 #let editorial-variable = (theme.define)("editorial-variable", fonts: (
   display: "Fraunces", // wght 100-900 · opsz 9pt-144pt · SOFT 0-100 · WONK 0-1

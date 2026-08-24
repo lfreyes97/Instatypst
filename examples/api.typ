@@ -1,4 +1,4 @@
-#import "theme.typ": theme
+#import "../src/lib.typ": *
 
 // ===== 1. Definir un tema de marca (deriva del tema base) =====
 #let marca = (theme.define)("mi-marca", colors: (
@@ -39,15 +39,15 @@
 - primary de \`marca\`: (#theme.color)("primary", t: marca).to-hex()
 - primary de \`marca-alt\`: (#theme.color)("primary", t: marca-alt).to-hex()
 
-// ===== 4. Usar el tema con las plantillas (sombrear tokens) =====
-#import "social.typ": *
-
-#let palette = marca.colors
-#let fonts = marca.fonts
-
+// ===== 4. Usar el tema con las plantillas — pásalo explícito con `theme:` =====
+// (sombrear `palette`/`fonts` como en versiones viejas de este ejemplo NO
+// funciona: las funciones de social.typ resuelven esos nombres por closure
+// contra su propio archivo, no contra lo que reasignes aquí — ver la nota
+// al inicio de src/social.typ.)
 #announce-post(
   "NUEVO",
   [Temas gestionados por la API],
   [Todos los colores y fuentes salen de tu tema, no de valores fijos.],
   "@mi_marca",
+  theme: marca,
 )

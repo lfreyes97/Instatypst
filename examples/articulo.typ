@@ -1,4 +1,4 @@
-#import "articulo.typ": articulo, primer-parrafo
+#import "../src/lib.typ": *
 
 #show: articulo.with(
   titulo: "Los tiempos hipermodernos",

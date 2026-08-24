@@ -1,4 +1,4 @@
-#import "social.typ": *
+#import "../src/lib.typ": *
 
 // Post 1: Cita (Instagram cuadrado)
 #quote-post(

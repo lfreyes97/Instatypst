@@ -1,0 +1,13 @@
+[package]
+name = "instatypst"
+version = "0.1.0"
+entrypoint = "src/lib.typ"
+authors = ["Luis Reyes"]
+description = "Sistema de diseño en Typst: temas de color y tipografía, plantillas para redes sociales, letras capitulares y citas bíblicas."
+compiler = "0.15.1"
+categories = ["layout", "utility"]
+keywords = [
+  "diseño", "temas", "paletas", "tipografia", "tipografía", "redes-sociales",
+  "instagram", "capitulares", "drop-cap", "biblia", "escritura",
+]
+exclude = ["Fonts", "examples", "cristianamente.typ"]
