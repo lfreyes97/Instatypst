@@ -21,6 +21,25 @@ Fonts/                fuentes usadas por el proyecto (no forman parte del paquet
 cristianamente.typ    paquete aparte, no integrado — conservado como referencia
 ```
 
+## Generar un archivo desde una plantilla
+
+`scripts/nueva-plantilla.py` escribe un `.typ` de arranque para cualquiera
+de las 12 plantillas (10 de `social.typ` + `articulo` + `pasaje`), con
+marcadores de posición listos para editar:
+
+```bash
+python3 scripts/nueva-plantilla.py --listar
+python3 scripts/nueva-plantilla.py announce-post mi-post.typ \
+  --paleta terracota --tipografia editorial-clasico \
+  --campo tagline=NUEVO --campo title="Mi título"
+```
+
+Por defecto genera `#import "@local/instatypst:0.1.0": *` (asume el
+paquete instalado, ver abajo); usa `--repo` para un import relativo si
+vas a dejar el archivo dentro de `examples/` de este mismo repo. Con
+`--compilar` lo compila de una vez (usa `Fonts/` de este repo por
+defecto; `--fonts <ruta>` para otra).
+
 ## Uso
 
 ### Como paquete instalado localmente
