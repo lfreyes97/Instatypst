@@ -41,7 +41,11 @@
     note: "el bundle de Fonts/ solo trae los cortes numerados (08/12/SC); \"EB Garamond\" a secas solo resuelve si el sistema ya la tiene instalada aparte",
   ),
   "fraunces": (family: "Fraunces", category: "display", variable: true, axes: (wght: (100, 900), opsz: (9, 144), SOFT: (0, 100), WONK: (0, 1))),
-  "gfs-didot": (family: "GFS Didot", category: "display", variable: false),
+  "gfs-didot": (
+    family: "GFS Didot", category: "display", variable: false,
+    scripts: ("latin", "greek"),
+    note: "griego politónico auténtico (revival de un Didot griego del s. XIX) — ver src/idiomas.typ",
+  ),
   "google-sans-flex": (family: "Google Sans Flex", category: "body", variable: true, axes: (wght: (100, 900), opsz: (6, 144), wdth: (50, 151), GRAD: (0, 100), ROND: (0, 100))),
   "googlesanscode-nf": (family: "GoogleSansCode NF", category: "mono", variable: false),
   "hanken-grotesk": (family: "Hanken Grotesk", category: "body", variable: true, axes: (wght: (100, 900))),
@@ -58,7 +62,11 @@
   "iosevka-nf": (family: "Iosevka NF", category: "mono", variable: false),
   "jost": (family: "Jost", category: "display", variable: true, axes: (wght: (100, 900))),
   "liga-sfmono-nerd": (family: "Liga SFMono Nerd Font", category: "mono", variable: false),
-  "libertinus-serif": (family: "Libertinus Serif", category: "body", variable: false),
+  "libertinus-serif": (
+    family: "Libertinus Serif", category: "body", variable: false,
+    scripts: ("latin", "greek", "hebrew"),
+    note: "única fuente del proyecto verificada con cobertura de hebreo (con niqqud) — ver src/idiomas.typ",
+  ),
   "libre-baskerville": (family: "Libre Baskerville", category: "body", variable: true, axes: (wght: (400, 700))),
   "literata": (family: "Literata", category: "body", variable: true, axes: (wght: (200, 900), opsz: (7, 72))),
   "marcellus": (family: "Marcellus", category: "display", variable: false),
@@ -91,8 +99,14 @@
 // Nombre de familia listo para pasar a text(font: ...)
 #let family(key) = token(key).family
 
-// Todas las claves de una categoría ("display" | "body" | "mono" | "hand")
+// Todas las claves de una categoría ("display" | "body" | "mono" | "hand" | "ornament")
 #let by-category(cat) = tokens.keys().filter(k => tokens.at(k).category == cat)
+
+// Todas las claves con cobertura verificada de un guion/escritura
+// ("latin" | "greek" | "hebrew") — solo se declara `scripts` en los tokens
+// donde de verdad se comprobó compilando; ausencia de la clave NO implica
+// que la fuente carezca del guion, solo que no se verificó aquí.
+#let by-script(script) = tokens.keys().filter(k => script in tokens.at(k).at("scripts", default: ("latin",)))
 
 // Namespace
 #let font-tokens = (
@@ -100,4 +114,5 @@
   token: token,
   family: family,
   "by-category": by-category,
+  "by-script": by-script,
 )

@@ -32,4 +32,5 @@
 #import "dropcaps.typ": capitular
 #import "articulo.typ": articulo, primer-parrafo, make-theme, fondo-editorial
 #import "scripture.typ": scripture, vs, ch, pasaje
+#import "idiomas.typ": lat, gr, he, translit, interlineal
 #import "social.typ": *

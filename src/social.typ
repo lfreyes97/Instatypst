@@ -26,6 +26,7 @@
 // documento) — pero NO uses ese patrón para personalizar plantillas.
 
 #import "theme.typ": theme
+#import "idiomas.typ": gr, he
 
 // ============ 1. TOKENS DE DISEÑO ============
 
@@ -687,3 +688,42 @@
 #let blockquote-grid(tarjetas, columnas: 2) = block(width: 100%, above: 24pt, below: 24pt)[
   #grid(columns: (1fr,) * columnas, gutter: 24pt, ..tarjetas)
 ]
+
+// Texto bíblico en paralelo — versículo completo en el idioma original
+// junto a su traducción, en dos columnas. Para hebreo pone la columna
+// original en RTL (grid() voltea el orden visual solo con dir: rtl, ver
+// idiomas.typ); para griego usa GFS Didot (o Libertinus Serif si
+// autentico: false) vía gr()/he() de idiomas.typ.
+#let blockquote-paralelo(
+  original,
+  traduccion,
+  idioma: "griego", // "griego" | "hebreo"
+  autentico: true,
+  referencia: none,
+  color: none,
+  theme: theme.base,
+) = {
+  let color = if color == none { theme.colors.primary } else { color }
+  let es-rtl = idioma == "hebreo"
+  block(width: 100%, above: 24pt, below: 24pt, fill: theme.colors.white, stroke: 1pt + gray.lighten(70%), radius: radius, inset: 28pt)[
+    #if referencia != none [
+      #text(font: theme.fonts.body, size: 18pt, weight: 700, fill: color, referencia)
+      #v(14pt)
+    ]
+    #let celda-original = [
+      #set text(dir: if es-rtl { rtl } else { ltr })
+      #set align(if es-rtl { right } else { left })
+      #if idioma == "hebreo" { he(text(size: 24pt, original)) } else { gr(text(size: 24pt, original), autentico: autentico) }
+    ]
+    #let celda-traduccion = [
+      #set text(font: theme.fonts.body, size: 20pt, style: "italic", fill: theme.colors.dark)
+      #traduccion
+    ]
+    #grid(
+      columns: (1fr, 1fr),
+      column-gutter: 28pt,
+      align: (horizon, horizon),
+      ..if es-rtl { (celda-traduccion, celda-original) } else { (celda-original, celda-traduccion) }
+    )
+  ]
+}
