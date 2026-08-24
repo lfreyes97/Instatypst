@@ -1,0 +1,9 @@
+# Fuentes pesadas — no se versionan por tamaño (1.2 GB y 705 MB resp.).
+# Si hacen falta en otra máquina, cópialas de nuevo a estas rutas desde
+# ~/.local/share/fonts/ (ver conversación / historial de este proyecto).
+Fonts/Iosevka_Nerd_Font/
+Fonts/ZedMono_Nerd_Font/
+
+# Salidas de compilación — se regeneran con `typst compile`
+*.pdf
+out/
