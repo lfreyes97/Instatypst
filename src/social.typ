@@ -727,3 +727,43 @@
     )
   ]
 }
+
+// Cita con atribución lateral rotada — barra vertical con autor/fuente
+// (rotate(270deg), se lee girando la cabeza a la derecha) junto al cuerpo
+// de la cita, numerado opcionalmente. Puerto de un patrón editorial
+// (cita de Pascal con atribución de lado), con los tokens de este tema
+// en vez de fuentes sueltas.
+#let blockquote-lateral(
+  body,
+  autor: none,
+  fuente: none,
+  n: none,
+  color: none,
+  theme: theme.base,
+) = {
+  let color = if color == none { theme.colors.primary } else { color }
+  block(width: 100%, above: 24pt, below: 24pt)[
+    #grid(
+      columns: (auto, 1fr),
+      column-gutter: 18pt,
+      align: (bottom, top),
+      if autor != none or fuente != none {
+        align(bottom)[
+          #rotate(270deg, reflow: true)[
+            #text(font: theme.fonts.body, weight: 700, size: 16pt, fill: color)[
+              #if autor != none [#autor]
+              #if autor != none and fuente != none [ — ]
+              #if fuente != none [#text(style: "italic", fill: theme.colors.dark)[#fuente]]
+            ]
+          ]
+        ]
+      } else { [] },
+      [
+        #set par(justify: true)
+        #set text(font: theme.fonts.body, size: 15pt, fill: theme.colors.dark)
+        #if n != none [#text(weight: 700)[#n.] ]
+        #body
+      ],
+    )
+  ]
+}

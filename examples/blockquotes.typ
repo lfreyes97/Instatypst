@@ -94,3 +94,20 @@
     )
   ]
 ])
+
+#pagebreak()
+
+// Atribución lateral rotada (rotate(270deg)) — puerto de un patrón
+// editorial visto fuera del proyecto, con nuestros propios tokens.
+#canvas(sizes.instagram, [
+  #bg(palette.light)
+  #pad(page-pad)[
+    #blockquote-lateral(
+      n: 26,
+      autor: "Blaise Pascal",
+      fuente: "Pensées",
+    )[Del mismo modo que se estropea la mente, se estropea también el sentimiento.
+
+    La mente y el sentimiento se forman por medio del trato con los demás; y es imposible elegir bien si uno no está ya formado y no estropeado.]
+  ]
+])
