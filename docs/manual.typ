@@ -621,6 +621,41 @@ A diferencia de las plantillas sociales, estas *no* son un canvas: son bloques p
 
 #note[Para hebreo RTL, `blockquote-paralelo` invierte el `grid` cuando `idioma: "hebreo"` — el original queda a la derecha visualmente pero se escribe normal en el array. `blockquote-avatar` requiere `iniciales:` explícito para no romper si `autor` no es texto plano (bug corregido de `cristianamente.typ:444`). `blockquote-callout` con `variante: "hand"` delega el cuerpo a Caveat (requiere `--font-path Fonts`).]
 
+#h2[12.2 Legos — primitives componibles]
+Cada `blockquote-*` anterior es una *receta* con los mismos 4 legos. Exponerlos permite armar brutalista/glass/editorial sin pedir `estilo:` monolítico — edificio de legos.
+
+#api-table((
+  ([`bq-frame(body, tipo:)`], [`tipo: "soft" (modern, radius 24pt) / "hard" (brutal, radius 0 + borde 3.5pt black) / "glass" (gradient translúcido + borde 0.6pt)`], [`#bq-frame(tipo: "hard")[...]`]),
+  ([`bq-mark(texto, detras:)`], [Comilla suelta; `detras: true` la pone 180pt detrás como en `blockquote-pull`], [`#bq-mark("“", detras: true)`]),
+  ([`bq-rule(width:, color:)` / `bq-rule-full`], [Filete corto (default 48pt) o línea 100%], [`#bq-rule(width: 36pt)`]),
+  ([`bq-attribution(autor:, fuente:, modo:)`], [`modo: "pro" (— Autor · Fuente) / "mono" (DM Mono caja) / "caps" (tracking 0.12em)`], [`#bq-attribution(autor: "Mies", modo: "mono")`]),
+))
+
+```typ
+// Card modern (soft) vs brutal (hard) vs glass — mismo contenido
+#bq-frame(tipo: "soft")[... #bq-rule() #bq-attribution(autor: "Mies", modo: "pro")]
+#bq-frame(tipo: "hard")[#text(upper[...]) #bq-rule(color: red) #bq-attribution(autor: "Mies", modo: "mono")]
+#bq-frame(tipo: "glass", color: palette.primary)[... #bq-attribution(modo: "caps")]
+
+// Pull con marca detrás + composición libre callout
+#bq-mark("“", detras: true) + #bq-rule(width: 36pt)
+#bq-frame(tipo: "hard", inset: 16pt)[#grid(columns: (auto, 1fr), gutter: 12pt, text("⚠"), [#text(upper[Warn]) #body])]
+```
+
+#h3[Ejemplos compactos — legos]
+#bq-frame(tipo: "soft", inset: 10pt)[
+  #text(style: "italic", size: 9pt)[La constancia entrena al algoritmo.] #v(4pt) #bq-rule(width: 24pt) #v(4pt) #bq-attribution(autor: "Equipo de redes", modo: "pro")
+]
+#bq-frame(tipo: "hard", inset: 10pt)[
+  #text(weight: 900, size: 9pt, upper[La constancia entrena al algoritmo.]) #v(4pt) #bq-rule(color: rgb("#ff3b30"), width: 24pt) #v(4pt) #bq-attribution(autor: "Equipo de redes", modo: "mono")
+]
+#bq-frame(tipo: "glass", color: palette.primary, inset: 10pt)[
+  #text(style: "italic", size: 9pt)[La constancia entrena al algoritmo.] #v(4pt) #bq-attribution(autor: "Equipo de redes", modo: "caps", color: palette.primary)
+]
+#v(4pt)
+#bq-mark("“", fill: palette.secondary.transparentize(65%), detras: true)
+#pad(x: 10pt)[#text(font: theme.base.fonts.display, weight: 800, size: 11pt)[La tipografía es la ropa de las ideas.] #v(4pt) #bq-rule(width: 24pt) #v(4pt) #bq-attribution(autor: "Anónimo", fuente: "Manual", modo: "pro")]
+
 // ═══════════════════════════════════════════════════════════
 = Herramientas CLI — `nueva-plantilla.py` <cap-cli>
 #h1[13 · Herramientas CLI — `nueva-plantilla.py`]

@@ -148,6 +148,42 @@
 
 #pagebreak()
 
+// ── Legos primitives (bq-frame/mark/rule/attribution) ──
+#canvas(sizes.instagram, [
+  #bg(palette.white)
+  #pad(page-pad)[
+    #bq-frame(tipo: "soft", color: palette.primary)[
+      #text(style: "italic", size: 22pt)[La constancia entrena al algoritmo. Y a tu audiencia.]
+      #v(6pt) #bq-rule(color: palette.primary, width: 36pt) #v(6pt) #bq-attribution(autor: "Equipo de redes", modo: "pro")
+    ]
+    #v(14pt) #text(size: 14pt, fill: gray)[soft = radius 24pt · modern]
+  ]
+])
+#pagebreak()
+#canvas(sizes.instagram, [
+  #bg(palette.white)
+  #pad(page-pad)[
+    #bq-frame(tipo: "hard")[
+      #text(weight: 900, size: 26pt, upper[La constancia entrena al algoritmo. Y a tu audiencia.])
+      #v(8pt) #bq-rule(color: rgb("#ff3b30"), width: 32pt) #v(8pt) #bq-attribution(autor: "Equipo de redes", modo: "mono")
+    ]
+    #v(14pt) #text(size: 14pt, fill: gray)[hard = radius 0 · brutalista · mono]
+  ]
+])
+#pagebreak()
+#canvas(sizes.instagram, [
+  #gradient-bg(from: palette.dark, to: palette.primary)
+  #pad(page-pad)[
+    #bq-frame(tipo: "glass", color: palette.primary)[
+      #text(style: "italic", size: 22pt, fill: theme.base.colors.dark)[La constancia entrena al algoritmo. Y a tu audiencia.]
+      #v(6pt) #bq-attribution(autor: "Equipo de redes", modo: "caps", color: palette.primary)
+    ]
+    #v(14pt) #text(size: 14pt, fill: white.transparentize(30%))[glass = translúcido sobre gradient-bg]
+  ]
+])
+
+#pagebreak()
+
 // Atribución lateral rotada (rotate(270deg)) — puerto de un patrón
 // editorial visto fuera del proyecto, con nuestros propios tokens.
 #canvas(sizes.instagram, [

@@ -64,11 +64,13 @@
     - event-post · testimonial-post · poll-story · versus-post
   ],
   block(fill: white, stroke: 0.7pt + luma(85%), radius: 8pt, inset: 12pt)[
-    #text(size: 9pt, weight: 700)[4. Blockquotes (9)]
+    #text(size: 9pt, weight: 700)[4. Blockquotes (14 + 4 legos)]
     #v(4pt)
     #set text(size: 8pt, fill: luma(30%))
     - editorial · bar (×3) · card · hero
     - avatar · hand · paralelo · lateral · grid
+    - pull · definition · callout · poetry · timeline
+    - legos: bq-frame/mark/rule/attribution
   ],
   block(fill: white, stroke: 0.7pt + luma(85%), radius: 8pt, inset: 12pt)[
     #text(size: 9pt, weight: 700)[5. Editorial]
@@ -475,6 +477,82 @@
   ]
 ])
 
+// ── Legos — primitives componibles (edificio de legos) ──
+#canvas(sizes.instagram, [
+  #bg(palette.white)
+  #pad(page-pad)[
+    #text(size: 20pt, weight: 700, fill: gray)[5c · Legos — bq-frame (soft / hard / glass)]
+    #v(8pt)
+    #bq-frame(tipo: "soft", color: palette.primary)[
+      #text(style: "italic", size: 22pt)[La constancia entrena al algoritmo. Y a tu audiencia.]
+      #v(6pt) #bq-rule(color: palette.primary, width: 36pt) #v(6pt) #bq-attribution(autor: "Equipo de redes", modo: "pro")
+    ]
+    #v(8pt) #text(size: 14pt, fill: gray)[`bq-frame(tipo: "soft")` · radius 24pt · modern default]
+  ]
+])
+#canvas(sizes.instagram, [
+  #bg(rgb("#0a0a0a"))
+  #pad(page-pad)[
+    #text(size: 20pt, weight: 700, fill: white.transparentize(30%))[5d · Legos — bq-frame hard (brutalista)]
+    #v(8pt)
+    #bq-frame(tipo: "hard")[
+      #text(weight: 900, size: 28pt, fill: black, upper[La constancia entrena al algoritmo. Y a tu audiencia.])
+      #v(10pt) #bq-rule(color: rgb("#ff3b30"), width: 32pt) #v(10pt) #bq-attribution(autor: "Equipo de redes", modo: "mono")
+    ]
+    #v(8pt) #text(size: 14pt, fill: white.transparentize(40%))[`bq-frame(tipo: "hard")` · radius 0 · borde 3.5pt black · `mono`]
+  ]
+])
+#canvas(sizes.instagram, [
+  #gradient-bg(from: palette.dark, to: palette.primary)
+  #pad(page-pad)[
+    #text(size: 20pt, weight: 700, fill: white.transparentize(40%))[5e · Legos — bq-frame glass]
+    #v(8pt)
+    #bq-frame(tipo: "glass", color: palette.primary)[
+      #text(style: "italic", size: 22pt, fill: theme.base.colors.dark)[La constancia entrena al algoritmo. Y a tu audiencia.]
+      #v(8pt) #bq-rule-full(color: palette.primary) #v(8pt) #bq-attribution(autor: "Equipo de redes", fuente: "Manual", modo: "caps", color: palette.primary)
+    ]
+    #v(8pt) #text(size: 14pt, fill: white.transparentize(40%))[`bq-frame(tipo: "glass")` · translúcido sobre `gradient-bg` · `caps`]
+  ]
+])
+#canvas(sizes.instagram, [
+  #bg(palette.white)
+  #pad(page-pad)[
+    #text(size: 20pt, weight: 700, fill: gray)[5f · Legos — bq-mark + bq-rule + bq-attribution]
+    #v(8pt)
+    #bq-mark("“", fill: palette.secondary.transparentize(65%), detras: true)
+    #pad(x: 18pt)[
+      #text(font: theme.base.fonts.display, weight: 800, size: 36pt)[La tipografía es la ropa de las ideas.]
+      #v(10pt) #bq-rule(color: palette.secondary, width: 36pt) #v(10pt) #bq-attribution(autor: "Anónimo", fuente: "Manual", modo: "pro")
+    ]
+    #v(10pt) #text(size: 14pt, fill: gray)[`bq-mark(detras: true)` 180pt · `bq-rule(width: 36pt)` · `bq-attribution(modo: pro/mono/caps)`]
+    #v(12pt)
+    #bq-attribution(autor: "Séneca", fuente: "Cartas", modo: "caps", color: palette.primary) #h(12pt)
+    #bq-attribution(autor: "Anónimo", modo: "mono") #h(12pt)
+    #bq-attribution(autor: "Anónimo", modo: "pro")
+  ]
+])
+#canvas(sizes.instagram, [
+  #bg(palette.light)
+  #pad(page-pad)[
+    #text(size: 20pt, weight: 700, fill: gray)[5g · Legos — composición libre (callout artesanal)]
+    #v(8pt)
+    #bq-frame(tipo: "hard", inset: 16pt)[
+      #grid(columns: (auto, 1fr), gutter: 12pt, align: (top, top),
+        text(size: 24pt, "⚠"),
+        [#text(weight: 800, size: 16pt, fill: black, upper[Warn]) #v(4pt) #text(size: 20pt)[Evita más de 25 palabras por slide — el ojo abandona.]]
+      )
+    ]
+    #v(8pt)
+    #bq-frame(tipo: "glass", color: palette.secondary, inset: 14pt)[
+      #grid(columns: (auto, 1fr), gutter: 10pt, align: (top, top),
+        text(size: 22pt, "✦"),
+        [#text(weight: 800, size: 14pt, fill: palette.secondary, upper[Tip]) #v(4pt) #text(size: 20pt)[Carruseles de 6–8 slides retienen 2× más que una sola imagen.]]
+      )
+    ]
+    #v(8pt) #text(size: 14pt, fill: gray)[Mismo contenido, legos distintos — sin pedir `estilo:` monolítico]
+  ]
+])
+
 // ═══════════════════════════════════════════════════════════
 // 6. EDITORIAL — capitular + articulo + pasaje
 // ═══════════════════════════════════════════════════════════
@@ -626,7 +704,7 @@ En hebreo, #he[בְּרֵאשִׁית] ("bereshit") abre el Génesis — se rend
     box(fill: palette.primary, radius: 6pt, inset: 8pt)[#align(center)[#text(fill: white, size: 7.5pt, weight: 700)[15#linebreak()paletas]]],
     box(fill: palette.secondary, radius: 6pt, inset: 8pt)[#align(center)[#text(fill: white, size: 7.5pt, weight: 700)[8#linebreak()parejas]]],
     box(fill: palette.accent, radius: 6pt, inset: 8pt)[#align(center)[#text(fill: white, size: 7.5pt, weight: 700)[10#linebreak()plantillas]]],
-    box(fill: palette.dark, radius: 6pt, inset: 8pt)[#align(center)[#text(fill: white, size: 7.5pt, weight: 700)[9#linebreak()blockquotes]]],
+    box(fill: palette.dark, radius: 6pt, inset: 8pt)[#align(center)[#text(fill: white, size: 7.5pt, weight: 700)[14+4#linebreak()quotes/legos]]],
   )
   #v(16pt)
   #text(size: 8pt, fill: gray)[`#import "src/lib.typ": *` · `typst compile --root . --font-path Fonts demo.typ demo.pdf`]
