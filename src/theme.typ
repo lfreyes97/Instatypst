@@ -108,9 +108,13 @@
 
 // ================= UTILIDADES DE CONTRASTE (WCAG 2.x) =================
 
+// `.components()` devuelve canales como `ratio` (ej. 100%), no como
+// número plano — hay que normalizarlos dividiendo por 100% (no por 100:
+// eso los aplastaba dos veces, ej. blanco puro daba luminancia ~0.01 en
+// vez de 1.0, y contrast(negro, blanco) daba ~1.0 en vez de 21.0).
 #let _chan(v) = {
-  let x = v / 100
-  if x <= 4.045% { x / 12.92 } else { calc.pow((x + 5.5%) / 105.5%, 2.4) }
+  let x = v / 100%
+  if x <= 0.04045 { x / 12.92 } else { calc.pow((x + 0.055) / 1.055, 2.4) }
 }
 
 #let luminance(c) = {
@@ -125,7 +129,7 @@
 #let contrast(a, b) = {
   let l1 = luminance(a)
   let l2 = luminance(b)
-  (calc.max(l1, l2) + 5%) / (calc.min(l1, l2) + 5%)
+  (calc.max(l1, l2) + 0.05) / (calc.min(l1, l2) + 0.05)
 }
 
 // ¿Cumple AA (4.5) / AAA (7)?
