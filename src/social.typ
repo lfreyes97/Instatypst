@@ -767,3 +767,96 @@
     )
   ]
 }
+
+// ── NUEVOS · con finetuning (no-GFM) ──
+
+// Pull-quote — comilla gigante detrás del texto, filete corto, display 800.
+// Pensado para portadas/carrusel donde `blockquote-hero` centrado se queda corto.
+// `marca: none` lo deja minimal; `color:` controla comilla y filete.
+#let blockquote-pull(body, autor: none, fuente: none, marca: "“", color: none, theme: theme.base) = {
+  let color = if color == none { theme.colors.primary } else { color }
+  block(width: 100%, above: 28pt, below: 28pt)[
+    #if marca != none {
+      place(dx: -10pt, dy: -30pt)[
+        #text(font: theme.fonts.display, size: 180pt, fill: color.transparentize(88%), weight: 900, marca)
+      ]
+    }
+    #pad(x: 28pt, y: 12pt)[
+      #text(font: theme.fonts.display, weight: 800, size: 46pt, fill: theme.colors.dark, body)
+      #if autor != none or fuente != none [
+        #v(18pt)
+        #box(fill: color, height: 3pt, width: 48pt)
+        #v(10pt)
+        #text(font: theme.fonts.body, size: 20pt, weight: 700, fill: theme.colors.dark)[
+          #if autor != none [#autor]
+          #if fuente != none [#text(style: "italic", fill: gray.darken(10%))[ — #fuente]]
+        ]
+      ]
+    ]
+  ]
+}
+
+// Definición / glosario — porte de `definicion` de cristianamente.typ
+// `termino` + `/pronunciación/` + badge `origen` + cuerpo + pills `relacionados`.
+#let blockquote-definition(termino, body, pronunciacion: none, origen: none, relacionados: none, color: none, theme: theme.base) = {
+  let color = if color == none { theme.colors.primary } else { color }
+  block(width: 100%, above: 24pt, below: 24pt, fill: theme.colors.white, stroke: 1pt + gray.lighten(70%), radius: radius, inset: 32pt)[
+    #text(font: theme.fonts.display, weight: 900, size: 40pt, fill: theme.colors.dark, termino)
+    #if pronunciacion != none [#h(10pt) #text(font: theme.fonts.body, size: 18pt, fill: gray, style: "italic")[/#pronunciacion/]]
+    #if origen != none [#h(8pt) #box(fill: color.transparentize(88%), inset: (x: 8pt, y: 4pt), radius: 100pt)[#text(size: 14pt, fill: color, weight: 700, origen)]]
+    #v(14pt)
+    #set text(font: theme.fonts.body, size: 26pt, fill: theme.colors.dark)
+    #set par(leading: 0.85em)
+    #body
+    #if relacionados != none and relacionados.len() > 0 [
+      #v(14pt) #line(length: 100%, stroke: 0.75pt + gray.lighten(70%)) #v(10pt)
+      #text(size: 16pt, fill: gray, weight: 600)[Ver también: ]
+      #for (i, r) in relacionados.enumerate() [
+        #box(fill: theme.colors.light, inset: (x: 8pt, y: 4pt), radius: 100pt)[#text(size: 16pt, fill: gray.darken(20%), r)] #h(6pt)
+      ]
+    ]
+  ]
+}
+
+// Callout — tip/info/warning/marginal con icono + barra lateral.
+// Reemplazo con *intención* para `blockquote-bar` acentuado genérico.
+#let blockquote-callout(body, titulo: none, icono: "✦", variante: "tip", color: none, theme: theme.base) = {
+  let defaults = (tip: palette.accent, info: palette.primary, warn: rgb("#EAB308"), hand: palette.secondary)
+  let color = if color == none { defaults.at(variante, default: palette.accent) } else { color }
+  block(width: 100%, above: 20pt, below: 20pt, fill: color.transparentize(92%), stroke: (left: 5pt + color), inset: (x: 28pt, y: 22pt), radius: 12pt)[
+    #grid(columns: (auto, 1fr), gutter: 14pt, align: (top, top),
+      text(size: 28pt, icono),
+      [
+        #if titulo != none [#text(font: theme.fonts.body, size: 20pt, weight: 800, fill: color, upper(titulo)) #v(6pt)]
+        #if variante == "hand" {
+          text(font: "Caveat", size: 28pt, fill: theme.colors.dark, body)
+        } else {
+          text(font: theme.fonts.body, size: 26pt, fill: theme.colors.dark, body)
+        }
+      ]
+    )
+  ]
+}
+
+// Poesía / verso — respeta saltos, sin justificar, sangría colgante.
+#let blockquote-poetry(body, autor: none, color: none, theme: theme.base) = {
+  let color = if color == none { theme.colors.secondary } else { color }
+  block(width: 100%, above: 24pt, below: 24pt, fill: theme.colors.white, stroke: (left: 3pt + color.transparentize(50%)), inset: (x: 28pt, y: 20pt), radius: 8pt)[
+    #set text(font: theme.fonts.body, size: 26pt, fill: theme.colors.dark)
+    #set par(leading: 0.95em, justify: false, first-line-indent: 0pt, hanging-indent: 1em)
+    #body
+    #if autor != none [#v(10pt) #align(right)[#text(font: theme.fonts.body, size: 18pt, fill: gray, style: "italic")[— #autor]]]
+  ]
+}
+
+// Timeline — fecha a la izquierda + regla vertical + cuerpo.
+#let blockquote-timeline(fecha, body, color: none, theme: theme.base) = {
+  let color = if color == none { theme.colors.primary } else { color }
+  block(width: 100%, above: 18pt, below: 18pt)[
+    #grid(columns: (auto, auto, 1fr), gutter: 14pt, align: (top, top, top),
+      text(font: theme.fonts.body, size: 18pt, weight: 800, fill: color, fecha),
+      box(width: 3pt, height: 44pt, fill: color.transparentize(65%), radius: 2pt),
+      [#set text(font: theme.fonts.body, size: 22pt, fill: theme.colors.dark); #set par(leading: 0.85em); #body],
+    )
+  ]
+}

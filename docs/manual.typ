@@ -591,9 +591,9 @@ Todas devuelven un `canvas` listo para exportar a PNG/PDF. El parámetro `theme:
 
 A diferencia de las plantillas sociales, estas *no* son un canvas: son bloques para insertar en cualquier página o dentro de un `canvas` (`src/social.typ:549`). Convención uniforme: `body` posicional primero, `autor:`/`fuente:` nombrados y opcionales, `color:` + `theme:` presentes.
 
-#h2[12.1 Catálogo de 9 tipos]
+#h2[12.1 Catálogo — 9 clásicos GFM + 5 nuevos con finetuning]
 #api-table((
-  ([`blockquote-editorial(body, autor:, fuente:)`], [Doble borde + comilla 60pt + itálica], [Demo 1/9 en demo]),
+  ([`blockquote-editorial(body, autor:, fuente:)`], [Doble borde + comilla 60pt + itálica], [Demo 1/9]),
   ([`blockquote-bar(body, variante:)`], [Barra izquierda; `variante`: default/grande/acento], [Demo 2–4/9]),
   ([`blockquote-card(body, autor:, fuente:)`], [Tarjeta con barra superior de color], [Demo 5/9]),
   ([`blockquote-hero(body, autor:, fuente:)`], [Centrada dramática, comilla 86pt], [Demo 6/9, sobre gradiente]),
@@ -603,19 +603,23 @@ A diferencia de las plantillas sociales, estas *no* son un canvas: son bloques p
   ([`blockquote-lateral(body, n:, autor:, fuente:)`], [Cita con atribución rotada 270° + numeración], [Demo 10/9]),
   ([`blockquote-grid(tarjetas, columnas:)`], [Grid de `blockquote-avatar` en 2–3 cols], [Demo 7/9]),
 ))
+#h3[Nuevos — no-GFM]
+#api-table((
+  ([`blockquote-pull(body, autor:, fuente:, marca:)`], [Pull-quote — comilla 180pt detrás + filete 48pt; `marca: none` minimal], [Demo 11–12/14]),
+  ([`blockquote-definition(termino, body, pronunciacion:, origen:, relacionados:)`], [Glosario — badge origen + pills relacionados], [Demo 13/14]),
+  ([`blockquote-callout(body, titulo:, icono:, variante:)`], [Callout — `variante: tip/info/warn/hand` (hand = Caveat)], [Demo 14a/14]),
+  ([`blockquote-poetry(body, autor:)`], [Verso — sangría colgante, sin justificar], [Demo 14b/14]),
+  ([`blockquote-timeline(fecha, body)`], [Línea temporal — fecha + regla vertical], [Demo 14b/14]),
+))
 
 #h3[Ejemplos compactos (dentro de A4)]
 #blockquote-bar([La constancia entrena al algoritmo... y a tu audiencia.], autor: "Equipo de redes", color: palette.secondary)
-#blockquote-bar([Una cita acentuada con fondo tenue.], variante: "acento", color: palette.primary)
-#blockquote-card([Las cuentas que usan carruseles duplican su interacción.], autor: "María J.", fuente: "Community Manager", color: palette.primary)
-#blockquote-hand([El corazón tiene razones que la razón no conoce.], autor: "Pascal")
-#blockquote-paralelo(
-  [Ἐν ἀρχῇ ἦν ὁ λόγος...], [En el principio era el Verbo...],
-  idioma: "griego", referencia: "Juan 1:1", color: palette.primary,
-)
-#blockquote-lateral(n: 26, autor: "Blaise Pascal", fuente: "Pensées")[Del mismo modo que se estropea la mente, se estropea también el sentimiento.]
+#blockquote-callout(variante: "tip", titulo: "Tip", icono: "✦")[Carruseles de 6–8 slides retienen 2× más que una imagen.]
+#blockquote-definition("Sola Scriptura", pronunciacion: "so-la skrip-tu-ra", origen: "latín", relacionados: ("Sola Fide",), color: palette.primary)[Doctrina según la cual la Escritura es la única autoridad infalible.]
+#blockquote-pull([La tipografía es la ropa que le pones a las ideas.], autor: "Anónimo", fuente: "Manual", color: palette.secondary)
+#blockquote-poetry(autor: "Borges", color: palette.primary)[El aleph es uno de los puntos \ que contiene todos los puntos.]
 
-#note[Para hebreo RTL, `blockquote-paralelo` invierte el `grid` cuando `idioma: "hebreo"` — el original queda a la derecha visualmente pero se escribe normal en el array. `blockquote-avatar` requiere `iniciales:` explícito para no romper si `autor` no es texto plano (bug corregido de `cristianamente.typ:444`).]
+#note[Para hebreo RTL, `blockquote-paralelo` invierte el `grid` cuando `idioma: "hebreo"` — el original queda a la derecha visualmente pero se escribe normal en el array. `blockquote-avatar` requiere `iniciales:` explícito para no romper si `autor` no es texto plano (bug corregido de `cristianamente.typ:444`). `blockquote-callout` con `variante: "hand"` delega el cuerpo a Caveat (requiere `--font-path Fonts`).]
 
 // ═══════════════════════════════════════════════════════════
 = Herramientas CLI — `nueva-plantilla.py` <cap-cli>

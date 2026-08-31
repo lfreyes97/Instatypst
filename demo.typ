@@ -306,7 +306,7 @@
 #align(center)[
   #text(font: theme.base.fonts.display, size: 20pt, weight: 800, fill: theme.base.colors.primary)[5 · Blockquotes]
   #v(4pt)
-  #text(size: 9pt, fill: gray)[9 funciones `blockquote-*` · bloques reutilizables (no canvas) — aquí montados en canvas Instagram para demo]
+  #text(size: 9pt, fill: gray)[14 funciones `blockquote-*` · bloques reutilizables (no canvas) — aquí montados en canvas Instagram para demo · 9 clásicos GFM + 5 nuevos con finetuning]
 ]
 #pagebreak()
 
@@ -415,6 +415,63 @@
     #blockquote-lateral(n: 26, autor: "Blaise Pascal", fuente: "Pensées")[Del mismo modo que se estropea la mente, se estropea también el sentimiento. La mente y el sentimiento se forman por medio del trato con los demás; y es imposible elegir bien si uno no está ya formado y no estropeado.]
     #v(16pt)
     #blockquote-lateral(autor: "Séneca", fuente: "Cartas")[No es que tengamos poco tiempo, sino que perdemos mucho.]
+  ]
+])
+
+// ── Nuevos con finetuning (no-GFM) ──
+#canvas(sizes.instagram, [
+  #bg(palette.white)
+  #pad(page-pad)[
+    #text(size: 20pt, weight: 700, fill: gray)[11/14 · blockquote-pull — marca de agua detrás]
+    #v(8pt)
+    #blockquote-pull([La tipografía es la ropa que le pones a las ideas.], autor: "Anónimo", fuente: "Manual de estilo", color: palette.secondary)
+    #v(12pt)
+    #text(size: 16pt, fill: gray)[`marca:` por defecto "“" · `marca: none` minimal · `color:` controla comilla+filete]
+  ]
+])
+
+#canvas(sizes.instagram, [
+  #bg(palette.light)
+  #pad(page-pad)[
+    #text(size: 20pt, weight: 700, fill: gray)[12/14 · blockquote-pull — minimal sin marca]
+    #v(8pt)
+    #blockquote-pull([Menos es más — hasta que deja de comunicar.], autor: "Mies van der Rohe", marca: none, color: (palettes.as-theme)("neon").colors.primary)
+  ]
+])
+
+#canvas(sizes.instagram, [
+  #bg(palette.light)
+  #pad(page-pad)[
+    #text(size: 20pt, weight: 700, fill: gray)[13/14 · blockquote-definition — glosario]
+    #v(8pt)
+    #blockquote-definition("Sola Scriptura", pronunciacion: "so-la skrip-tu-ra", origen: "latín", relacionados: ("Sola Fide", "Sola Gratia"), color: palette.primary)[Doctrina según la cual la Escritura es la única autoridad infalible para la fe y la práctica. No niega otras autoridades, las subordina.]
+    #v(8pt) #text(size: 16pt, fill: gray)[Porte de `definicion` de cristianamente.typ · `origen:` badge + `relacionados:` pills]
+  ]
+])
+
+#canvas(sizes.instagram, [
+  #bg(palette.white)
+  #pad(page-pad)[
+    #text(size: 20pt, weight: 700, fill: gray)[14a/14 · blockquote-callout — 4 variantes]
+    #v(8pt)
+    #blockquote-callout(variante: "tip", titulo: "Tip", icono: "✦")[Publica carruseles de 6–8 slides: retienen 2× más que una sola imagen.]
+    #blockquote-callout(variante: "info", titulo: "Nota editorial", icono: "◐")[Esta traducción usa *YHWH* donde el hebreo trae el tetragrámaton.]
+    #blockquote-callout(variante: "warn", titulo: "Cuidado", icono: "⚠")[Evita poner más de 25 palabras por slide — el ojo abandona.]
+    #blockquote-callout(variante: "hand", titulo: "Marginal", icono: "✎")[Idea al margen: probar con fondo crema, no blanco.]
+    #v(6pt) #text(size: 16pt, fill: gray)[`variante: tip/info/warn/hand` · `hand` usa Caveat · `color:` sobreescribe el default]
+  ]
+])
+
+#canvas(sizes.instagram, [
+  #bg(palette.light)
+  #pad(page-pad)[
+    #text(size: 20pt, weight: 700, fill: gray)[14b/14 · blockquote-poetry + blockquote-timeline]
+    #v(8pt)
+    #blockquote-poetry(autor: "Jorge Luis Borges", color: palette.primary)[El aleph es uno de los puntos del espacio \ que contiene todos los puntos. \ Vi en el aleph la tierra y en la tierra otra vez el aleph.]
+    #v(14pt)
+    #blockquote-timeline("1517", [Martín Lutero clava las 95 tesis en Wittenberg — inicio simbólico de la Reforma.], color: rgb("#8b2e3a"))
+    #blockquote-timeline("2026", [Este sistema nace: paletas + tipografía + editorial en Typst.], color: palette.secondary)
+    #v(8pt) #text(size: 16pt, fill: gray)[`poetry`: verso con sangría colgante sin justificar · `timeline`: fecha + regla vertical]
   ]
 ])
 
