@@ -860,3 +860,72 @@
     )
   ]
 }
+
+// ── LEGOS — primitives componibles (edificio de legos) ──
+// Cada blockquote-* de arriba pasa a ser una *receta* con estos legos.
+// Exponerlos permite armar brutalista/glass/editorial sin pedir `estilo:` monolítico.
+
+#let bq-mark(texto, size: 60pt, fill: none, theme: theme.base, detras: false) = {
+  let fill = if fill == none { theme.colors.primary.transparentize(75%) } else { fill }
+  if detras {
+    place(dx: -10pt, dy: -30pt)[#text(font: theme.fonts.display, size: 180pt, fill: fill.transparentize(30%), weight: 900, texto)]
+  } else {
+    text(font: theme.fonts.display, size: size, fill: fill, weight: 900, texto)
+  }
+}
+
+#let bq-rule(color: none, width: 48pt, theme: theme.base) = {
+  let color = if color == none { theme.colors.primary } else { color }
+  box(fill: color, height: 3pt, width: width, radius: 1.5pt)
+}
+
+#let bq-rule-full(color: none, theme: theme.base) = {
+  let color = if color == none { theme.colors.primary } else { color }
+  line(length: 100%, stroke: 0.75pt + color.transparentize(70%))
+}
+
+#let bq-attribution(autor: none, fuente: none, modo: "pro", color: none, theme: theme.base) = {
+  let color = if color == none { theme.colors.dark } else { color }
+  if modo == "mono" {
+    // Brutalista: DM Mono + upper + caja de color
+    if autor != none or fuente != none {
+      let label = if autor != none and fuente != none { upper(autor) + " · " + upper(fuente) } else if autor != none { upper(autor) } else { upper(fuente) }
+      box(fill: theme.colors.primary, inset: (x: 6pt, y: 3pt))[#text(font: "DM Mono", size: 9pt, weight: 700, fill: white, label)]
+    }
+  } else if modo == "caps" {
+    text(font: theme.fonts.body, size: 9pt, weight: 700, tracking: 0.12em, fill: gray.darken(20%))[
+      #if autor != none { upper(autor) }
+      #if autor != none and fuente != none { "  ·  " }
+      #if fuente != none { upper(fuente) }
+    ]
+  } else {
+    // pro
+    [#if autor != none [#text(font: theme.fonts.body, size: 11pt, weight: 700, fill: color)[— #autor]] #if fuente != none [#text(font: theme.fonts.body, size: 10pt, style: "italic", fill: gray.darken(10%))[ · #fuente]]]
+  }
+}
+
+#let bq-frame(body, tipo: "soft", color: none, theme: theme.base, radius: none, inset: none) = {
+  let color = if color == none { theme.colors.primary } else { color }
+  if tipo == "hard" {
+    // Brutalista: radius 0, borde 3.5pt negro, sombra offset contenida (pad extra para no desbordar grillas)
+    let r = if radius == none { 0pt } else { radius }
+    let padv = if inset == none { 22pt } else { inset }
+    pad(right: 6pt, bottom: 6pt)[
+      #block(width: 100%, above: 12pt, below: 12pt, fill: black, radius: r, inset: 0pt)[
+        #block(fill: white, stroke: 3.5pt + black, radius: r, inset: padv, width: 100%, height: 100%)[#body]
+      ]
+    ]
+  } else if tipo == "glass" {
+    // Glass: filling translúcido + borde fino + gradient subyacente
+    let r = if radius == none { 16pt } else { radius }
+    let padv = if inset == none { 16pt } else { inset }
+    block(width: 100%, above: 12pt, below: 12pt, fill: gradient.linear(angle: 135deg, color.transparentize(82%), white.transparentize(30%)), stroke: 0.7pt + white.transparentize(20%), radius: r + 2pt, inset: 1pt)[
+      #block(fill: white.transparentize(35%), stroke: 0.6pt + color.transparentize(70%), radius: r, inset: padv, width: 100%)[#body]
+    ]
+  } else {
+    // soft = modern (default, compatible)
+    let r = if radius == none { 24pt } else { radius }
+    let padv = if inset == none { 32pt } else { inset }
+    block(width: 100%, above: 12pt, below: 12pt, fill: theme.colors.white, stroke: 1pt + gray.lighten(70%), radius: r, inset: padv)[#body]
+  }
+}
