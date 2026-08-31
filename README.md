@@ -3,6 +3,18 @@
 Sistema de diseño en Typst: temas de color y tipografía, plantillas para
 redes sociales, letras capitulares y bloques de cita bíblica.
 
+## Documentación
+
+- **`demo.pdf`** — catálogo visual de todo lo exportado por `src/lib.typ` (lo que *se ve*). Fuente: `demo.typ`.
+- **`docs/manual.pdf`** — manual narrativo (cómo *se usa*): instalación, `theme` API, paletas, tipografía, capitulares, editorial, escritura, idiomas, canvas/componentes, plantillas y blockquotes. Fuente: `docs/manual.typ`.
+
+Compilar cualquiera de los dos:
+
+```bash
+typst compile --root . --font-path Fonts demo.typ
+typst compile --root . --font-path Fonts docs/manual.typ
+```
+
 ## Estructura
 
 ```
@@ -15,7 +27,10 @@ src/                  código del paquete (entrypoint: src/lib.typ)
   dropcaps.typ        letra capital automática (capitular())
   articulo.typ        plantilla editorial: paleta + pareja + capitular en un tema
   scripture.typ       bloques de cita bíblica (pasaje(), vs(), ch())
+  idiomas.typ         lat/gr/he, translit e interlineal
   social.typ          plantillas de canvas (Instagram/stories) + blockquotes
+demo.typ              catálogo visual (no forma parte del paquete)
+docs/manual.typ       manual narrativo (no forma parte del paquete)
 examples/             ejemplos de uso de cada módulo (no forman parte del paquete)
 Fonts/                fuentes usadas por el proyecto (no forman parte del paquete)
 cristianamente.typ    paquete aparte, no integrado — conservado como referencia
@@ -83,7 +98,8 @@ typst compile --root . --font-path Fonts examples/articulo.typ
 - `capitular` — letra capital (de `dropcaps.typ`)
 - `articulo`, `primer-parrafo`, `make-theme`, `fondo-editorial` — plantilla editorial
 - `scripture`, `vs`, `ch`, `pasaje` — bloques de cita bíblica
-- todo lo de `social.typ`: `canvas`, `badge`, `headline`, `subhead`, `footer`, `quote-post`, `announce-post`, `tip-card`, `carousel-cover`, `carousel-slide`, `stat-card`, `event-post`, `testimonial-post`, `poll-story`, `versus-post`, `blockquote-*`, `avatar`, `avatar-row`, `stat`, `progress`, `divider`
+- todo lo de `social.typ`: `canvas`, `badge`, `headline`, `subhead`, `footer`, `quote-post`, `announce-post`, `tip-card`, `carousel-cover`, `carousel-slide`, `stat-card`, `event-post`, `testimonial-post`, `poll-story`, `versus-post`, `blockquote-*` (9 tipos + `blockquote-grid`/`blockquote-paralelo`/`blockquote-lateral`), `avatar`, `avatar-row`, `stat`, `progress`, `divider`
+- `lat`, `gr`, `he`, `translit`, `interlineal` — capa de idiomas (`idiomas.typ`)
 
 ## Nota sobre temas y `theme:`
 
