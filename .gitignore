@@ -1,9 +1,14 @@
 # Fuentes pesadas — no se versionan por tamaño (1.2 GB y 705 MB resp.).
-# Si hacen falta en otra máquina, cópialas de nuevo a estas rutas desde
-# ~/.local/share/fonts/ (ver conversación / historial de este proyecto).
+# En una máquina nueva: `nix develop` (o direnv) las trae de nixpkgs vía
+# flake.nix (nerd-fonts.iosevka / nerd-fonts.zed-mono) — no hace falta
+# copiarlas a mano. Sin Nix, cópialas desde ~/.local/share/fonts/ o
+# reinstálalas desde nerdfonts.com.
 Fonts/Iosevka_Nerd_Font/
 Fonts/ZedMono_Nerd_Font/
 
 # Salidas de compilación — se regeneran con `typst compile`
 *.pdf
 out/
+
+# Nix + direnv
+.direnv/

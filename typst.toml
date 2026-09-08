@@ -10,4 +10,4 @@ keywords = [
   "diseño", "temas", "paletas", "tipografia", "tipografía", "redes-sociales",
   "instagram", "capitulares", "drop-cap", "biblia", "escritura",
 ]
-exclude = ["Fonts", "examples", "cristianamente.typ", "demo.typ", "demo.pdf", "docs"]
+exclude = ["Fonts", "examples", "cristianamente.typ", "demo.typ", "demo.pdf", "docs", "flake.nix", "flake.lock", ".envrc", ".direnv"]
