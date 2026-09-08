@@ -12,3 +12,6 @@ out/
 
 # Nix + direnv
 .direnv/
+
+# Scratchpad de la sesión (renders temporales, pruebas)
+_to_delete/
