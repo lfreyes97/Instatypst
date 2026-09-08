@@ -1,0 +1,2560 @@
+{
+ "familias": [
+  {
+   "carpeta": "AdwaitaMono_Nerd_Font",
+   "familia": "AdwaitaMono Nerd Font",
+   "glifos": [
+    {
+     "cp": 8258,
+     "hex": "2042",
+     "categoria": "asterismo",
+     "nombre": "asterismo",
+     "cara": "AdwaitaMono Nerd Font",
+     "estilo": "normal"
+    },
+    {
+     "cp": 9733,
+     "hex": "2605",
+     "categoria": "estrella",
+     "nombre": "estrella negra",
+     "cara": "AdwaitaMono Nerd Font",
+     "estilo": "normal"
+    },
+    {
+     "cp": 9734,
+     "hex": "2606",
+     "categoria": "estrella",
+     "nombre": "estrella blanca",
+     "cara": "AdwaitaMono Nerd Font",
+     "estilo": "normal"
+    },
+    {
+     "cp": 9756,
+     "hex": "261C",
+     "categoria": "mano",
+     "nombre": "mano índice",
+     "cara": "AdwaitaMono Nerd Font",
+     "estilo": "normal"
+    },
+    {
+     "cp": 9757,
+     "hex": "261D",
+     "categoria": "mano",
+     "nombre": "mano índice",
+     "cara": "AdwaitaMono Nerd Font",
+     "estilo": "normal"
+    },
+    {
+     "cp": 9758,
+     "hex": "261E",
+     "categoria": "mano",
+     "nombre": "mano índice",
+     "cara": "AdwaitaMono Nerd Font",
+     "estilo": "normal"
+    },
+    {
+     "cp": 9759,
+     "hex": "261F",
+     "categoria": "mano",
+     "nombre": "mano índice",
+     "cara": "AdwaitaMono Nerd Font",
+     "estilo": "normal"
+    },
+    {
+     "cp": 10013,
+     "hex": "271D",
+     "categoria": "cruz",
+     "nombre": "cruz latina",
+     "cara": "AdwaitaMono Nerd Font",
+     "estilo": "normal"
+    },
+    {
+     "cp": 10016,
+     "hex": "2720",
+     "categoria": "cruz",
+     "nombre": "cruz de Malta",
+     "cara": "AdwaitaMono Nerd Font",
+     "estilo": "normal"
+    },
+    {
+     "cp": 10017,
+     "hex": "2721",
+     "categoria": "cruz",
+     "nombre": "estrella de David",
+     "cara": "AdwaitaMono Nerd Font",
+     "estilo": "normal"
+    },
+    {
+     "cp": 10018,
+     "hex": "2722",
+     "categoria": "cruz",
+     "nombre": "asterisco de cuatro láminas",
+     "cara": "AdwaitaMono Nerd Font",
+     "estilo": "normal"
+    },
+    {
+     "cp": 10019,
+     "hex": "2723",
+     "categoria": "cruz",
+     "nombre": "asterisco de cuatro globos",
+     "cara": "AdwaitaMono Nerd Font",
+     "estilo": "normal"
+    },
+    {
+     "cp": 10020,
+     "hex": "2724",
+     "categoria": "cruz",
+     "nombre": "asterisco pesado de cuatro globos",
+     "cara": "AdwaitaMono Nerd Font",
+     "estilo": "normal"
+    },
+    {
+     "cp": 10021,
+     "hex": "2725",
+     "categoria": "cruz",
+     "nombre": "asterisco pesado de cuatro láminas",
+     "cara": "AdwaitaMono Nerd Font",
+     "estilo": "normal"
+    },
+    {
+     "cp": 10022,
+     "hex": "2726",
+     "categoria": "estrella",
+     "nombre": "estrella de cuatro puntas",
+     "cara": "AdwaitaMono Nerd Font",
+     "estilo": "normal"
+    },
+    {
+     "cp": 10023,
+     "hex": "2727",
+     "categoria": "estrella",
+     "nombre": "estrella negra de cuatro puntas",
+     "cara": "AdwaitaMono Nerd Font",
+     "estilo": "normal"
+    },
+    {
+     "cp": 10033,
+     "hex": "2731",
+     "categoria": "estrella",
+     "nombre": "asterisco pesado",
+     "cara": "AdwaitaMono Nerd Font",
+     "estilo": "normal"
+    },
+    {
+     "cp": 10034,
+     "hex": "2732",
+     "categoria": "estrella",
+     "nombre": "asterisco de centro abierto",
+     "cara": "AdwaitaMono Nerd Font",
+     "estilo": "normal"
+    },
+    {
+     "cp": 10035,
+     "hex": "2733",
+     "categoria": "estrella",
+     "nombre": "asterisco de ocho radios",
+     "cara": "AdwaitaMono Nerd Font",
+     "estilo": "normal"
+    },
+    {
+     "cp": 10036,
+     "hex": "2734",
+     "categoria": "estrella",
+     "nombre": "estrella negra de ocho puntas",
+     "cara": "AdwaitaMono Nerd Font",
+     "estilo": "normal"
+    },
+    {
+     "cp": 10038,
+     "hex": "2736",
+     "categoria": "estrella",
+     "nombre": "estrella negra de seis puntas",
+     "cara": "AdwaitaMono Nerd Font",
+     "estilo": "normal"
+    },
+    {
+     "cp": 10039,
+     "hex": "2737",
+     "categoria": "estrella",
+     "nombre": "estrella negra de ocho puntas rectilínea",
+     "cara": "AdwaitaMono Nerd Font",
+     "estilo": "normal"
+    },
+    {
+     "cp": 10040,
+     "hex": "2738",
+     "categoria": "estrella",
+     "nombre": "estrella rectilínea pesada de ocho puntas",
+     "cara": "AdwaitaMono Nerd Font",
+     "estilo": "normal"
+    },
+    {
+     "cp": 10041,
+     "hex": "2739",
+     "categoria": "estrella",
+     "nombre": "estrella negra de doce puntas",
+     "cara": "AdwaitaMono Nerd Font",
+     "estilo": "normal"
+    },
+    {
+     "cp": 10042,
+     "hex": "273A",
+     "categoria": "estrella",
+     "nombre": "asterisco de dieciséis puntas",
+     "cara": "AdwaitaMono Nerd Font",
+     "estilo": "normal"
+    },
+    {
+     "cp": 10043,
+     "hex": "273B",
+     "categoria": "estrella",
+     "nombre": "asterisco de radios en lágrima",
+     "cara": "AdwaitaMono Nerd Font",
+     "estilo": "normal"
+    },
+    {
+     "cp": 10044,
+     "hex": "273C",
+     "categoria": "estrella",
+     "nombre": "asterisco de radios en lágrima de centro abierto",
+     "cara": "AdwaitaMono Nerd Font",
+     "estilo": "normal"
+    },
+    {
+     "cp": 10045,
+     "hex": "273D",
+     "categoria": "estrella",
+     "nombre": "asterisco de molinete de lágrimas pesado",
+     "cara": "AdwaitaMono Nerd Font",
+     "estilo": "normal"
+    },
+    {
+     "cp": 10046,
+     "hex": "273E",
+     "categoria": "flor",
+     "nombre": "florete de seis pétalos",
+     "cara": "AdwaitaMono Nerd Font",
+     "estilo": "normal"
+    },
+    {
+     "cp": 10047,
+     "hex": "273F",
+     "categoria": "flor",
+     "nombre": "flor negra",
+     "cara": "AdwaitaMono Nerd Font",
+     "estilo": "normal"
+    },
+    {
+     "cp": 10048,
+     "hex": "2740",
+     "categoria": "flor",
+     "nombre": "flor blanca",
+     "cara": "AdwaitaMono Nerd Font",
+     "estilo": "normal"
+    },
+    {
+     "cp": 10049,
+     "hex": "2741",
+     "categoria": "flor",
+     "nombre": "flor negra delineada de ocho pétalos",
+     "cara": "AdwaitaMono Nerd Font",
+     "estilo": "normal"
+    },
+    {
+     "cp": 10050,
+     "hex": "2742",
+     "categoria": "estrella",
+     "nombre": "estrella de ocho puntas de centro abierto rodeado",
+     "cara": "AdwaitaMono Nerd Font",
+     "estilo": "normal"
+    },
+    {
+     "cp": 10051,
+     "hex": "2743",
+     "categoria": "estrella",
+     "nombre": "asterisco pesado de radios en lágrima",
+     "cara": "AdwaitaMono Nerd Font",
+     "estilo": "normal"
+    },
+    {
+     "cp": 10052,
+     "hex": "2744",
+     "categoria": "copo",
+     "nombre": "copo de nieve",
+     "cara": "AdwaitaMono Nerd Font",
+     "estilo": "normal"
+    },
+    {
+     "cp": 10053,
+     "hex": "2745",
+     "categoria": "copo",
+     "nombre": "copo de nieve trifoliado compacto",
+     "cara": "AdwaitaMono Nerd Font",
+     "estilo": "normal"
+    },
+    {
+     "cp": 10054,
+     "hex": "2746",
+     "categoria": "copo",
+     "nombre": "copo de nieve de cheurón pesado",
+     "cara": "AdwaitaMono Nerd Font",
+     "estilo": "normal"
+    },
+    {
+     "cp": 10055,
+     "hex": "2747",
+     "categoria": "destello",
+     "nombre": "destello",
+     "cara": "AdwaitaMono Nerd Font",
+     "estilo": "normal"
+    },
+    {
+     "cp": 10056,
+     "hex": "2748",
+     "categoria": "destello",
+     "nombre": "destello pesado",
+     "cara": "AdwaitaMono Nerd Font",
+     "estilo": "normal"
+    },
+    {
+     "cp": 10057,
+     "hex": "2749",
+     "categoria": "destello",
+     "nombre": "destello de papeleta",
+     "cara": "AdwaitaMono Nerd Font",
+     "estilo": "normal"
+    },
+    {
+     "cp": 10058,
+     "hex": "274A",
+     "categoria": "estrella",
+     "nombre": "asterisco de ocho radios",
+     "cara": "AdwaitaMono Nerd Font",
+     "estilo": "normal"
+    },
+    {
+     "cp": 10059,
+     "hex": "274B",
+     "categoria": "estrella",
+     "nombre": "asterisco pesado de ocho radios",
+     "cara": "AdwaitaMono Nerd Font",
+     "estilo": "normal"
+    },
+    {
+     "cp": 10060,
+     "hex": "274C",
+     "categoria": "sello",
+     "nombre": "tacha",
+     "cara": "AdwaitaMono Nerd Font",
+     "estilo": "normal"
+    },
+    {
+     "cp": 10081,
+     "hex": "2761",
+     "categoria": "puntuacion",
+     "nombre": "puntuación ornamentada",
+     "cara": "AdwaitaMono Nerd Font",
+     "estilo": "normal"
+    },
+    {
+     "cp": 10084,
+     "hex": "2764",
+     "categoria": "corazon",
+     "nombre": "corazón pesado",
+     "cara": "AdwaitaMono Nerd Font",
+     "estilo": "normal"
+    },
+    {
+     "cp": 10092,
+     "hex": "276C",
+     "categoria": "paren",
+     "nombre": "paréntesis ornamentado",
+     "cara": "AdwaitaMono Nerd Font",
+     "estilo": "normal"
+    },
+    {
+     "cp": 10093,
+     "hex": "276D",
+     "categoria": "paren",
+     "nombre": "paréntesis ornamentado",
+     "cara": "AdwaitaMono Nerd Font",
+     "estilo": "normal"
+    },
+    {
+     "cp": 10094,
+     "hex": "276E",
+     "categoria": "paren",
+     "nombre": "paréntesis ornamentado",
+     "cara": "AdwaitaMono Nerd Font",
+     "estilo": "normal"
+    },
+    {
+     "cp": 10095,
+     "hex": "276F",
+     "categoria": "paren",
+     "nombre": "paréntesis ornamentado",
+     "cara": "AdwaitaMono Nerd Font",
+     "estilo": "normal"
+    },
+    {
+     "cp": 10096,
+     "hex": "2770",
+     "categoria": "paren",
+     "nombre": "paréntesis ornamentado",
+     "cara": "AdwaitaMono Nerd Font",
+     "estilo": "normal"
+    },
+    {
+     "cp": 10097,
+     "hex": "2771",
+     "categoria": "paren",
+     "nombre": "paréntesis ornamentado",
+     "cara": "AdwaitaMono Nerd Font",
+     "estilo": "normal"
+    },
+    {
+     "cp": 10132,
+     "hex": "2794",
+     "categoria": "flecha",
+     "nombre": "flecha pesada ancha hacia la derecha",
+     "cara": "AdwaitaMono Nerd Font",
+     "estilo": "normal"
+    },
+    {
+     "cp": 10140,
+     "hex": "279C",
+     "categoria": "flecha",
+     "nombre": "flecha ornamentada",
+     "cara": "AdwaitaMono Nerd Font",
+     "estilo": "normal"
+    },
+    {
+     "cp": 10141,
+     "hex": "279D",
+     "categoria": "flecha",
+     "nombre": "flecha ornamentada",
+     "cara": "AdwaitaMono Nerd Font",
+     "estilo": "normal"
+    },
+    {
+     "cp": 10142,
+     "hex": "279E",
+     "categoria": "flecha",
+     "nombre": "flecha ornamentada",
+     "cara": "AdwaitaMono Nerd Font",
+     "estilo": "normal"
+    },
+    {
+     "cp": 10145,
+     "hex": "27A1",
+     "categoria": "flecha",
+     "nombre": "flecha pesada hacia la derecha",
+     "cara": "AdwaitaMono Nerd Font",
+     "estilo": "normal"
+    },
+    {
+     "cp": 10146,
+     "hex": "27A2",
+     "categoria": "flecha",
+     "nombre": "flecha ornamentada",
+     "cara": "AdwaitaMono Nerd Font",
+     "estilo": "normal"
+    },
+    {
+     "cp": 10147,
+     "hex": "27A3",
+     "categoria": "flecha",
+     "nombre": "flecha ornamentada",
+     "cara": "AdwaitaMono Nerd Font",
+     "estilo": "normal"
+    },
+    {
+     "cp": 10148,
+     "hex": "27A4",
+     "categoria": "flecha",
+     "nombre": "flecha ornamentada",
+     "cara": "AdwaitaMono Nerd Font",
+     "estilo": "normal"
+    },
+    {
+     "cp": 10149,
+     "hex": "27A5",
+     "categoria": "flecha",
+     "nombre": "flecha ornamentada",
+     "cara": "AdwaitaMono Nerd Font",
+     "estilo": "normal"
+    },
+    {
+     "cp": 10150,
+     "hex": "27A6",
+     "categoria": "flecha",
+     "nombre": "flecha ornamentada",
+     "cara": "AdwaitaMono Nerd Font",
+     "estilo": "normal"
+    },
+    {
+     "cp": 10151,
+     "hex": "27A7",
+     "categoria": "flecha",
+     "nombre": "flecha ornamentada",
+     "cara": "AdwaitaMono Nerd Font",
+     "estilo": "normal"
+    },
+    {
+     "cp": 10160,
+     "hex": "27B0",
+     "categoria": "flecha",
+     "nombre": "flecha ornamentada",
+     "cara": "AdwaitaMono Nerd Font",
+     "estilo": "normal"
+    },
+    {
+     "cp": 10175,
+     "hex": "27BF",
+     "categoria": "flecha",
+     "nombre": "doble bucle",
+     "cara": "AdwaitaMono Nerd Font",
+     "estilo": "normal"
+    }
+   ]
+  },
+  {
+   "carpeta": "Bodoni_Moda",
+   "familia": "Bodoni Moda",
+   "glifos": [
+    {
+     "cp": 10081,
+     "hex": "2761",
+     "categoria": "puntuacion",
+     "nombre": "puntuación ornamentada",
+     "cara": "Bodoni Moda",
+     "estilo": "normal"
+    }
+   ]
+  },
+  {
+   "carpeta": "Cormorant",
+   "familia": "Cormorant",
+   "glifos": [
+    {
+     "cp": 8258,
+     "hex": "2042",
+     "categoria": "asterismo",
+     "nombre": "asterismo",
+     "cara": "Cormorant",
+     "estilo": "normal"
+    },
+    {
+     "cp": 9756,
+     "hex": "261C",
+     "categoria": "mano",
+     "nombre": "mano índice",
+     "cara": "Cormorant",
+     "estilo": "normal"
+    },
+    {
+     "cp": 9758,
+     "hex": "261E",
+     "categoria": "mano",
+     "nombre": "mano índice",
+     "cara": "Cormorant",
+     "estilo": "normal"
+    },
+    {
+     "cp": 10086,
+     "hex": "2766",
+     "categoria": "fleuron",
+     "nombre": "hedera (floral heart)",
+     "cara": "Cormorant",
+     "estilo": "normal"
+    }
+   ]
+  },
+  {
+   "carpeta": "Cormorant_Garamond",
+   "familia": "Cormorant Garamond",
+   "glifos": [
+    {
+     "cp": 8258,
+     "hex": "2042",
+     "categoria": "asterismo",
+     "nombre": "asterismo",
+     "cara": "Cormorant Garamond",
+     "estilo": "normal"
+    },
+    {
+     "cp": 9756,
+     "hex": "261C",
+     "categoria": "mano",
+     "nombre": "mano índice",
+     "cara": "Cormorant Garamond",
+     "estilo": "normal"
+    },
+    {
+     "cp": 9758,
+     "hex": "261E",
+     "categoria": "mano",
+     "nombre": "mano índice",
+     "cara": "Cormorant Garamond",
+     "estilo": "normal"
+    },
+    {
+     "cp": 10086,
+     "hex": "2766",
+     "categoria": "fleuron",
+     "nombre": "hedera (floral heart)",
+     "cara": "Cormorant Garamond",
+     "estilo": "normal"
+    }
+   ]
+  },
+  {
+   "carpeta": "EB_Garamond",
+   "familia": "EB Garamond 08",
+   "glifos": [
+    {
+     "cp": 9753,
+     "hex": "2619",
+     "categoria": "fleuron",
+     "nombre": "giraldilla (fleurón)",
+     "cara": "EB Garamond 08",
+     "estilo": "normal"
+    },
+    {
+     "cp": 9756,
+     "hex": "261C",
+     "categoria": "mano",
+     "nombre": "mano índice",
+     "cara": "EB Garamond 12",
+     "estilo": "normal"
+    },
+    {
+     "cp": 9757,
+     "hex": "261D",
+     "categoria": "mano",
+     "nombre": "mano índice",
+     "cara": "EB Garamond 12",
+     "estilo": "normal"
+    },
+    {
+     "cp": 9758,
+     "hex": "261E",
+     "categoria": "mano",
+     "nombre": "mano índice",
+     "cara": "EB Garamond 12",
+     "estilo": "normal"
+    },
+    {
+     "cp": 10067,
+     "hex": "2753",
+     "categoria": "sello",
+     "nombre": "interrogación ornamentada",
+     "cara": "EB Garamond SC 12",
+     "estilo": "normal"
+    },
+    {
+     "cp": 10071,
+     "hex": "2757",
+     "categoria": "sello",
+     "nombre": "exclamación pesada",
+     "cara": "EB Garamond SC 12",
+     "estilo": "normal"
+    },
+    {
+     "cp": 10077,
+     "hex": "275D",
+     "categoria": "cita",
+     "nombre": "comilla ornamentada",
+     "cara": "EB Garamond 12",
+     "estilo": "normal"
+    },
+    {
+     "cp": 10078,
+     "hex": "275E",
+     "categoria": "cita",
+     "nombre": "comilla ornamentada",
+     "cara": "EB Garamond 12",
+     "estilo": "normal"
+    },
+    {
+     "cp": 10079,
+     "hex": "275F",
+     "categoria": "cita",
+     "nombre": "comilla ornamentada",
+     "cara": "EB Garamond 12",
+     "estilo": "normal"
+    },
+    {
+     "cp": 10086,
+     "hex": "2766",
+     "categoria": "fleuron",
+     "nombre": "hedera (floral heart)",
+     "cara": "EB Garamond 12",
+     "estilo": "normal"
+    },
+    {
+     "cp": 10087,
+     "hex": "2767",
+     "categoria": "fleuron",
+     "nombre": "hedera rotada (floral heart)",
+     "cara": "EB Garamond 08",
+     "estilo": "normal"
+    }
+   ]
+  },
+  {
+   "carpeta": "GoogleSansCode_Nerd_Font",
+   "familia": "GoogleSansCode NF",
+   "glifos": [
+    {
+     "cp": 10092,
+     "hex": "276C",
+     "categoria": "paren",
+     "nombre": "paréntesis ornamentado",
+     "cara": "GoogleSansCode NF",
+     "estilo": "normal"
+    },
+    {
+     "cp": 10093,
+     "hex": "276D",
+     "categoria": "paren",
+     "nombre": "paréntesis ornamentado",
+     "cara": "GoogleSansCode NF",
+     "estilo": "normal"
+    },
+    {
+     "cp": 10094,
+     "hex": "276E",
+     "categoria": "paren",
+     "nombre": "paréntesis ornamentado",
+     "cara": "GoogleSansCode NF",
+     "estilo": "normal"
+    },
+    {
+     "cp": 10095,
+     "hex": "276F",
+     "categoria": "paren",
+     "nombre": "paréntesis ornamentado",
+     "cara": "GoogleSansCode NF",
+     "estilo": "normal"
+    },
+    {
+     "cp": 10096,
+     "hex": "2770",
+     "categoria": "paren",
+     "nombre": "paréntesis ornamentado",
+     "cara": "GoogleSansCode NF",
+     "estilo": "normal"
+    },
+    {
+     "cp": 10097,
+     "hex": "2771",
+     "categoria": "paren",
+     "nombre": "paréntesis ornamentado",
+     "cara": "GoogleSansCode NF",
+     "estilo": "normal"
+    }
+   ]
+  },
+  {
+   "carpeta": "IM_Fell_DW_Pica_SC",
+   "familia": "IM FELL DW Pica SC",
+   "glifos": [
+    {
+     "cp": 9756,
+     "hex": "261C",
+     "categoria": "mano",
+     "nombre": "mano índice",
+     "cara": "IM FELL DW Pica SC",
+     "estilo": "normal"
+    },
+    {
+     "cp": 9758,
+     "hex": "261E",
+     "categoria": "mano",
+     "nombre": "mano índice",
+     "cara": "IM FELL DW Pica SC",
+     "estilo": "normal"
+    }
+   ]
+  },
+  {
+   "carpeta": "IM_Fell_Double_Pica",
+   "familia": "IM FELL Double Pica",
+   "glifos": [
+    {
+     "cp": 9756,
+     "hex": "261C",
+     "categoria": "mano",
+     "nombre": "mano índice",
+     "cara": "IM FELL Double Pica",
+     "estilo": "normal"
+    },
+    {
+     "cp": 9758,
+     "hex": "261E",
+     "categoria": "mano",
+     "nombre": "mano índice",
+     "cara": "IM FELL Double Pica",
+     "estilo": "normal"
+    }
+   ]
+  },
+  {
+   "carpeta": "IM_Fell_Double_Pica_SC",
+   "familia": "IM FELL Double Pica SC",
+   "glifos": [
+    {
+     "cp": 9756,
+     "hex": "261C",
+     "categoria": "mano",
+     "nombre": "mano índice",
+     "cara": "IM FELL Double Pica SC",
+     "estilo": "normal"
+    },
+    {
+     "cp": 9758,
+     "hex": "261E",
+     "categoria": "mano",
+     "nombre": "mano índice",
+     "cara": "IM FELL Double Pica SC",
+     "estilo": "normal"
+    }
+   ]
+  },
+  {
+   "carpeta": "IM_Fell_English",
+   "familia": "IM FELL English",
+   "glifos": [
+    {
+     "cp": 9756,
+     "hex": "261C",
+     "categoria": "mano",
+     "nombre": "mano índice",
+     "cara": "IM FELL English",
+     "estilo": "normal"
+    },
+    {
+     "cp": 9758,
+     "hex": "261E",
+     "categoria": "mano",
+     "nombre": "mano índice",
+     "cara": "IM FELL English",
+     "estilo": "normal"
+    }
+   ]
+  },
+  {
+   "carpeta": "IM_Fell_English_SC",
+   "familia": "IM FELL English SC",
+   "glifos": [
+    {
+     "cp": 9756,
+     "hex": "261C",
+     "categoria": "mano",
+     "nombre": "mano índice",
+     "cara": "IM FELL English SC",
+     "estilo": "normal"
+    },
+    {
+     "cp": 9758,
+     "hex": "261E",
+     "categoria": "mano",
+     "nombre": "mano índice",
+     "cara": "IM FELL English SC",
+     "estilo": "normal"
+    }
+   ]
+  },
+  {
+   "carpeta": "IM_Fell_French_Canon_SC",
+   "familia": "IM FELL French Canon SC",
+   "glifos": [
+    {
+     "cp": 9756,
+     "hex": "261C",
+     "categoria": "mano",
+     "nombre": "mano índice",
+     "cara": "IM FELL French Canon SC",
+     "estilo": "normal"
+    },
+    {
+     "cp": 9758,
+     "hex": "261E",
+     "categoria": "mano",
+     "nombre": "mano índice",
+     "cara": "IM FELL French Canon SC",
+     "estilo": "normal"
+    }
+   ]
+  },
+  {
+   "carpeta": "IM_Fell_Great_Primer",
+   "familia": "IM FELL Great Primer",
+   "glifos": [
+    {
+     "cp": 9756,
+     "hex": "261C",
+     "categoria": "mano",
+     "nombre": "mano índice",
+     "cara": "IM FELL Great Primer",
+     "estilo": "normal"
+    },
+    {
+     "cp": 9758,
+     "hex": "261E",
+     "categoria": "mano",
+     "nombre": "mano índice",
+     "cara": "IM FELL Great Primer",
+     "estilo": "normal"
+    }
+   ]
+  },
+  {
+   "carpeta": "IM_Fell_Great_Primer_SC",
+   "familia": "IM FELL Great Primer SC",
+   "glifos": [
+    {
+     "cp": 9756,
+     "hex": "261C",
+     "categoria": "mano",
+     "nombre": "mano índice",
+     "cara": "IM FELL Great Primer SC",
+     "estilo": "normal"
+    },
+    {
+     "cp": 9758,
+     "hex": "261E",
+     "categoria": "mano",
+     "nombre": "mano índice",
+     "cara": "IM FELL Great Primer SC",
+     "estilo": "normal"
+    }
+   ]
+  },
+  {
+   "carpeta": "Inter",
+   "familia": "Inter",
+   "glifos": [
+    {
+     "cp": 8258,
+     "hex": "2042",
+     "categoria": "asterismo",
+     "nombre": "asterismo",
+     "cara": "Inter",
+     "estilo": "normal"
+    },
+    {
+     "cp": 9733,
+     "hex": "2605",
+     "categoria": "estrella",
+     "nombre": "estrella negra",
+     "cara": "Inter",
+     "estilo": "normal"
+    },
+    {
+     "cp": 9734,
+     "hex": "2606",
+     "categoria": "estrella",
+     "nombre": "estrella blanca",
+     "cara": "Inter",
+     "estilo": "normal"
+    },
+    {
+     "cp": 10084,
+     "hex": "2764",
+     "categoria": "corazon",
+     "nombre": "corazón pesado",
+     "cara": "Inter",
+     "estilo": "normal"
+    }
+   ]
+  },
+  {
+   "carpeta": "Iosevka_Nerd_Font",
+   "familia": "Iosevka NF",
+   "glifos": [
+    {
+     "cp": 8258,
+     "hex": "2042",
+     "categoria": "asterismo",
+     "nombre": "asterismo",
+     "cara": "Iosevka NF",
+     "estilo": "normal"
+    },
+    {
+     "cp": 9733,
+     "hex": "2605",
+     "categoria": "estrella",
+     "nombre": "estrella negra",
+     "cara": "Iosevka NF",
+     "estilo": "normal"
+    },
+    {
+     "cp": 9734,
+     "hex": "2606",
+     "categoria": "estrella",
+     "nombre": "estrella blanca",
+     "cara": "Iosevka NF",
+     "estilo": "normal"
+    },
+    {
+     "cp": 9756,
+     "hex": "261C",
+     "categoria": "mano",
+     "nombre": "mano índice",
+     "cara": "Iosevka NF",
+     "estilo": "normal"
+    },
+    {
+     "cp": 9757,
+     "hex": "261D",
+     "categoria": "mano",
+     "nombre": "mano índice",
+     "cara": "Iosevka NF",
+     "estilo": "normal"
+    },
+    {
+     "cp": 9758,
+     "hex": "261E",
+     "categoria": "mano",
+     "nombre": "mano índice",
+     "cara": "Iosevka NF",
+     "estilo": "normal"
+    },
+    {
+     "cp": 9759,
+     "hex": "261F",
+     "categoria": "mano",
+     "nombre": "mano índice",
+     "cara": "Iosevka NF",
+     "estilo": "normal"
+    },
+    {
+     "cp": 10013,
+     "hex": "271D",
+     "categoria": "cruz",
+     "nombre": "cruz latina",
+     "cara": "Iosevka NF",
+     "estilo": "normal"
+    },
+    {
+     "cp": 10016,
+     "hex": "2720",
+     "categoria": "cruz",
+     "nombre": "cruz de Malta",
+     "cara": "Iosevka NF",
+     "estilo": "normal"
+    },
+    {
+     "cp": 10017,
+     "hex": "2721",
+     "categoria": "cruz",
+     "nombre": "estrella de David",
+     "cara": "Iosevka NF",
+     "estilo": "normal"
+    },
+    {
+     "cp": 10018,
+     "hex": "2722",
+     "categoria": "cruz",
+     "nombre": "asterisco de cuatro láminas",
+     "cara": "Iosevka NF",
+     "estilo": "normal"
+    },
+    {
+     "cp": 10019,
+     "hex": "2723",
+     "categoria": "cruz",
+     "nombre": "asterisco de cuatro globos",
+     "cara": "Iosevka NF",
+     "estilo": "normal"
+    },
+    {
+     "cp": 10020,
+     "hex": "2724",
+     "categoria": "cruz",
+     "nombre": "asterisco pesado de cuatro globos",
+     "cara": "Iosevka NF",
+     "estilo": "normal"
+    },
+    {
+     "cp": 10021,
+     "hex": "2725",
+     "categoria": "cruz",
+     "nombre": "asterisco pesado de cuatro láminas",
+     "cara": "Iosevka NF",
+     "estilo": "normal"
+    },
+    {
+     "cp": 10022,
+     "hex": "2726",
+     "categoria": "estrella",
+     "nombre": "estrella de cuatro puntas",
+     "cara": "Iosevka NF",
+     "estilo": "normal"
+    },
+    {
+     "cp": 10023,
+     "hex": "2727",
+     "categoria": "estrella",
+     "nombre": "estrella negra de cuatro puntas",
+     "cara": "Iosevka NF",
+     "estilo": "normal"
+    },
+    {
+     "cp": 10033,
+     "hex": "2731",
+     "categoria": "estrella",
+     "nombre": "asterisco pesado",
+     "cara": "Iosevka NF",
+     "estilo": "normal"
+    },
+    {
+     "cp": 10034,
+     "hex": "2732",
+     "categoria": "estrella",
+     "nombre": "asterisco de centro abierto",
+     "cara": "Iosevka NF",
+     "estilo": "normal"
+    },
+    {
+     "cp": 10035,
+     "hex": "2733",
+     "categoria": "estrella",
+     "nombre": "asterisco de ocho radios",
+     "cara": "Iosevka NF",
+     "estilo": "normal"
+    },
+    {
+     "cp": 10036,
+     "hex": "2734",
+     "categoria": "estrella",
+     "nombre": "estrella negra de ocho puntas",
+     "cara": "Iosevka NF",
+     "estilo": "normal"
+    },
+    {
+     "cp": 10038,
+     "hex": "2736",
+     "categoria": "estrella",
+     "nombre": "estrella negra de seis puntas",
+     "cara": "Iosevka NF",
+     "estilo": "normal"
+    },
+    {
+     "cp": 10039,
+     "hex": "2737",
+     "categoria": "estrella",
+     "nombre": "estrella negra de ocho puntas rectilínea",
+     "cara": "Iosevka NF",
+     "estilo": "normal"
+    },
+    {
+     "cp": 10040,
+     "hex": "2738",
+     "categoria": "estrella",
+     "nombre": "estrella rectilínea pesada de ocho puntas",
+     "cara": "Iosevka NF",
+     "estilo": "normal"
+    },
+    {
+     "cp": 10041,
+     "hex": "2739",
+     "categoria": "estrella",
+     "nombre": "estrella negra de doce puntas",
+     "cara": "Iosevka NF",
+     "estilo": "normal"
+    },
+    {
+     "cp": 10042,
+     "hex": "273A",
+     "categoria": "estrella",
+     "nombre": "asterisco de dieciséis puntas",
+     "cara": "Iosevka NF",
+     "estilo": "normal"
+    },
+    {
+     "cp": 10043,
+     "hex": "273B",
+     "categoria": "estrella",
+     "nombre": "asterisco de radios en lágrima",
+     "cara": "Iosevka NF",
+     "estilo": "normal"
+    },
+    {
+     "cp": 10044,
+     "hex": "273C",
+     "categoria": "estrella",
+     "nombre": "asterisco de radios en lágrima de centro abierto",
+     "cara": "Iosevka NF",
+     "estilo": "normal"
+    },
+    {
+     "cp": 10045,
+     "hex": "273D",
+     "categoria": "estrella",
+     "nombre": "asterisco de molinete de lágrimas pesado",
+     "cara": "Iosevka NF",
+     "estilo": "normal"
+    },
+    {
+     "cp": 10046,
+     "hex": "273E",
+     "categoria": "flor",
+     "nombre": "florete de seis pétalos",
+     "cara": "Iosevka NF",
+     "estilo": "normal"
+    },
+    {
+     "cp": 10047,
+     "hex": "273F",
+     "categoria": "flor",
+     "nombre": "flor negra",
+     "cara": "Iosevka NF",
+     "estilo": "normal"
+    },
+    {
+     "cp": 10048,
+     "hex": "2740",
+     "categoria": "flor",
+     "nombre": "flor blanca",
+     "cara": "Iosevka NF",
+     "estilo": "normal"
+    },
+    {
+     "cp": 10049,
+     "hex": "2741",
+     "categoria": "flor",
+     "nombre": "flor negra delineada de ocho pétalos",
+     "cara": "Iosevka NF",
+     "estilo": "normal"
+    },
+    {
+     "cp": 10050,
+     "hex": "2742",
+     "categoria": "estrella",
+     "nombre": "estrella de ocho puntas de centro abierto rodeado",
+     "cara": "Iosevka NF",
+     "estilo": "normal"
+    },
+    {
+     "cp": 10051,
+     "hex": "2743",
+     "categoria": "estrella",
+     "nombre": "asterisco pesado de radios en lágrima",
+     "cara": "Iosevka NF",
+     "estilo": "normal"
+    },
+    {
+     "cp": 10052,
+     "hex": "2744",
+     "categoria": "copo",
+     "nombre": "copo de nieve",
+     "cara": "Iosevka NF",
+     "estilo": "normal"
+    },
+    {
+     "cp": 10053,
+     "hex": "2745",
+     "categoria": "copo",
+     "nombre": "copo de nieve trifoliado compacto",
+     "cara": "Iosevka NF",
+     "estilo": "normal"
+    },
+    {
+     "cp": 10054,
+     "hex": "2746",
+     "categoria": "copo",
+     "nombre": "copo de nieve de cheurón pesado",
+     "cara": "Iosevka NF",
+     "estilo": "normal"
+    },
+    {
+     "cp": 10055,
+     "hex": "2747",
+     "categoria": "destello",
+     "nombre": "destello",
+     "cara": "Iosevka NF",
+     "estilo": "normal"
+    },
+    {
+     "cp": 10056,
+     "hex": "2748",
+     "categoria": "destello",
+     "nombre": "destello pesado",
+     "cara": "Iosevka NF",
+     "estilo": "normal"
+    },
+    {
+     "cp": 10057,
+     "hex": "2749",
+     "categoria": "destello",
+     "nombre": "destello de papeleta",
+     "cara": "Iosevka NF",
+     "estilo": "normal"
+    },
+    {
+     "cp": 10058,
+     "hex": "274A",
+     "categoria": "estrella",
+     "nombre": "asterisco de ocho radios",
+     "cara": "Iosevka NF",
+     "estilo": "normal"
+    },
+    {
+     "cp": 10059,
+     "hex": "274B",
+     "categoria": "estrella",
+     "nombre": "asterisco pesado de ocho radios",
+     "cara": "Iosevka NF",
+     "estilo": "normal"
+    },
+    {
+     "cp": 10060,
+     "hex": "274C",
+     "categoria": "sello",
+     "nombre": "tacha",
+     "cara": "Iosevka NF",
+     "estilo": "normal"
+    },
+    {
+     "cp": 10081,
+     "hex": "2761",
+     "categoria": "puntuacion",
+     "nombre": "puntuación ornamentada",
+     "cara": "Iosevka NF",
+     "estilo": "normal"
+    },
+    {
+     "cp": 10084,
+     "hex": "2764",
+     "categoria": "corazon",
+     "nombre": "corazón pesado",
+     "cara": "Iosevka NF",
+     "estilo": "normal"
+    },
+    {
+     "cp": 10092,
+     "hex": "276C",
+     "categoria": "paren",
+     "nombre": "paréntesis ornamentado",
+     "cara": "Iosevka NF",
+     "estilo": "normal"
+    },
+    {
+     "cp": 10093,
+     "hex": "276D",
+     "categoria": "paren",
+     "nombre": "paréntesis ornamentado",
+     "cara": "Iosevka NF",
+     "estilo": "normal"
+    },
+    {
+     "cp": 10094,
+     "hex": "276E",
+     "categoria": "paren",
+     "nombre": "paréntesis ornamentado",
+     "cara": "Iosevka NF",
+     "estilo": "normal"
+    },
+    {
+     "cp": 10095,
+     "hex": "276F",
+     "categoria": "paren",
+     "nombre": "paréntesis ornamentado",
+     "cara": "Iosevka NF",
+     "estilo": "normal"
+    },
+    {
+     "cp": 10096,
+     "hex": "2770",
+     "categoria": "paren",
+     "nombre": "paréntesis ornamentado",
+     "cara": "Iosevka NF",
+     "estilo": "normal"
+    },
+    {
+     "cp": 10097,
+     "hex": "2771",
+     "categoria": "paren",
+     "nombre": "paréntesis ornamentado",
+     "cara": "Iosevka NF",
+     "estilo": "normal"
+    },
+    {
+     "cp": 10132,
+     "hex": "2794",
+     "categoria": "flecha",
+     "nombre": "flecha pesada ancha hacia la derecha",
+     "cara": "Iosevka NF",
+     "estilo": "normal"
+    },
+    {
+     "cp": 10140,
+     "hex": "279C",
+     "categoria": "flecha",
+     "nombre": "flecha ornamentada",
+     "cara": "Iosevka NF",
+     "estilo": "normal"
+    },
+    {
+     "cp": 10141,
+     "hex": "279D",
+     "categoria": "flecha",
+     "nombre": "flecha ornamentada",
+     "cara": "Iosevka NF",
+     "estilo": "normal"
+    },
+    {
+     "cp": 10142,
+     "hex": "279E",
+     "categoria": "flecha",
+     "nombre": "flecha ornamentada",
+     "cara": "Iosevka NF",
+     "estilo": "normal"
+    },
+    {
+     "cp": 10145,
+     "hex": "27A1",
+     "categoria": "flecha",
+     "nombre": "flecha pesada hacia la derecha",
+     "cara": "Iosevka NF",
+     "estilo": "normal"
+    },
+    {
+     "cp": 10146,
+     "hex": "27A2",
+     "categoria": "flecha",
+     "nombre": "flecha ornamentada",
+     "cara": "Iosevka NF",
+     "estilo": "normal"
+    },
+    {
+     "cp": 10147,
+     "hex": "27A3",
+     "categoria": "flecha",
+     "nombre": "flecha ornamentada",
+     "cara": "Iosevka NF",
+     "estilo": "normal"
+    },
+    {
+     "cp": 10148,
+     "hex": "27A4",
+     "categoria": "flecha",
+     "nombre": "flecha ornamentada",
+     "cara": "Iosevka NF",
+     "estilo": "normal"
+    },
+    {
+     "cp": 10149,
+     "hex": "27A5",
+     "categoria": "flecha",
+     "nombre": "flecha ornamentada",
+     "cara": "Iosevka NF",
+     "estilo": "normal"
+    },
+    {
+     "cp": 10150,
+     "hex": "27A6",
+     "categoria": "flecha",
+     "nombre": "flecha ornamentada",
+     "cara": "Iosevka NF",
+     "estilo": "normal"
+    },
+    {
+     "cp": 10151,
+     "hex": "27A7",
+     "categoria": "flecha",
+     "nombre": "flecha ornamentada",
+     "cara": "Iosevka NF",
+     "estilo": "normal"
+    },
+    {
+     "cp": 10160,
+     "hex": "27B0",
+     "categoria": "flecha",
+     "nombre": "flecha ornamentada",
+     "cara": "Iosevka NF",
+     "estilo": "normal"
+    },
+    {
+     "cp": 10175,
+     "hex": "27BF",
+     "categoria": "flecha",
+     "nombre": "doble bucle",
+     "cara": "Iosevka NF",
+     "estilo": "normal"
+    }
+   ]
+  },
+  {
+   "carpeta": "Libertinus_Serif",
+   "familia": "Libertinus Serif",
+   "glifos": [
+    {
+     "cp": 8258,
+     "hex": "2042",
+     "categoria": "asterismo",
+     "nombre": "asterismo",
+     "cara": "Libertinus Serif",
+     "estilo": "normal"
+    },
+    {
+     "cp": 9733,
+     "hex": "2605",
+     "categoria": "estrella",
+     "nombre": "estrella negra",
+     "cara": "Libertinus Serif",
+     "estilo": "normal"
+    },
+    {
+     "cp": 9753,
+     "hex": "2619",
+     "categoria": "fleuron",
+     "nombre": "giraldilla (fleurón)",
+     "cara": "Libertinus Serif",
+     "estilo": "normal"
+    },
+    {
+     "cp": 9755,
+     "hex": "261B",
+     "categoria": "mano",
+     "nombre": "mano índice",
+     "cara": "Libertinus Serif",
+     "estilo": "normal"
+    },
+    {
+     "cp": 9758,
+     "hex": "261E",
+     "categoria": "mano",
+     "nombre": "mano índice",
+     "cara": "Libertinus Serif",
+     "estilo": "normal"
+    },
+    {
+     "cp": 10013,
+     "hex": "271D",
+     "categoria": "cruz",
+     "nombre": "cruz latina",
+     "cara": "Libertinus Serif",
+     "estilo": "normal"
+    },
+    {
+     "cp": 10087,
+     "hex": "2767",
+     "categoria": "fleuron",
+     "nombre": "hedera rotada (floral heart)",
+     "cara": "Libertinus Serif",
+     "estilo": "normal"
+    }
+   ]
+  },
+  {
+   "carpeta": "LigaSF",
+   "familia": "Orments",
+   "glifos": [
+    {
+     "cp": 48,
+     "hex": "0030",
+     "categoria": "alfabeto",
+     "nombre": "floritura «0»",
+     "cara": "Orments",
+     "estilo": "normal"
+    },
+    {
+     "cp": 49,
+     "hex": "0031",
+     "categoria": "alfabeto",
+     "nombre": "floritura «1»",
+     "cara": "Orments",
+     "estilo": "normal"
+    },
+    {
+     "cp": 50,
+     "hex": "0032",
+     "categoria": "alfabeto",
+     "nombre": "floritura «2»",
+     "cara": "Orments",
+     "estilo": "normal"
+    },
+    {
+     "cp": 51,
+     "hex": "0033",
+     "categoria": "alfabeto",
+     "nombre": "floritura «3»",
+     "cara": "Orments",
+     "estilo": "normal"
+    },
+    {
+     "cp": 52,
+     "hex": "0034",
+     "categoria": "alfabeto",
+     "nombre": "floritura «4»",
+     "cara": "Orments",
+     "estilo": "normal"
+    },
+    {
+     "cp": 53,
+     "hex": "0035",
+     "categoria": "alfabeto",
+     "nombre": "floritura «5»",
+     "cara": "Orments",
+     "estilo": "normal"
+    },
+    {
+     "cp": 54,
+     "hex": "0036",
+     "categoria": "alfabeto",
+     "nombre": "floritura «6»",
+     "cara": "Orments",
+     "estilo": "normal"
+    },
+    {
+     "cp": 55,
+     "hex": "0037",
+     "categoria": "alfabeto",
+     "nombre": "floritura «7»",
+     "cara": "Orments",
+     "estilo": "normal"
+    },
+    {
+     "cp": 56,
+     "hex": "0038",
+     "categoria": "alfabeto",
+     "nombre": "floritura «8»",
+     "cara": "Orments",
+     "estilo": "normal"
+    },
+    {
+     "cp": 57,
+     "hex": "0039",
+     "categoria": "alfabeto",
+     "nombre": "floritura «9»",
+     "cara": "Orments",
+     "estilo": "normal"
+    },
+    {
+     "cp": 65,
+     "hex": "0041",
+     "categoria": "alfabeto",
+     "nombre": "floritura «A»",
+     "cara": "Orments",
+     "estilo": "normal"
+    },
+    {
+     "cp": 66,
+     "hex": "0042",
+     "categoria": "alfabeto",
+     "nombre": "floritura «B»",
+     "cara": "Orments",
+     "estilo": "normal"
+    },
+    {
+     "cp": 67,
+     "hex": "0043",
+     "categoria": "alfabeto",
+     "nombre": "floritura «C»",
+     "cara": "Orments",
+     "estilo": "normal"
+    },
+    {
+     "cp": 68,
+     "hex": "0044",
+     "categoria": "alfabeto",
+     "nombre": "floritura «D»",
+     "cara": "Orments",
+     "estilo": "normal"
+    },
+    {
+     "cp": 69,
+     "hex": "0045",
+     "categoria": "alfabeto",
+     "nombre": "floritura «E»",
+     "cara": "Orments",
+     "estilo": "normal"
+    },
+    {
+     "cp": 70,
+     "hex": "0046",
+     "categoria": "alfabeto",
+     "nombre": "floritura «F»",
+     "cara": "Orments",
+     "estilo": "normal"
+    },
+    {
+     "cp": 71,
+     "hex": "0047",
+     "categoria": "alfabeto",
+     "nombre": "floritura «G»",
+     "cara": "Orments",
+     "estilo": "normal"
+    },
+    {
+     "cp": 72,
+     "hex": "0048",
+     "categoria": "alfabeto",
+     "nombre": "floritura «H»",
+     "cara": "Orments",
+     "estilo": "normal"
+    },
+    {
+     "cp": 73,
+     "hex": "0049",
+     "categoria": "alfabeto",
+     "nombre": "floritura «I»",
+     "cara": "Orments",
+     "estilo": "normal"
+    },
+    {
+     "cp": 74,
+     "hex": "004A",
+     "categoria": "alfabeto",
+     "nombre": "floritura «J»",
+     "cara": "Orments",
+     "estilo": "normal"
+    },
+    {
+     "cp": 75,
+     "hex": "004B",
+     "categoria": "alfabeto",
+     "nombre": "floritura «K»",
+     "cara": "Orments",
+     "estilo": "normal"
+    },
+    {
+     "cp": 76,
+     "hex": "004C",
+     "categoria": "alfabeto",
+     "nombre": "floritura «L»",
+     "cara": "Orments",
+     "estilo": "normal"
+    },
+    {
+     "cp": 77,
+     "hex": "004D",
+     "categoria": "alfabeto",
+     "nombre": "floritura «M»",
+     "cara": "Orments",
+     "estilo": "normal"
+    },
+    {
+     "cp": 78,
+     "hex": "004E",
+     "categoria": "alfabeto",
+     "nombre": "floritura «N»",
+     "cara": "Orments",
+     "estilo": "normal"
+    },
+    {
+     "cp": 79,
+     "hex": "004F",
+     "categoria": "alfabeto",
+     "nombre": "floritura «O»",
+     "cara": "Orments",
+     "estilo": "normal"
+    },
+    {
+     "cp": 80,
+     "hex": "0050",
+     "categoria": "alfabeto",
+     "nombre": "floritura «P»",
+     "cara": "Orments",
+     "estilo": "normal"
+    },
+    {
+     "cp": 81,
+     "hex": "0051",
+     "categoria": "alfabeto",
+     "nombre": "floritura «Q»",
+     "cara": "Orments",
+     "estilo": "normal"
+    },
+    {
+     "cp": 82,
+     "hex": "0052",
+     "categoria": "alfabeto",
+     "nombre": "floritura «R»",
+     "cara": "Orments",
+     "estilo": "normal"
+    },
+    {
+     "cp": 83,
+     "hex": "0053",
+     "categoria": "alfabeto",
+     "nombre": "floritura «S»",
+     "cara": "Orments",
+     "estilo": "normal"
+    },
+    {
+     "cp": 84,
+     "hex": "0054",
+     "categoria": "alfabeto",
+     "nombre": "floritura «T»",
+     "cara": "Orments",
+     "estilo": "normal"
+    },
+    {
+     "cp": 85,
+     "hex": "0055",
+     "categoria": "alfabeto",
+     "nombre": "floritura «U»",
+     "cara": "Orments",
+     "estilo": "normal"
+    },
+    {
+     "cp": 86,
+     "hex": "0056",
+     "categoria": "alfabeto",
+     "nombre": "floritura «V»",
+     "cara": "Orments",
+     "estilo": "normal"
+    },
+    {
+     "cp": 87,
+     "hex": "0057",
+     "categoria": "alfabeto",
+     "nombre": "floritura «W»",
+     "cara": "Orments",
+     "estilo": "normal"
+    },
+    {
+     "cp": 88,
+     "hex": "0058",
+     "categoria": "alfabeto",
+     "nombre": "floritura «X»",
+     "cara": "Orments",
+     "estilo": "normal"
+    },
+    {
+     "cp": 89,
+     "hex": "0059",
+     "categoria": "alfabeto",
+     "nombre": "floritura «Y»",
+     "cara": "Orments",
+     "estilo": "normal"
+    },
+    {
+     "cp": 90,
+     "hex": "005A",
+     "categoria": "alfabeto",
+     "nombre": "floritura «Z»",
+     "cara": "Orments",
+     "estilo": "normal"
+    },
+    {
+     "cp": 97,
+     "hex": "0061",
+     "categoria": "alfabeto",
+     "nombre": "floritura «a»",
+     "cara": "Orments",
+     "estilo": "normal"
+    },
+    {
+     "cp": 98,
+     "hex": "0062",
+     "categoria": "alfabeto",
+     "nombre": "floritura «b»",
+     "cara": "Orments",
+     "estilo": "normal"
+    },
+    {
+     "cp": 99,
+     "hex": "0063",
+     "categoria": "alfabeto",
+     "nombre": "floritura «c»",
+     "cara": "Orments",
+     "estilo": "normal"
+    },
+    {
+     "cp": 100,
+     "hex": "0064",
+     "categoria": "alfabeto",
+     "nombre": "floritura «d»",
+     "cara": "Orments",
+     "estilo": "normal"
+    },
+    {
+     "cp": 101,
+     "hex": "0065",
+     "categoria": "alfabeto",
+     "nombre": "floritura «e»",
+     "cara": "Orments",
+     "estilo": "normal"
+    },
+    {
+     "cp": 102,
+     "hex": "0066",
+     "categoria": "alfabeto",
+     "nombre": "floritura «f»",
+     "cara": "Orments",
+     "estilo": "normal"
+    },
+    {
+     "cp": 103,
+     "hex": "0067",
+     "categoria": "alfabeto",
+     "nombre": "floritura «g»",
+     "cara": "Orments",
+     "estilo": "normal"
+    },
+    {
+     "cp": 104,
+     "hex": "0068",
+     "categoria": "alfabeto",
+     "nombre": "floritura «h»",
+     "cara": "Orments",
+     "estilo": "normal"
+    },
+    {
+     "cp": 105,
+     "hex": "0069",
+     "categoria": "alfabeto",
+     "nombre": "floritura «i»",
+     "cara": "Orments",
+     "estilo": "normal"
+    },
+    {
+     "cp": 106,
+     "hex": "006A",
+     "categoria": "alfabeto",
+     "nombre": "floritura «j»",
+     "cara": "Orments",
+     "estilo": "normal"
+    },
+    {
+     "cp": 107,
+     "hex": "006B",
+     "categoria": "alfabeto",
+     "nombre": "floritura «k»",
+     "cara": "Orments",
+     "estilo": "normal"
+    },
+    {
+     "cp": 108,
+     "hex": "006C",
+     "categoria": "alfabeto",
+     "nombre": "floritura «l»",
+     "cara": "Orments",
+     "estilo": "normal"
+    },
+    {
+     "cp": 109,
+     "hex": "006D",
+     "categoria": "alfabeto",
+     "nombre": "floritura «m»",
+     "cara": "Orments",
+     "estilo": "normal"
+    },
+    {
+     "cp": 110,
+     "hex": "006E",
+     "categoria": "alfabeto",
+     "nombre": "floritura «n»",
+     "cara": "Orments",
+     "estilo": "normal"
+    },
+    {
+     "cp": 111,
+     "hex": "006F",
+     "categoria": "alfabeto",
+     "nombre": "floritura «o»",
+     "cara": "Orments",
+     "estilo": "normal"
+    },
+    {
+     "cp": 112,
+     "hex": "0070",
+     "categoria": "alfabeto",
+     "nombre": "floritura «p»",
+     "cara": "Orments",
+     "estilo": "normal"
+    },
+    {
+     "cp": 113,
+     "hex": "0071",
+     "categoria": "alfabeto",
+     "nombre": "floritura «q»",
+     "cara": "Orments",
+     "estilo": "normal"
+    },
+    {
+     "cp": 114,
+     "hex": "0072",
+     "categoria": "alfabeto",
+     "nombre": "floritura «r»",
+     "cara": "Orments",
+     "estilo": "normal"
+    },
+    {
+     "cp": 115,
+     "hex": "0073",
+     "categoria": "alfabeto",
+     "nombre": "floritura «s»",
+     "cara": "Orments",
+     "estilo": "normal"
+    },
+    {
+     "cp": 116,
+     "hex": "0074",
+     "categoria": "alfabeto",
+     "nombre": "floritura «t»",
+     "cara": "Orments",
+     "estilo": "normal"
+    },
+    {
+     "cp": 117,
+     "hex": "0075",
+     "categoria": "alfabeto",
+     "nombre": "floritura «u»",
+     "cara": "Orments",
+     "estilo": "normal"
+    },
+    {
+     "cp": 118,
+     "hex": "0076",
+     "categoria": "alfabeto",
+     "nombre": "floritura «v»",
+     "cara": "Orments",
+     "estilo": "normal"
+    },
+    {
+     "cp": 119,
+     "hex": "0077",
+     "categoria": "alfabeto",
+     "nombre": "floritura «w»",
+     "cara": "Orments",
+     "estilo": "normal"
+    },
+    {
+     "cp": 120,
+     "hex": "0078",
+     "categoria": "alfabeto",
+     "nombre": "floritura «x»",
+     "cara": "Orments",
+     "estilo": "normal"
+    },
+    {
+     "cp": 121,
+     "hex": "0079",
+     "categoria": "alfabeto",
+     "nombre": "floritura «y»",
+     "cara": "Orments",
+     "estilo": "normal"
+    },
+    {
+     "cp": 122,
+     "hex": "007A",
+     "categoria": "alfabeto",
+     "nombre": "floritura «z»",
+     "cara": "Orments",
+     "estilo": "normal"
+    },
+    {
+     "cp": 10077,
+     "hex": "275D",
+     "categoria": "cita",
+     "nombre": "comilla ornamentada",
+     "cara": "Liga SFMono Nerd Font",
+     "estilo": "normal"
+    },
+    {
+     "cp": 10078,
+     "hex": "275E",
+     "categoria": "cita",
+     "nombre": "comilla ornamentada",
+     "cara": "Liga SFMono Nerd Font",
+     "estilo": "normal"
+    },
+    {
+     "cp": 10092,
+     "hex": "276C",
+     "categoria": "paren",
+     "nombre": "paréntesis ornamentado",
+     "cara": "Liga SFMono Nerd Font",
+     "estilo": "normal"
+    },
+    {
+     "cp": 10093,
+     "hex": "276D",
+     "categoria": "paren",
+     "nombre": "paréntesis ornamentado",
+     "cara": "Liga SFMono Nerd Font",
+     "estilo": "normal"
+    },
+    {
+     "cp": 10094,
+     "hex": "276E",
+     "categoria": "paren",
+     "nombre": "paréntesis ornamentado",
+     "cara": "Liga SFMono Nerd Font",
+     "estilo": "normal"
+    },
+    {
+     "cp": 10095,
+     "hex": "276F",
+     "categoria": "paren",
+     "nombre": "paréntesis ornamentado",
+     "cara": "Liga SFMono Nerd Font",
+     "estilo": "normal"
+    },
+    {
+     "cp": 10096,
+     "hex": "2770",
+     "categoria": "paren",
+     "nombre": "paréntesis ornamentado",
+     "cara": "Liga SFMono Nerd Font",
+     "estilo": "normal"
+    },
+    {
+     "cp": 10097,
+     "hex": "2771",
+     "categoria": "paren",
+     "nombre": "paréntesis ornamentado",
+     "cara": "Liga SFMono Nerd Font",
+     "estilo": "normal"
+    }
+   ]
+  },
+  {
+   "carpeta": "Literata",
+   "familia": "Literata",
+   "glifos": [
+    {
+     "cp": 8258,
+     "hex": "2042",
+     "categoria": "asterismo",
+     "nombre": "asterismo",
+     "cara": "Literata",
+     "estilo": "normal"
+    }
+   ]
+  },
+  {
+   "carpeta": "Noto_Serif",
+   "familia": "Noto Serif",
+   "glifos": [
+    {
+     "cp": 8258,
+     "hex": "2042",
+     "categoria": "asterismo",
+     "nombre": "asterismo",
+     "cara": "Noto Serif",
+     "estilo": "normal"
+    }
+   ]
+  },
+  {
+   "carpeta": "Ysabeau",
+   "familia": "Ysabeau",
+   "glifos": [
+    {
+     "cp": 8258,
+     "hex": "2042",
+     "categoria": "asterismo",
+     "nombre": "asterismo",
+     "cara": "Ysabeau",
+     "estilo": "normal"
+    },
+    {
+     "cp": 9756,
+     "hex": "261C",
+     "categoria": "mano",
+     "nombre": "mano índice",
+     "cara": "Ysabeau",
+     "estilo": "normal"
+    },
+    {
+     "cp": 9758,
+     "hex": "261E",
+     "categoria": "mano",
+     "nombre": "mano índice",
+     "cara": "Ysabeau",
+     "estilo": "normal"
+    },
+    {
+     "cp": 10086,
+     "hex": "2766",
+     "categoria": "fleuron",
+     "nombre": "hedera (floral heart)",
+     "cara": "Ysabeau",
+     "estilo": "normal"
+    }
+   ]
+  },
+  {
+   "carpeta": "Ysabeau_Infant",
+   "familia": "Ysabeau Infant",
+   "glifos": [
+    {
+     "cp": 8258,
+     "hex": "2042",
+     "categoria": "asterismo",
+     "nombre": "asterismo",
+     "cara": "Ysabeau Infant",
+     "estilo": "normal"
+    },
+    {
+     "cp": 9756,
+     "hex": "261C",
+     "categoria": "mano",
+     "nombre": "mano índice",
+     "cara": "Ysabeau Infant",
+     "estilo": "normal"
+    },
+    {
+     "cp": 9758,
+     "hex": "261E",
+     "categoria": "mano",
+     "nombre": "mano índice",
+     "cara": "Ysabeau Infant",
+     "estilo": "normal"
+    },
+    {
+     "cp": 10086,
+     "hex": "2766",
+     "categoria": "fleuron",
+     "nombre": "hedera (floral heart)",
+     "cara": "Ysabeau Infant",
+     "estilo": "normal"
+    }
+   ]
+  },
+  {
+   "carpeta": "Ysabeau_Office",
+   "familia": "Ysabeau Office",
+   "glifos": [
+    {
+     "cp": 8258,
+     "hex": "2042",
+     "categoria": "asterismo",
+     "nombre": "asterismo",
+     "cara": "Ysabeau Office",
+     "estilo": "normal"
+    },
+    {
+     "cp": 9756,
+     "hex": "261C",
+     "categoria": "mano",
+     "nombre": "mano índice",
+     "cara": "Ysabeau Office",
+     "estilo": "normal"
+    },
+    {
+     "cp": 9758,
+     "hex": "261E",
+     "categoria": "mano",
+     "nombre": "mano índice",
+     "cara": "Ysabeau Office",
+     "estilo": "normal"
+    },
+    {
+     "cp": 10086,
+     "hex": "2766",
+     "categoria": "fleuron",
+     "nombre": "hedera (floral heart)",
+     "cara": "Ysabeau Office",
+     "estilo": "normal"
+    }
+   ]
+  },
+  {
+   "carpeta": "Ysabeau_SC",
+   "familia": "Ysabeau SC",
+   "glifos": [
+    {
+     "cp": 8258,
+     "hex": "2042",
+     "categoria": "asterismo",
+     "nombre": "asterismo",
+     "cara": "Ysabeau SC",
+     "estilo": "normal"
+    },
+    {
+     "cp": 9756,
+     "hex": "261C",
+     "categoria": "mano",
+     "nombre": "mano índice",
+     "cara": "Ysabeau SC",
+     "estilo": "normal"
+    },
+    {
+     "cp": 9758,
+     "hex": "261E",
+     "categoria": "mano",
+     "nombre": "mano índice",
+     "cara": "Ysabeau SC",
+     "estilo": "normal"
+    },
+    {
+     "cp": 10086,
+     "hex": "2766",
+     "categoria": "fleuron",
+     "nombre": "hedera (floral heart)",
+     "cara": "Ysabeau SC",
+     "estilo": "normal"
+    }
+   ]
+  },
+  {
+   "carpeta": "ZedMono_Nerd_Font",
+   "familia": "ZedMono NF",
+   "glifos": [
+    {
+     "cp": 9733,
+     "hex": "2605",
+     "categoria": "estrella",
+     "nombre": "estrella negra",
+     "cara": "ZedMono NF",
+     "estilo": "normal"
+    },
+    {
+     "cp": 9734,
+     "hex": "2606",
+     "categoria": "estrella",
+     "nombre": "estrella blanca",
+     "cara": "ZedMono NF",
+     "estilo": "normal"
+    },
+    {
+     "cp": 10022,
+     "hex": "2726",
+     "categoria": "estrella",
+     "nombre": "estrella de cuatro puntas",
+     "cara": "ZedMono NF",
+     "estilo": "normal"
+    },
+    {
+     "cp": 10023,
+     "hex": "2727",
+     "categoria": "estrella",
+     "nombre": "estrella negra de cuatro puntas",
+     "cara": "ZedMono NF",
+     "estilo": "normal"
+    },
+    {
+     "cp": 10033,
+     "hex": "2731",
+     "categoria": "estrella",
+     "nombre": "asterisco pesado",
+     "cara": "ZedMono NF",
+     "estilo": "normal"
+    },
+    {
+     "cp": 10035,
+     "hex": "2733",
+     "categoria": "estrella",
+     "nombre": "asterisco de ocho radios",
+     "cara": "ZedMono NF",
+     "estilo": "normal"
+    },
+    {
+     "cp": 10036,
+     "hex": "2734",
+     "categoria": "estrella",
+     "nombre": "estrella negra de ocho puntas",
+     "cara": "ZedMono NF",
+     "estilo": "normal"
+    },
+    {
+     "cp": 10038,
+     "hex": "2736",
+     "categoria": "estrella",
+     "nombre": "estrella negra de seis puntas",
+     "cara": "ZedMono NF",
+     "estilo": "normal"
+    },
+    {
+     "cp": 10039,
+     "hex": "2737",
+     "categoria": "estrella",
+     "nombre": "estrella negra de ocho puntas rectilínea",
+     "cara": "ZedMono NF",
+     "estilo": "normal"
+    },
+    {
+     "cp": 10040,
+     "hex": "2738",
+     "categoria": "estrella",
+     "nombre": "estrella rectilínea pesada de ocho puntas",
+     "cara": "ZedMono NF",
+     "estilo": "normal"
+    },
+    {
+     "cp": 10041,
+     "hex": "2739",
+     "categoria": "estrella",
+     "nombre": "estrella negra de doce puntas",
+     "cara": "ZedMono NF",
+     "estilo": "normal"
+    },
+    {
+     "cp": 10042,
+     "hex": "273A",
+     "categoria": "estrella",
+     "nombre": "asterisco de dieciséis puntas",
+     "cara": "ZedMono NF",
+     "estilo": "normal"
+    },
+    {
+     "cp": 10060,
+     "hex": "274C",
+     "categoria": "sello",
+     "nombre": "tacha",
+     "cara": "ZedMono NF",
+     "estilo": "normal"
+    },
+    {
+     "cp": 10084,
+     "hex": "2764",
+     "categoria": "corazon",
+     "nombre": "corazón pesado",
+     "cara": "ZedMono NF",
+     "estilo": "normal"
+    },
+    {
+     "cp": 10092,
+     "hex": "276C",
+     "categoria": "paren",
+     "nombre": "paréntesis ornamentado",
+     "cara": "ZedMono NF",
+     "estilo": "normal"
+    },
+    {
+     "cp": 10093,
+     "hex": "276D",
+     "categoria": "paren",
+     "nombre": "paréntesis ornamentado",
+     "cara": "ZedMono NF",
+     "estilo": "normal"
+    },
+    {
+     "cp": 10094,
+     "hex": "276E",
+     "categoria": "paren",
+     "nombre": "paréntesis ornamentado",
+     "cara": "ZedMono NF",
+     "estilo": "normal"
+    },
+    {
+     "cp": 10095,
+     "hex": "276F",
+     "categoria": "paren",
+     "nombre": "paréntesis ornamentado",
+     "cara": "ZedMono NF",
+     "estilo": "normal"
+    },
+    {
+     "cp": 10096,
+     "hex": "2770",
+     "categoria": "paren",
+     "nombre": "paréntesis ornamentado",
+     "cara": "ZedMono NF",
+     "estilo": "normal"
+    },
+    {
+     "cp": 10097,
+     "hex": "2771",
+     "categoria": "paren",
+     "nombre": "paréntesis ornamentado",
+     "cara": "ZedMono NF",
+     "estilo": "normal"
+    },
+    {
+     "cp": 10132,
+     "hex": "2794",
+     "categoria": "flecha",
+     "nombre": "flecha pesada ancha hacia la derecha",
+     "cara": "ZedMono NF",
+     "estilo": "normal"
+    },
+    {
+     "cp": 10145,
+     "hex": "27A1",
+     "categoria": "flecha",
+     "nombre": "flecha pesada hacia la derecha",
+     "cara": "ZedMono NF",
+     "estilo": "normal"
+    },
+    {
+     "cp": 10148,
+     "hex": "27A4",
+     "categoria": "flecha",
+     "nombre": "flecha ornamentada",
+     "cara": "ZedMono NF",
+     "estilo": "normal"
+    },
+    {
+     "cp": 10149,
+     "hex": "27A5",
+     "categoria": "flecha",
+     "nombre": "flecha ornamentada",
+     "cara": "ZedMono NF",
+     "estilo": "normal"
+    },
+    {
+     "cp": 10150,
+     "hex": "27A6",
+     "categoria": "flecha",
+     "nombre": "flecha ornamentada",
+     "cara": "ZedMono NF",
+     "estilo": "normal"
+    }
+   ]
+  },
+  {
+   "carpeta": "Zen_Old_Mincho",
+   "familia": "Zen Old Mincho",
+   "glifos": [
+    {
+     "cp": 9733,
+     "hex": "2605",
+     "categoria": "estrella",
+     "nombre": "estrella negra",
+     "cara": "Zen Old Mincho",
+     "estilo": "normal"
+    },
+    {
+     "cp": 9734,
+     "hex": "2606",
+     "categoria": "estrella",
+     "nombre": "estrella blanca",
+     "cara": "Zen Old Mincho",
+     "estilo": "normal"
+    },
+    {
+     "cp": 9756,
+     "hex": "261C",
+     "categoria": "mano",
+     "nombre": "mano índice",
+     "cara": "Zen Old Mincho",
+     "estilo": "normal"
+    },
+    {
+     "cp": 9757,
+     "hex": "261D",
+     "categoria": "mano",
+     "nombre": "mano índice",
+     "cara": "Zen Old Mincho",
+     "estilo": "normal"
+    },
+    {
+     "cp": 9758,
+     "hex": "261E",
+     "categoria": "mano",
+     "nombre": "mano índice",
+     "cara": "Zen Old Mincho",
+     "estilo": "normal"
+    },
+    {
+     "cp": 9759,
+     "hex": "261F",
+     "categoria": "mano",
+     "nombre": "mano índice",
+     "cara": "Zen Old Mincho",
+     "estilo": "normal"
+    }
+   ]
+  }
+ ]
+}
