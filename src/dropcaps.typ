@@ -16,7 +16,9 @@
 }
 
 #let _a-texto(c) = {
-  if type(c) == str {
+  if c == none {
+    ""
+  } else if type(c) == str {
     c
   } else if c.has("text") {
     _a-texto(c.text)
@@ -36,7 +38,9 @@
 }
 
 #let _puntos(c) = {
-  if type(c) == str {
+  if c == none {
+    0
+  } else if type(c) == str {
     c.split(" ").len() - 1
   } else if c.has("text") {
     _puntos(c.text)
@@ -54,6 +58,9 @@
 }
 
 #let _dividir(c, indice) = {
+  if c == none {
+    return (none, none, none)
+  }
   if indice > _puntos(c) {
     return (c, none, none)
   }
@@ -122,6 +129,9 @@
 #let _despues = regex("[" + ".\"'" + ",;:!?\u{00BB}\u{201D}\u{2019})\]\}" + "\u{0300}-\u{036F}" + "]+")
 
 #let _inicial(c) = {
+  if c == none {
+    return (none, none)
+  }
   if type(c) == str {
     if c == "" {
       return (none, c)
@@ -187,7 +197,7 @@
 #let _dimensionado(alto, letra, ..args) = context {
   let nombrados = args.named()
   if "size" in nombrados {
-    text(..args)
+    text(..args, letra)
   } else {
     let base = 10pt
     let m = measure(text(..nombrados, size: base, letra)).height
