@@ -7,13 +7,41 @@ redes sociales, letras capitulares y bloques de cita bíblica.
 
 - **`demo.pdf`** — catálogo visual de todo lo exportado por `src/lib.typ` (lo que *se ve*). Fuente: `demo.typ`.
 - **`docs/manual.pdf`** — manual narrativo (cómo *se usa*): instalación, `theme` API, paletas, tipografía, capitulares, editorial, escritura, idiomas, canvas/componentes, plantillas y blockquotes. Fuente: `docs/manual.typ`.
+- **`ornamentos/ornamentos.pdf`** — catálogo de ornamentos tipográficos (fleurons, estrellas, manos, flechas, la floritura-alfabeto de Orments…) presentes en `Fonts/`. Todo el subsistema vive junto en `ornamentos/`: fuente `ornamentos.typ`, datos `ornamentos.json`, escáner `catalogar-ornamentos.py` — ver `ornamentos/README.md`.
 
-Compilar cualquiera de los dos:
+Compilar cualquiera de ellos:
 
 ```bash
 typst compile --root . --font-path Fonts demo.typ
 typst compile --root . --font-path Fonts docs/manual.typ
+typst compile --root . --font-path Fonts ornamentos/ornamentos.typ
 ```
+
+Con el entorno de Nix (ver abajo) no hace falta `--root`/`--font-path`:
+ya quedan fijos por variable de entorno, así que basta
+`typst compile demo.typ`.
+
+## Entorno de desarrollo con Nix
+
+La dificultad recurrente de este proyecto era las fuentes: `--font-path
+Fonts` hay que repetirlo en cada compilación, y dos familias pesadas
+(`Fonts/Iosevka_Nerd_Font/`, `Fonts/ZedMono_Nerd_Font/` — 1.2GB y 705MB)
+están en `.gitignore` y no viajan con el repo, así que una máquina nueva
+no las tiene hasta copiarlas a mano.
+
+`flake.nix` resuelve ambas cosas:
+
+```bash
+nix develop        # typst + poppler_utils + python3, y las 2 Nerd Fonts de nixpkgs
+# o, con direnv instalado:
+direnv allow       # entra sola cada vez que hagas `cd` al repo (usa .envrc)
+```
+
+Adentro, `TYPST_ROOT`/`TYPST_FONT_PATHS` ya apuntan a este repo y a
+`Fonts/`, así que `typst compile demo.typ` funciona sin flags. Nota: no
+se probó `nix develop` en este repo todavía (revisa que resuelvan los
+paquetes `nerd-fonts.*` — nixpkgs reestructuró ese paquete en 2024, ver
+comentario en `flake.nix` si tu versión de nixpkgs usa otros nombres).
 
 ## Estructura
 
@@ -28,10 +56,12 @@ src/                  código del paquete (entrypoint: src/lib.typ)
   articulo.typ        plantilla editorial: paleta + pareja + capitular en un tema
   scripture.typ       bloques de cita bíblica (pasaje(), vs(), ch())
   idiomas.typ         lat/gr/he, translit e interlineal
-  social.typ          plantillas de canvas (Instagram/stories) + blockquotes
+  social.typ          plantillas de canvas (Instagram/stories/etc.)
+  blockquotes.typ     legos bq-* + 14 blockquote-* (bloques, no canvas)
 demo.typ              catálogo visual (no forma parte del paquete)
 docs/manual.typ       manual narrativo (no forma parte del paquete)
 examples/             ejemplos de uso de cada módulo (no forman parte del paquete)
+ornamentos/           catálogo de ornamentos de Fonts/ — typ + json + escáner (no forma parte del paquete)
 Fonts/                fuentes usadas por el proyecto (no forman parte del paquete)
 cristianamente.typ    paquete aparte, no integrado — conservado como referencia
 ```
@@ -98,8 +128,9 @@ typst compile --root . --font-path Fonts examples/articulo.typ
 - `capitular` — letra capital (de `dropcaps.typ`)
 - `articulo`, `primer-parrafo`, `make-theme`, `fondo-editorial` — plantilla editorial
 - `scripture`, `vs`, `ch`, `pasaje` — bloques de cita bíblica
-- todo lo de `social.typ`: `canvas`, `badge`, `headline`, `subhead`, `footer`, `quote-post`, `announce-post`, `tip-card`, `carousel-cover`, `carousel-slide`, `stat-card`, `event-post`, `testimonial-post`, `poll-story`, `versus-post`, `blockquote-*` (9 tipos + `blockquote-grid`/`blockquote-paralelo`/`blockquote-lateral`), `avatar`, `avatar-row`, `stat`, `progress`, `divider`
-- `lat`, `gr`, `he`, `translit`, `interlineal` — capa de idiomas (`idiomas.typ`)
+- todo lo de `social.typ`: `canvas`, `badge`, `headline`, `subhead`, `footer`, `quote-post`, `announce-post`, `tip-card`, `carousel-cover`, `carousel-slide`, `stat-card`, `event-post`, `testimonial-post`, `quote-social`, `poll-story`, `versus-post`, `avatar`, `avatar-row`, `stat`, `progress`, `divider`
+- todo lo de `blockquotes.typ`: `bq-frame`/`bq-mark`/`bq-rule`/`bq-attribution` (legos) + 14 `blockquote-*` (incluye `blockquote-grid`/`blockquote-paralelo`/`blockquote-lateral`)
+- `lat`, `gr`, `he`, `translit`, `interlineal`, `orn` — capa de idiomas (`idiomas.typ`)
 
 ## Nota sobre temas y `theme:`
 
