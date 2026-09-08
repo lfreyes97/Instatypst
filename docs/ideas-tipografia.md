@@ -17,19 +17,33 @@ dropcaps.
 
 Hoy `capitular()` (`src/dropcaps.typ`) usa la letra grande de la misma
 fuente del cuerpo — funcional, pero sin el carácter ornamental de una
-capitular de verdad. Dos caminos si se quiere mejorar esto:
+capitular de verdad.
 
-- Conseguir esa variante como fuente — rompe la regla del proyecto de
-  no pedir fuentes nuevas; solo viable si ya está guardada en algún
-  lado, no para pedir una nueva.
-- Portarla como SVG en vez de fuente — mismo camino que ya funcionó
-  para bocadillo/cinta/blob/aura (`src/formas.typ`, `src/social.typ`):
-  si aparece un SVG con letras capitulares reales (glifos, no una
-  fuente completa), se puede recortar y recolorear igual que se hizo
-  con los 6 blobs de `Assets/shapes.2svg`.
+**Sí existen, en el repo oficial de la fuente — verificado, no
+suposición:** [georgd/EB-Garamond-Initials](https://github.com/georgd/EB-Garamond-Initials),
+licencia **OFL-1.1** (misma familia de licencia que el resto de
+`Fonts/`). Capitulares basadas en las iluminadas de *De Peste
+Commentarius* (1589, Jean Antoine Sarrasin), trabajo del mismo
+proyecto que `georgd/EB-Garamond` (la fuente que ya usamos). Estructura
+del repo: carpeta `SVG/` con los glifos vectoriales reales (además de
+`SFD/` fuente editable y fuentes OTF/TTF compiladas en `build/`) — el
+material SVG que hacía falta para portar, no una fuente nueva.
 
-Ninguna existe en el repo todavía — esto es una nota de qué hacer SI
-aparece ese material, no una tarea con algo que portar ahora mismo.
+Diseño en **dos capas**, pensado para dos colores:
+- `EBGaramond-InitialsF1` — el ornamento de fondo (florituras).
+- `EBGaramond-InitialsF2` — la letra en primer plano.
+
+Portarlas sería el mismo patrón que los 6 blobs de `Assets/shapes.2svg`
+(recortar viewBox real, recolorear con `fill.to-hex()`), pero con DOS
+`<path>` por letra en vez de uno — F1 con `theme.colors.accent` (o
+`.secondary`), F2 con `theme.colors.primary`/`.dark`, superpuestos.
+Nota del propio repo: "work in progress", calidad variable entre
+letras — habría que revisar cuáles letras están completas antes de
+prometer el alfabeto entero.
+
+**Pendiente de decidir, no hecho:** cuáles letras descargar (todo el
+alfabeto son ~52 archivos entre F1/F2 — dos capas × 26 letras) y de
+qué commit/tag exacto, antes de bajar nada del repo.
 
 ## Falta una fuente con cobertura de emoji
 
