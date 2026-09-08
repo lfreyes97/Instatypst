@@ -1,4 +1,5 @@
 #import "../src/lib.typ": *
+#import "../src/lib.typ" as lib
 #import "@preview/codly:1.3.0": *
 #import "@preview/codly-languages:0.1.1": *
 #show: codly-init.with()
@@ -47,6 +48,57 @@
 )
 
 #let code-tabs(..bodies) = bodies.pos().join(v(4pt))
+
+// ── Ejemplo con preview en vivo ──
+// `dictionary(lib)` convierte TODO lo exportado por lib.typ en un dict —
+// se usa como `scope:` de eval(), así que el código que se ve es
+// literalmente el código que se ejecuta (no hay copia manual que se
+// pueda desincronizar del código real).
+#let escope = dictionary(lib)
+
+// Lado a lado: código | render en vivo. Solo sirve para funciones que
+// NO arman un canvas (page(...) no se puede anidar en un contenedor —
+// ver example-canvas más abajo para esas).
+#let example(codigo) = grid(
+  columns: (1fr, 1fr),
+  gutter: 12pt,
+  align: (left + horizon, center + horizon),
+  block(width: 100%, height: 100%, fill: luma(97%), stroke: 0.5pt + luma(85%), radius: 6pt, inset: 10pt)[
+    #set text(size: 8pt)
+    #codigo
+  ],
+  block(width: 100%, height: 100%, fill: white, stroke: 0.5pt + luma(85%), radius: 6pt, inset: 10pt)[
+    // sin justificar: en una columna angosta, justify: true (heredado del
+    // set par global del manual) fuerza guionado feo y huecos grandes
+    #set par(justify: false)
+    #eval(codigo.text, mode: "markup", scope: escope)
+  ],
+)
+
+// Lista de parámetros — items: ((raw-del-parámetro, descripción), ...)
+#let options(items) = list(
+  ..items.map(it => [#raw(it.at(0)) — #it.at(1)]),
+)
+
+// Para las plantillas de canvas: por dentro llaman page(...), y Typst
+// prohíbe anidar una página en un contenedor (`box`/`scale`/etc. — no hay
+// vuelta, lo comprobamos compilando). No cabe lado a lado. Mejor opción
+// disponible: código + opciones en la página A4, render real e íntegro
+// en su propia página justo después — page(...) abre y cierra su propia
+// página sola, así que el documento vuelve a A4 solo en la siguiente.
+#let example-canvas(codigo, opciones: none) = {
+  block(width: 100%, fill: luma(97%), stroke: 0.5pt + luma(85%), radius: 6pt, inset: 10pt)[
+    #set text(size: 8pt)
+    #codigo
+  ]
+  if opciones != none {
+    v(6pt)
+    options(opciones)
+  }
+  v(4pt)
+  text(size: 7.5pt, fill: faint, style: "italic")[↓ render a tamaño real en la página siguiente]
+  eval(codigo.text, mode: "markup", scope: escope)
+}
 
 #set page(paper: "a4", margin: 2cm, fill: rgb("#fdfbf7"))
 #set text(font: theme.base.fonts.body, size: 10pt, fill: theme.base.colors.dark, lang: "es")
@@ -142,7 +194,8 @@ src/lib.typ              # entrypoint — re-exporta todo
   articulo.typ           # articulo, primer-parrafo, make-theme, fondo-editorial
   scripture.typ          # scripture, vs, ch, pasaje
   idiomas.typ            # lat, gr, he, translit, interlineal
-  social.typ             # canvas + componentes + 10 plantillas + 9 blockquotes
+  social.typ             # canvas + componentes + 11 plantillas de post completo
+  blockquotes.typ        # 5 legos bq-* (frame/mark/rule/rule-full/attribution) + 14 blockquote-*
 examples/                # 12 ejemplos de uso (no van en el paquete)
 scripts/nueva-plantilla.py # generador de esqueletos .typ (12 plantillas)
 Fonts/                   # ~45 familias usadas por el proyecto
@@ -487,7 +540,7 @@ En hebreo, #he[בְּרֵאשִׁית] — RTL automático.
     (original: [הַשָּׁמַיִם], translit: "haššāmayim", gloss: "los cielos"),
   ),
 )
-#note[Para un versículo completo en dos columnas (original + traducción) usa `blockquote-paralelo` (#link(<cap-blockquotes>)[cap. 10.2]).]
+#note[Para un versículo completo en dos columnas (original + traducción) usa `blockquote-paralelo` (#link(<cap-blockquotes>)[cap. 12.1]).]
 
 // ═══════════════════════════════════════════════════════════
 = Fundaciones — `canvas` <cap-canvas>
@@ -561,100 +614,389 @@ Todos a escala de `canvas` de 1080pt; si los usas en A4, escala como en `demo.ty
 = Plantillas sociales <cap-social>
 #h1[11 · Plantillas sociales]
 
-Todas devuelven un `canvas` listo para exportar a PNG/PDF. El parámetro `theme:` se propaga internamente a `badge`/`headline`/etc. por closure (ver nota de `social.typ:14`).
+Todas devuelven un `canvas` (un `page(...)` a tamaño de plataforma) listo para exportar a PNG/PDF. El parámetro `theme:` se propaga internamente a `badge`/`headline`/etc. por closure (ver nota de `social.typ:14`). Por eso cada ejemplo de abajo sale en su propia página a tamaño real inmediatamente después del código — Typst no permite anidar una página dentro de un bloque, así que no cabe un lado a lado con miniatura (ver el comentario en `docs/manual.typ` junto a `example-canvas`).
 
-#api-table((
-  ([`quote-post(quote, author, handle, size:, c1:, c2:, theme:)`], [Cita centrada sobre degradado + blobs], [`#quote-post([Cita], "Autor", "@h")`]),
-  ([`announce-post(tagline, title, subtitle, handle, theme:)`], [Badge + titular + botón "Saber más →"], [`#announce-post("NUEVO", [T], [S], "@h")`]),
-  ([`tip-card(n, title, description, handle, theme:)`], [Tip numerado sobre `dark` + número marca de agua], [`#tip-card(3, [T], [D], "@h")`]),
-  ([`carousel-cover(kicker, title, handle, n-pages:, theme:)`], [Portada carrusel "Desliza →"], [`#carousel-cover("GUÍA", [T], "@h", n-pages: 6)`]),
-  ([`carousel-slide(n, total, title, body-text, handle, theme:)`], [Slide interior con `progress(n/total)`], [`#carousel-slide(2, 6, [T], [B], "@h")`]),
-  ([`stat-card(value, label, caption, handle, theme:)`], [`stat` centrado + `divider`], [`#stat-card("+240%", [L], [C], "@h")`]),
-  ([`event-post(day, month, title, details, handle, theme:)`], [Evento story (1080×1920) — caja fecha], [`#event-post("12", "SEPT", [T], [D], "@h")`]),
-  ([`testimonial-post(quote, name, role, initials, handle, theme:)`], [Testimonio + `avatar-row`], [`#testimonial-post([Q], "M", "CM", "MJ", "@h")`]),
-  ([`poll-story(question, a, b, handle, theme:)`], [Encuesta story — 2 opciones], [`#poll-story([¿Qué?], [A], [B], "@h")`]),
-  ([`versus-post(l-title, l-items, r-title, r-items, handle, theme:)`], [Comparación 2 columnas + badge VS], [`#versus-post("Sin", (...), "Con", (...), "@h")`]),
+#h2[11.1 `quote-post`]
+Cita centrada sobre degradado + blobs decorativos.
+#example-canvas(```typ
+#quote-post([El diseño no es cómo se ve. Es cómo funciona.], "Steve Jobs", "@mi_marca")
+```, opciones: (
+  ("quote", "contenido de la cita"),
+  ("author", "nombre del autor"),
+  ("handle", "@usuario, esquina inferior"),
+  ("size:", "sizes.instagram (default) · story · twitter · linkedin"),
+  ("c1:, c2:", "colores del degradado (default primary → secondary)"),
+  ("theme:", "tema (default theme.base)"),
 ))
 
-#note[Ver `demo.pdf` §4 para cada plantilla a tamaño real (1080×1080 o 1080×1920 con `vs-badge` en `versus-post`). Dentro de este manual caben solo las tablas; el render a escala completa rompería la paginación A4.]
+#h2[11.2 `announce-post`]
+Badge + titular + subtítulo + botón "Saber más →".
+#example-canvas(```typ
+#announce-post("NUEVO", [Lanzamos la 2.0], [Rediseñamos todo.], "@mi_marca")
+```, opciones: (
+  ("tagline, title, subtitle, handle", "posicionales, en ese orden"),
+  ("size:", "default sizes.instagram"),
+  ("color:", "badge + botón (default primary)"),
+  ("theme:", "tema (default theme.base)"),
+))
 
-```typ
-#let marca = (palettes.as-theme)("terracota")
-#quote-post([El diseño no es cómo se ve. Es cómo funciona.], "Steve Jobs", "@mi_marca", theme: marca)
-#announce-post("NUEVO", [Lanzamos la 2.0], [Rediseñamos todo.], "@mi_marca", theme: marca)
-#versus-post("Sin estrategia", ([Azar], [Sin identidad]), "Con sistema", ([Calendario], [Plantillas]), "@mi_marca", theme: marca)
-```
+#h2[11.3 `tip-card`]
+Tip numerado sobre fondo `dark`, con el número como marca de agua.
+#example-canvas(```typ
+#tip-card(3, [Publica seguido], [La constancia entrena al algoritmo.], "@mi_marca")
+```, opciones: (
+  ("n, title, description, handle", "posicionales"),
+  ("size:", "default sizes.instagram"),
+  ("color:", "número + acentos (default accent)"),
+  ("theme:", "tema (default theme.base)"),
+))
+
+#h2[11.4 `carousel-cover`]
+Portada de carrusel con "Desliza →" y conteo de páginas.
+#example-canvas(```typ
+#carousel-cover("GUÍA", [5 errores que matan tu alcance], "@mi_marca", n-pages: 6)
+```, opciones: (
+  ("kicker, title, handle", "posicionales"),
+  ("n-pages:", "cuántos puntos de paginación (default 6)"),
+  ("size:", "default sizes.instagram"),
+  ("c1:, c2:", "degradado (default dark → primary)"),
+  ("theme:", "tema (default theme.base)"),
+))
+
+#h2[11.5 `carousel-slide`]
+Slide interior con `progress(n/total)` integrado.
+#example-canvas(```typ
+#carousel-slide(2, 6, [Error #2], [No programar el contenido con anticipación.], "@mi_marca")
+```, opciones: (
+  ("n, total, title, body-text, handle", "posicionales — n/total alimenta la barra de progreso"),
+  ("size:", "default sizes.instagram"),
+  ("color:", "barra + acentos (default primary)"),
+  ("theme:", "tema (default theme.base)"),
+))
+
+#h2[11.6 `stat-card`]
+Número gigante (`stat`) centrado + `divider`.
+#example-canvas(```typ
+#stat-card("+240%", "más alcance", "en 3 meses de constancia", "@mi_marca")
+```, opciones: (
+  ("value, label, caption, handle", "posicionales"),
+  ("size:", "default sizes.instagram"),
+  ("color:", "número + divisor (default primary)"),
+  ("theme:", "tema (default theme.base)"),
+))
+
+#h2[11.7 `event-post`]
+Evento en formato story (1080×1920) con caja de fecha.
+#example-canvas(```typ
+#event-post("12", "SEPT", [Noche de alabanza], [7:00pm · Auditorio principal], "@mi_marca")
+```, opciones: (
+  ("day, month, title, details, handle", "posicionales"),
+  ("size:", "default sizes.story (no instagram, a diferencia de las demás)"),
+  ("color:", "caja de fecha + acentos (default secondary)"),
+  ("theme:", "tema (default theme.base)"),
+))
+
+#h2[11.8 `testimonial-post`]
+Testimonio con `avatar-row` (iniciales, no foto — para foto real ver `quote-social` §11.9).
+#example-canvas(```typ
+#testimonial-post([Cambió cómo publicamos.], "María J.", "Community Manager", "MJ", "@mi_marca")
+```, opciones: (
+  ("quote, name, role, initials, handle", "posicionales — initials es explícito, no se deriva de name"),
+  ("size:", "default sizes.instagram"),
+  ("color:", "avatar + acentos (default primary)"),
+  ("theme:", "tema (default theme.base)"),
+))
+
+#h2[11.9 `quote-social`]
+Cita con foto real o iniciales, atribución dentro de la misma tarjeta (posición declarativa), y notas laterales opcionales. Para resaltar palabras dentro de la cita usa el `#raw("#highlight[...]")` nativo de Typst, no una API propia.
+#example-canvas(```typ
+#quote-social(
+  [La constancia entrena al algoritmo... y a tu #highlight[audiencia].],
+  "Luis Felipe Reyes de los Reyes",
+  iniciales: "LR",
+  atribucion: "arriba",
+)
+```, opciones: (
+  ("cita, nombre", "posicionales"),
+  ("iniciales:", "fallback si no hay foto: — explícito, no se deriva de nombre"),
+  ("foto:", "ruta a imagen (usa `/` inicial — relativa a la raíz del proyecto, no al archivo que llama)"),
+  ("atribucion:", [`"abajo"` (default) o `"arriba"` — dónde va foto+nombre respecto a la cita]),
+  ("comilla:", "muestra la comilla decorativa sobre la cita (default false)"),
+  ("nota-izq:, nota-der:", "dict (icono:, texto:) o none — notas decorativas en las esquinas inferiores"),
+  ("size:, color:, theme:", "como el resto de la familia"),
+))
+
+#h2[11.10 `poll-story`]
+Encuesta en formato story con 2 opciones.
+#example-canvas(```typ
+#poll-story([¿Reels o carrusel?], [Reels 🎬], [Carrusel 📊], "@mi_marca")
+```, opciones: (
+  ("question, option-a, option-b, handle", "posicionales"),
+  ("size:", "default sizes.story"),
+  ("c1:, c2:", "degradado de fondo (default primary → secondary)"),
+  ("theme:", "tema (default theme.base)"),
+))
+
+#h2[11.11 `versus-post`]
+Comparación en 2 columnas ("Sin" / "Con") con `vs-badge` central.
+#example-canvas(```typ
+#versus-post(
+  "Sin estrategia", ("Publicar al azar", "Sin identidad visual"),
+  "Con sistema", ("Calendario de contenido", "Plantillas consistentes"),
+  "@mi_marca",
+)
+```, opciones: (
+  ("left-title, left-items, right-title, right-items, handle", "posicionales — *-items es un array de strings"),
+  ("size:", "default sizes.instagram"),
+  ("bad:, good:", "color de las marcas ✕/✓ (default rojo/verde)"),
+  ("theme:", "tema (default theme.base)"),
+))
+
+#note[Todas aceptan `theme:` explícito para personalizar colores/fuentes sin sombrear `palette`/`fonts` (regla de oro, cap. 2). Ver `demo.pdf` §4 para las 11 juntas en una sola vista de catálogo.]
 
 // ═══════════════════════════════════════════════════════════
 = Blockquotes <cap-blockquotes>
 #h1[12 · Blockquotes]
 
-A diferencia de las plantillas sociales, estas *no* son un canvas: son bloques para insertar en cualquier página o dentro de un `canvas` (`src/social.typ:549`). Convención uniforme: `body` posicional primero, `autor:`/`fuente:` nombrados y opcionales, `color:` + `theme:` presentes.
+A diferencia de las plantillas sociales, estas *no* son un canvas: son bloques para insertar en cualquier página o dentro de un `canvas` (viven en `src/blockquotes.typ`, no en `social.typ` — ver cap. 1). Convención uniforme: `body` posicional primero, `autor:`/`fuente:` nombrados y opcionales, `color:` + `theme:` + `size:` presentes. Como no arman una página, sí caben lado a lado con su preview real (`example()`, código | render — a diferencia de las plantillas de canvas del capítulo anterior).
 
-#h2[12.1 Catálogo — 9 clásicos GFM + 5 nuevos con finetuning]
-#api-table((
-  ([`blockquote-editorial(body, autor:, fuente:)`], [Doble borde + comilla 60pt + itálica], [Demo 1/9]),
-  ([`blockquote-bar(body, variante:)`], [Barra izquierda; `variante`: default/grande/acento], [Demo 2–4/9]),
-  ([`blockquote-card(body, autor:, fuente:)`], [Tarjeta con barra superior de color], [Demo 5/9]),
-  ([`blockquote-hero(body, autor:, fuente:)`], [Centrada dramática, comilla 86pt], [Demo 6/9, sobre gradiente]),
-  ([`blockquote-avatar(body, autor:, fuente:, iniciales:)`], [Tarjeta con `avatar-row` si hay iniciales], [Demo 7/9 + grid]),
-  ([`blockquote-hand(body, autor:)`], [Manuscrita Caveat — requiere `--font-path Fonts`], [Demo 8/9]),
-  ([`blockquote-paralelo(orig, trad, idioma:, referencia:)`], [Griego/hebreo + traducción en 2 cols], [Demo 9a/b/9]),
-  ([`blockquote-lateral(body, n:, autor:, fuente:)`], [Cita con atribución rotada 270° + numeración], [Demo 10/9]),
-  ([`blockquote-grid(tarjetas, columnas:)`], [Grid de `blockquote-avatar` en 2–3 cols], [Demo 7/9]),
-))
-#h3[Nuevos — no-GFM]
-#api-table((
-  ([`blockquote-pull(body, autor:, fuente:, marca:)`], [Pull-quote — comilla 180pt detrás + filete 48pt; `marca: none` minimal], [Demo 11–12/14]),
-  ([`blockquote-definition(termino, body, pronunciacion:, origen:, relacionados:)`], [Glosario — badge origen + pills relacionados], [Demo 13/14]),
-  ([`blockquote-callout(body, titulo:, icono:, variante:)`], [Callout — `variante: tip/info/warn/hand` (hand = Caveat)], [Demo 14a/14]),
-  ([`blockquote-poetry(body, autor:)`], [Verso — sangría colgante, sin justificar], [Demo 14b/14]),
-  ([`blockquote-timeline(fecha, body)`], [Línea temporal — fecha + regla vertical], [Demo 14b/14]),
+#h2[12.0 Control de tamaño — `size:`]
+
+Cada función de esta familia (salvo `blockquote-grid`, que no compone texto propio, y los legos puramente gráficos `bq-frame`/`bq-rule`/`bq-rule-full`) acepta `size: auto`. `auto` conserva el tamaño de cuerpo original de esa plantilla — nada cambia si no pasas `size:`. Pasar un largo explícito fija el tamaño del elemento principal (el cuerpo de la cita, o `termino` en `blockquote-definition`) y *todo* lo demás dentro de esa misma llamada — comilla decorativa, atribución, ícono, badge — se re-escala en la misma proporción, calculada como `k = tu-tamaño / tamaño-base-de-esa-plantilla`. Es un control por-llamada: dos citas con el mismo `theme:` pueden pedir tamaños distintos sin pisarse.
+
+#note[Antes de esta convención, cada plantilla traía sus tamaños como números pt sueltos sin relación entre sí — así se colaron los bugs de texto ilegible en `blockquote-lateral`/`bq-attribution` que motivaron el rediseño de la campaña Warfield. `size:` es la forma soportada de ajustar el tamaño desde donde se llama la plantilla, en vez de editar el pt fijo dentro de `blockquotes.typ`.]
+
+#pagebreak(weak: true)
+#h3[Demo: el mismo `blockquote-card`, dos tamaños]
+Fíjate en la línea de autor: en el segundo ejemplo no se tocó, pero creció en la misma proporción que el cuerpo.
+#block(breakable: false)[
+  #example(```typ
+  #blockquote-card([Tamaño normal.], autor: "Warfield")
+  ```)
+]
+#v(6pt)
+#block(breakable: false)[
+  #example(```typ
+  #blockquote-card([Tamaño normal.], autor: "Warfield", size: 44pt)
+  ```)
+]
+
+#h2[12.1 Clásicos GFM]
+
+#h3[`blockquote-editorial`]
+Doble borde + comilla 60pt + itálica.
+#example(```typ
+#blockquote-editorial([La disciplina supera al talento cuando el talento no se disciplina.], autor: "Anónimo")
+```)
+#options((
+  ("body", "cuerpo de la cita, posicional"),
+  ("autor:, fuente:", "opcionales"),
+  ("color:, theme:", "default primary / theme.base"),
+  ("size:", "auto (32pt) — ver 12.0; escala también la comilla y la línea de atribución"),
 ))
 
-#h3[Ejemplos compactos (dentro de A4)]
-#blockquote-bar([La constancia entrena al algoritmo... y a tu audiencia.], autor: "Equipo de redes", color: palette.secondary)
+#h3[`blockquote-bar`]
+Barra izquierda de color.
+#example(```typ
+#blockquote-bar([La constancia entrena al algoritmo... y a tu audiencia.], autor: "Equipo de redes")
+```)
+#options((
+  ("body", "posicional"),
+  ("variante:", [`"default"` (32pt) · `"grande"` (44pt) · `"acento"`]),
+  ("autor:, fuente:, color:, theme:", "como el resto de la familia"),
+  ("size:", "auto — sobreescribe el tamaño que ya da `variante:`; la atribución escala con él"),
+))
+
+#h3[`blockquote-card`]
+Tarjeta con barra superior de color.
+#example(```typ
+#blockquote-card([El diseño es la ropa que le pones a las ideas.], autor: "Anónimo", fuente: "Manual")
+```)
+#options((
+  ("body, autor:, fuente:, color:, theme:", "misma convención uniforme"),
+  ("size:", "auto (32pt) — ver 12.0"),
+))
+
+#h3[`blockquote-hero`]
+Centrada, dramática — comilla 86pt.
+#example(```typ
+#blockquote-hero([Publica seguido. La constancia entrena al algoritmo.], autor: "Equipo de redes")
+```)
+#options((
+  ("body, autor:, fuente:, color:, theme:", "misma convención uniforme"),
+  ("size:", "auto (48pt) — escala también la comilla 86pt y la atribución"),
+))
+
+#h3[`blockquote-avatar`]
+Tarjeta con `avatar-row` (#link(<cap-componentes>)[cap. 10]) si hay iniciales.
+#example(```typ
+#blockquote-avatar([Cambió cómo publicamos.], autor: "María J.", fuente: "Community Manager", iniciales: "MJ")
+```)
+#options((
+  ("body", "posicional"),
+  ("iniciales:", "explícito — *no* se deriva de autor (evita el bug de `cristianamente.typ:444` si autor no es texto plano)"),
+  ("autor:, fuente:, color:, theme:", "como el resto de la familia"),
+  ("size:", "auto (28pt) — ver 12.0"),
+))
+
+#h3[`blockquote-hand`]
+Manuscrita (Caveat) — requiere `--font-path Fonts`.
+#example(```typ
+#blockquote-hand([Escrito a mano, para que se sienta humano.], autor: "Equipo de redes")
+```)
+#options((
+  ("body, autor:, color:, theme:", "misma convención uniforme"),
+  ("size:", "auto (40pt) — escala también la firma del autor"),
+))
+
+#h3[`blockquote-paralelo`]
+Original (griego/hebreo) + traducción en 2 columnas.
+#example(```typ
+#blockquote-paralelo("λόγος", "Palabra / razón", idioma: "griego", referencia: "Juan 1:1")
+```)
+#options((
+  ("original, traduccion", "posicionales"),
+  ("idioma:", [`"griego"` (default) o `"hebreo"` — invierte el grid a RTL]),
+  ("autentico:", "true usa GFS Didot para griego (default); false usa Libertinus Serif"),
+  ("referencia:, color:, theme:", "opcionales"),
+  ("size:", "auto (24pt, tamaño del texto original) — escala traducción y referencia con él"),
+))
+
+#h3[`blockquote-lateral`]
+Atribución rotada 270°, numeración opcional.
+#example(```typ
+#blockquote-lateral([El estilo es la respuesta a la pregunta: ¿cómo?], autor: "Pascal", n: 1)
+```)
+#options((
+  ("body", "posicional"),
+  ("n:", "número opcional (esquina)"),
+  ("autor:, fuente:, color:, theme:", "como el resto de la familia"),
+  ("size:", "auto (32pt) — escala también la etiqueta rotada"),
+))
+
+#h3[`blockquote-grid`]
+Varias `blockquote-avatar` en 2–3 columnas.
+#example(```typ
+#blockquote-grid(columnas: 2, (
+  blockquote-avatar([Uno.], autor: "A", iniciales: "AA"),
+  blockquote-avatar([Dos.], autor: "B", iniciales: "BB"),
+))
+```)
+#options((
+  ("tarjetas", "array de content (normalmente blockquote-avatar(...))"),
+  ("columnas:", "2 (default) o 3"),
+))
+#note[`blockquote-grid` no tiene `size:` propio — no compone texto, solo acomoda tarjetas ya armadas. Pasa `size:` a cada `blockquote-avatar(...)` dentro del array si quieres ajustarlas.]
+
+#h2[12.2 Nuevos — no-GFM]
+
+#h3[`blockquote-pull`]
+Pull-quote — comilla 180pt detrás + filete 48pt.
+#example(```typ
+#blockquote-pull([La tipografía es la ropa que le pones a las ideas.], autor: "Anónimo", fuente: "Manual")
+```)
+#options((
+  ("body", "posicional"),
+  ("marca:", [glifo de comilla — `none` para la variante minimal, sin marca detrás]),
+  ("autor:, fuente:, color:, theme:", "como el resto de la familia"),
+  ("size:", "auto (46pt) — escala también la comilla 180pt y la atribución"),
+))
+
+#h3[`blockquote-definition`]
+Glosario — badge de origen + pills de términos relacionados.
+#example(```typ
+#blockquote-definition("Sola Scriptura", pronunciacion: "so-la skrip-tu-ra", origen: "latín", relacionados: ("Sola Fide",))[Doctrina según la cual la Escritura es la única autoridad infalible.]
+```)
+#options((
+  ("termino, body", "posicionales — body va al final como content block"),
+  ("pronunciacion:, origen:, relacionados:", "opcionales — relacionados es un array de strings"),
+  ("color:, theme:", "default primary / theme.base"),
+  ("size:", "auto (40pt, tamaño de `termino`) — escala pronunciación, badge, cuerpo y pills"),
+))
+
+#h3[`blockquote-callout`]
+Callout con ícono + variante.
+#example(```typ
 #blockquote-callout(variante: "tip", titulo: "Tip", icono: "✦")[Carruseles de 6–8 slides retienen 2× más que una imagen.]
-#blockquote-definition("Sola Scriptura", pronunciacion: "so-la skrip-tu-ra", origen: "latín", relacionados: ("Sola Fide",), color: palette.primary)[Doctrina según la cual la Escritura es la única autoridad infalible.]
-#blockquote-pull([La tipografía es la ropa que le pones a las ideas.], autor: "Anónimo", fuente: "Manual", color: palette.secondary)
-#blockquote-poetry(autor: "Borges", color: palette.primary)[El aleph es uno de los puntos \ que contiene todos los puntos.]
+```)
+#options((
+  ("body", "posicional"),
+  ("variante:", [`"tip"` · `"info"` · `"warn"` · `"hand"` (hand delega a Caveat — requiere `--font-path Fonts`)]),
+  ("titulo:, icono:, color:, theme:", "opcionales"),
+  ("size:", "auto (26pt, o 28pt en \"hand\") — escala también ícono y título"),
+))
 
-#note[Para hebreo RTL, `blockquote-paralelo` invierte el `grid` cuando `idioma: "hebreo"` — el original queda a la derecha visualmente pero se escribe normal en el array. `blockquote-avatar` requiere `iniciales:` explícito para no romper si `autor` no es texto plano (bug corregido de `cristianamente.typ:444`). `blockquote-callout` con `variante: "hand"` delega el cuerpo a Caveat (requiere `--font-path Fonts`).]
+#h3[`blockquote-poetry`]
+Verso — sangría colgante, sin justificar.
+#example(```typ
+#blockquote-poetry(autor: "Borges")[El aleph es uno de los puntos \ que contiene todos los puntos.]
+```)
+#options((
+  ("body", "posicional — usa `\\` para saltos de verso"),
+  ("autor:, color:, theme:", "opcionales"),
+  ("size:", "auto (26pt) — escala también la línea de autor"),
+))
 
-#h2[12.2 Legos — primitives componibles]
+#h3[`blockquote-timeline`]
+Línea temporal — fecha + regla vertical.
+#example(```typ
+#blockquote-timeline("2024", [Se publicó la primera versión del sistema.])
+```)
+#options((
+  ("fecha, body", "posicionales"),
+  ("color:, theme:", "default primary / theme.base"),
+  ("size:", "auto (22pt) — escala la fecha con el cuerpo; la regla vertical es gráfica y no cambia"),
+))
+
+#note[Para hebreo RTL, `blockquote-paralelo` invierte el `grid` cuando `idioma: "hebreo"` — el original queda a la derecha visualmente pero se escribe normal en el array.]
+
+#h2[12.3 Legos — primitives componibles]
 Cada `blockquote-*` anterior es una *receta* con los mismos 4 legos. Exponerlos permite armar brutalista/glass/editorial sin pedir `estilo:` monolítico — edificio de legos.
 
-#api-table((
-  ([`bq-frame(body, tipo:)`], [`tipo: "soft" (modern, radius 24pt) / "hard" (brutal, radius 0 + borde 3.5pt black) / "glass" (gradient translúcido + borde 0.6pt)`], [`#bq-frame(tipo: "hard")[...]`]),
-  ([`bq-mark(texto, detras:)`], [Comilla suelta; `detras: true` la pone 180pt detrás como en `blockquote-pull`], [`#bq-mark("“", detras: true)`]),
-  ([`bq-rule(width:, color:)` / `bq-rule-full`], [Filete corto (default 48pt) o línea 100%], [`#bq-rule(width: 36pt)`]),
-  ([`bq-attribution(autor:, fuente:, modo:)`], [`modo: "pro" (— Autor · Fuente) / "mono" (DM Mono caja) / "caps" (tracking 0.12em)`], [`#bq-attribution(autor: "Mies", modo: "mono")`]),
+#h3[`bq-frame`]
+El contenedor — 3 acabados.
+#example(```typ
+#bq-frame(tipo: "hard")[#text(weight: 900, upper[La constancia entrena al algoritmo.])]
+```)
+#options((
+  ("body", "posicional"),
+  ("tipo:", [`"soft"` (modern, radius 24pt, default) · `"hard"` (brutal, radius 0 + borde 3.5pt) · `"glass"` (degradado translúcido + borde 0.6pt)]),
+  ("color:, theme:, radius:, inset:", "opcionales — radius:/inset: sobreescriben el default de cada tipo"),
 ))
 
-```typ
-// Card modern (soft) vs brutal (hard) vs glass — mismo contenido
-#bq-frame(tipo: "soft")[... #bq-rule() #bq-attribution(autor: "Mies", modo: "pro")]
-#bq-frame(tipo: "hard")[#text(upper[...]) #bq-rule(color: red) #bq-attribution(autor: "Mies", modo: "mono")]
-#bq-frame(tipo: "glass", color: palette.primary)[... #bq-attribution(modo: "caps")]
+#h3[`bq-mark`]
+Comilla decorativa suelta.
+#example(```typ
+#bq-mark("“", size: 40pt)
+```)
+#options((
+  ("texto", "posicional — el glifo"),
+  ("size:", "default 60pt"),
+  ("detras:", "true la pone grande (180pt) y semitransparente detrás, como en blockquote-pull"),
+  ("fill:, theme:", "opcionales"),
+))
 
-// Pull con marca detrás + composición libre callout
-#bq-mark("“", detras: true) + #bq-rule(width: 36pt)
-#bq-frame(tipo: "hard", inset: 16pt)[#grid(columns: (auto, 1fr), gutter: 12pt, text("⚠"), [#text(upper[Warn]) #body])]
-```
+#h3[`bq-rule` / `bq-rule-full`]
+Filete corto o línea completa.
+#example(```typ
+#bq-rule(width: 36pt, color: red)
+```)
+#options((
+  ("width:", "solo en bq-rule — default 48pt; bq-rule-full siempre ocupa 100%"),
+  ("color:, theme:", "default primary / theme.base"),
+))
 
-#h3[Ejemplos compactos — legos]
-#bq-frame(tipo: "soft", inset: 10pt)[
-  #text(style: "italic", size: 9pt)[La constancia entrena al algoritmo.] #v(4pt) #bq-rule(width: 24pt) #v(4pt) #bq-attribution(autor: "Equipo de redes", modo: "pro")
-]
-#bq-frame(tipo: "hard", inset: 10pt)[
-  #text(weight: 900, size: 9pt, upper[La constancia entrena al algoritmo.]) #v(4pt) #bq-rule(color: rgb("#ff3b30"), width: 24pt) #v(4pt) #bq-attribution(autor: "Equipo de redes", modo: "mono")
-]
-#bq-frame(tipo: "glass", color: palette.primary, inset: 10pt)[
-  #text(style: "italic", size: 9pt)[La constancia entrena al algoritmo.] #v(4pt) #bq-attribution(autor: "Equipo de redes", modo: "caps", color: palette.primary)
-]
-#v(4pt)
-#bq-mark("“", fill: palette.secondary.transparentize(65%), detras: true)
-#pad(x: 10pt)[#text(font: theme.base.fonts.display, weight: 800, size: 11pt)[La tipografía es la ropa de las ideas.] #v(4pt) #bq-rule(width: 24pt) #v(4pt) #bq-attribution(autor: "Anónimo", fuente: "Manual", modo: "pro")]
+#h3[`bq-attribution`]
+Línea de autor/fuente, 3 modos.
+#example(```typ
+#bq-attribution(autor: "Mies van der Rohe", modo: "mono")
+```)
+#options((
+  ("autor:, fuente:", "opcionales — formato \"— Autor · Fuente\""),
+  ("modo:", [`"pro"` (default, — Autor · Fuente) · `"mono"` (caja DM Mono) · `"caps"` (tracking 0.12em, mayúsculas)]),
+  ("color:, theme:", "opcionales"),
+  ("size:", "auto — escala el modo activo como conjunto (16pt en mono/caps, 20pt en pro)"),
+))
 
 // ═══════════════════════════════════════════════════════════
 = Herramientas CLI — `nueva-plantilla.py` <cap-cli>
@@ -697,7 +1039,8 @@ Por defecto emite `#import "@local/instatypst:0.1.0": *` (paquete instalado); co
   [`articulo, primer-parrafo, make-theme, fondo-editorial`], [`articulo.typ`],
   [`scripture, vs, ch, pasaje`], [`scripture.typ`],
   [`lat, gr, he, translit, interlineal`], [`idiomas.typ`],
-  [`canvas, bg, gradient-bg, blob, sizes, page-pad, radius, palette, fonts, badge, headline, subhead, footer, avatar, avatar-row, stat, progress, divider, quote-post, announce-post, tip-card, carousel-cover, carousel-slide, stat-card, event-post, testimonial-post, poll-story, versus-post, vs-badge, blockquote-*`], [`social.typ`],
+  [`canvas, bg, gradient-bg, blob, sizes, page-pad, radius, palette, fonts, badge, headline, subhead, footer, avatar, avatar-row, stat, progress, divider, quote-post, announce-post, tip-card, carousel-cover, carousel-slide, stat-card, event-post, testimonial-post, quote-social, poll-story, versus-post, vs-badge`], [`social.typ`],
+  [`bq-frame, bq-mark, bq-rule, bq-rule-full, bq-attribution, blockquote-*`], [`blockquotes.typ` — depende de `social.typ` (`radius`, `avatar-row`, `palette`) en una sola dirección],
 )
 
 #note[`cristianamente.typ` *no* forma parte del paquete (`typst.toml:13` lo excluye). Se conserva como referencia/legado — ver #link(<cap-migracion>)[Apéndice B].]
