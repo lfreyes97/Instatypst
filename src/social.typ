@@ -76,6 +76,51 @@
   circle(radius: size * 1pt, fill: color.transparentize(100% - opacity)),
 )
 
+// Fondo con blur — manchas de color desenfocadas, SVG embebido con
+// <feGaussianBlur> sobre círculos superpuestos. Distinto de blob(): ahí
+// el color es sólido con opacidad baja (transparencia); acá el color es
+// sólido al 100% y se funde con los demás por el desenfoque, no por
+// transparencia — dos efectos visuales distintos aunque ambos sean
+// "manchas de fondo". `size:` es el tamaño REAL del canvas (mismo dict
+// `sizes.*` que canvas()/event-post()/etc.) — no un w:/h: en pt aparte:
+// así el viewBox del SVG coincide exactamente con la proporción del
+// lienzo y los círculos salen redondos (no elípticos) sin importar si es
+// cuadrado (instagram), vertical (story) u horizontal (twitter).
+//
+// `colores:` se reparte en diagonal automáticamente; `posiciones:`
+// (array de (x, y) en las mismas unidades que `size`) para control
+// manual. Nota de diseño, no bug: colores muy próximos en tono (p. ej.
+// verde entre rojo y oro) se funden en un tono neutro/muddy donde se
+// superponen — es mezcla óptica real de cualquier técnica de blur, no
+// algo que este código haga mal (confirmado con rojo/verde/azul puros,
+// donde sí se distinguen las 3 zonas).
+#let _svg-aura(w, h, blur, circulos) = {
+  let elipses = circulos.map(c => "<circle cx='" + str(c.at(0)) + "' cy='" + str(c.at(1)) + "' r='" + str(c.at(2)) + "' fill='" + c.at(3) + "'/>").join("")
+  (
+    "<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 " + str(w) + " " + str(h) + "'>",
+    "<defs><filter id='b' x='-100%' y='-100%' width='400%' height='400%'><feGaussianBlur stdDeviation='" + str(blur) + "'/></filter></defs>",
+    "<g filter='url(#b)'>" + elipses + "</g></svg>",
+  ).join("")
+}
+
+#let aura-bg(colores, size: sizes.instagram, r: auto, blur: auto, posiciones: auto) = {
+  let w = size.at(0)
+  let h = size.at(1)
+  let n = colores.len()
+  let r = if r == auto { calc.min(w, h) * 0.38 } else { r }
+  let blur = if blur == auto { r * 0.55 } else { blur }
+  let centros = if posiciones == auto {
+    range(n).map(i => {
+      let t = if n == 1 { 0.5 } else { i / (n - 1) }
+      (w * (0.3 + 0.4 * t), h * (0.3 + 0.4 * (1 - t)))
+    })
+  } else {
+    posiciones
+  }
+  let circulos = range(n).map(i => (centros.at(i).at(0), centros.at(i).at(1), r, colores.at(i).to-hex()))
+  place(image(bytes(_svg-aura(w, h, blur, circulos)), format: "svg", width: 100%, height: 100%))
+}
+
 // ============ 3. COMPONENTES ============
 
 // Etiqueta / badge
