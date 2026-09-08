@@ -33,13 +33,14 @@
 //  concatenando con saltos de línea de por medio. Aplica a cualquier
 //  geometría nueva que se agregue aquí.
 //
-//  Pendiente (a propósito no implementado todavía — por esto se aseguró
-//  este archivo como punto de partida antes de seguir): SVG soporta
-//  <linearGradient>/<radialGradient> en el `fill` de un `<path>`,
-//  <feGaussianBlur> como filtro, y `opacity`/gradientes de opacidad para
-//  fades — nada de eso es fácil de lograr con Typst nativo sobre un
-//  contorno compuesto como este. Cuando se retome, esas van como
-//  parámetros nuevos en cada `formas.*` (p. ej. `formas.bocadillo(...,
+//  Blurs: ya implementado — ver `aura()` al final del archivo, que usa
+//  `<feGaussianBlur>` sobre un `<g>` de círculos superpuestos. Pendiente
+//  todavía (a propósito no implementado): <linearGradient>/
+//  <radialGradient> en el `fill` de un `<path>` (para bocadillo/cinta/
+//  blob con degradado en vez de color plano) y `opacity`/gradientes de
+//  opacidad para fades — nada de eso es fácil de lograr con Typst nativo
+//  sobre un contorno compuesto. Cuando se retome, van como parámetros
+//  nuevos en cada `formas.*` (p. ej. `formas.bocadillo(...,
 //  gradiente: (color, color))`), no como un sistema aparte.
 // ─────────────────────────────────────────────────────────────
 
@@ -165,4 +166,49 @@
   let h = if h == auto { w * bh / bw } else { h }
   let svg = "<svg xmlns='http://www.w3.org/2000/svg' viewBox='" + str(x0) + " " + str(y0) + " " + str(bw) + " " + str(bh) + "'><path d='" + b.d + "' fill='" + fill.to-hex() + "'/></svg>"
   image(bytes(svg), format: "svg", width: w, height: h)
+}
+
+// ── Blur — fondo de manchas de color desenfocadas ──
+// Técnica vista en un generador de fondos tipo "blurry blob" (SVG con
+// <feGaussianBlur> sobre un <g> de círculos superpuestos) — la clase de
+// cosa que motivó este archivo ("ya entrados podemos hacer gradientes,
+// blurs, fades"). Los blob-de-fondo que ya existían en social.typ
+// (bg()+blob(), ver cita-canvas) son círculos de opacidad baja SIN
+// desenfoque — esto es un efecto distinto (colores sólidos que se
+// funden entre sí por el blur, no transparencia).
+//
+// `colores:` se reparten en diagonal automáticamente (arriba-derecha a
+// abajo-izquierda); pasa `posiciones:` si quieres control manual. Nota
+// de diseño, no bug: colores muy próximos en tono (p. ej. verde entre
+// rojo y oro) se funden en un tono neutro/muddy donde se superponen —
+// es mezcla óptica real, esperable con cualquier técnica de blur. Para
+// que las zonas se distingan, usa colores con más separación de tono.
+#let _svg-aura(w, h, blur, circulos) = {
+  let elipses = circulos.map(c => "<circle cx='" + str(c.at(0)) + "' cy='" + str(c.at(1)) + "' r='" + str(c.at(2)) + "' fill='" + c.at(3) + "'/>").join("")
+  (
+    "<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 " + str(w) + " " + str(h) + "'>",
+    "<defs><filter id='b' x='-100%' y='-100%' width='400%' height='400%'><feGaussianBlur stdDeviation='" + str(blur) + "'/></filter></defs>",
+    "<g filter='url(#b)'>" + elipses + "</g></svg>",
+  ).join("")
+}
+
+// formas.aura(colores, ...) — `r`/`blur` en `auto` escalan con (w, h);
+// `posiciones:` (array de (dx, dy) en pt, mismo largo que `colores`)
+// pisa el reparto diagonal automático.
+#let aura(colores, w: 400pt, h: 400pt, r: auto, blur: auto, posiciones: auto) = {
+  let w-n = w / 1pt
+  let h-n = h / 1pt
+  let n = colores.len()
+  let r-n = if r == auto { calc.min(w-n, h-n) * 0.38 } else { r / 1pt }
+  let blur-n = if blur == auto { r-n * 0.55 } else { blur / 1pt }
+  let centros = if posiciones == auto {
+    range(n).map(i => {
+      let t = if n == 1 { 0.5 } else { i / (n - 1) }
+      (w-n * (0.3 + 0.4 * t), h-n * (0.3 + 0.4 * (1 - t)))
+    })
+  } else {
+    posiciones.map(p => (p.at(0) / 1pt, p.at(1) / 1pt))
+  }
+  let circulos = range(n).map(i => (centros.at(i).at(0), centros.at(i).at(1), r-n, colores.at(i).to-hex()))
+  image(bytes(_svg-aura(w-n, h-n, blur-n, circulos)), format: "svg", width: w, height: h)
 }
