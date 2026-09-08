@@ -94,16 +94,46 @@
 // superponen — es mezcla óptica real de cualquier técnica de blur, no
 // algo que este código haga mal (confirmado con rojo/verde/azul puros,
 // donde sí se distinguen las 3 zonas).
-#let _svg-aura(w, h, blur, circulos) = {
+// `panel:` (opcional) — vidrio esmerilado REAL, no un gradiente
+// aproximando el efecto (como bq-frame tipo "glass" en blockquotes.typ):
+// una copia desenfocada de LAS MISMAS manchas, recortada al rect
+// redondeado del panel, con un tinte translúcido y borde encima. Solo es
+// posible porque esta función controla ambas capas (fondo + panel) — un
+// panel de vidrio no puede ser una forma aislada como bocadillo/cinta/
+// blob en formas.typ, necesita saber qué hay detrás para desenfocarlo.
+// `panel:` es un dict (x:, y:, w:, h:, r:) en las mismas unidades que
+// `size` (números crudos, no pt).
+#let _svg-aura(w, h, blur, circulos, panel: none, panel-blur: auto, tinte: white) = {
   let elipses = circulos.map(c => "<circle cx='" + str(c.at(0)) + "' cy='" + str(c.at(1)) + "' r='" + str(c.at(2)) + "' fill='" + c.at(3) + "'/>").join("")
+  let pblur = if panel-blur == auto { blur * 0.4 } else { panel-blur }
+  let pr = if panel == none { 0 } else { panel.at("r", default: 0) }
+  let panel-defs = if panel == none {
+    ""
+  } else {
+    (
+      "<filter id='pb' x='-50%' y='-50%' width='200%' height='200%'><feGaussianBlur stdDeviation='" + str(pblur) + "'/></filter>",
+      "<clipPath id='pc'><rect x='" + str(panel.x) + "' y='" + str(panel.y) + "' width='" + str(panel.w) + "' height='" + str(panel.h) + "' rx='" + str(pr) + "'/></clipPath>",
+    ).join("")
+  }
+  let panel-capas = if panel == none {
+    ""
+  } else {
+    (
+      "<g filter='url(#pb)' clip-path='url(#pc)'>" + elipses + "</g>",
+      "<rect x='" + str(panel.x) + "' y='" + str(panel.y) + "' width='" + str(panel.w) + "' height='" + str(panel.h) + "' rx='" + str(pr) + "' fill='" + tinte.to-hex() + "' fill-opacity='0.35'/>",
+      "<rect x='" + str(panel.x) + "' y='" + str(panel.y) + "' width='" + str(panel.w) + "' height='" + str(panel.h) + "' rx='" + str(pr) + "' fill='none' stroke='" + tinte.to-hex() + "' stroke-opacity='0.6' stroke-width='1.5'/>",
+    ).join("")
+  }
   (
     "<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 " + str(w) + " " + str(h) + "'>",
-    "<defs><filter id='b' x='-100%' y='-100%' width='400%' height='400%'><feGaussianBlur stdDeviation='" + str(blur) + "'/></filter></defs>",
-    "<g filter='url(#b)'>" + elipses + "</g></svg>",
+    "<defs><filter id='b' x='-100%' y='-100%' width='400%' height='400%'><feGaussianBlur stdDeviation='" + str(blur) + "'/></filter>" + panel-defs + "</defs>",
+    "<g filter='url(#b)'>" + elipses + "</g>",
+    panel-capas,
+    "</svg>",
   ).join("")
 }
 
-#let aura-bg(colores, size: sizes.instagram, r: auto, blur: auto, posiciones: auto) = {
+#let aura-bg(colores, size: sizes.instagram, r: auto, blur: auto, posiciones: auto, panel: none, panel-blur: auto, tinte: white) = {
   let w = size.at(0)
   let h = size.at(1)
   let n = colores.len()
@@ -118,7 +148,10 @@
     posiciones
   }
   let circulos = range(n).map(i => (centros.at(i).at(0), centros.at(i).at(1), r, colores.at(i).to-hex()))
-  place(image(bytes(_svg-aura(w, h, blur, circulos)), format: "svg", width: 100%, height: 100%))
+  place(image(
+    bytes(_svg-aura(w, h, blur, circulos, panel: panel, panel-blur: panel-blur, tinte: tinte)),
+    format: "svg", width: 100%, height: 100%,
+  ))
 }
 
 // ============ 3. COMPONENTES ============
