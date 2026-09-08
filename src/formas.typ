@@ -5,12 +5,11 @@
 //  Arquitectura: este módulo es un NAMESPACE (mismo patrón que
 //  color-tokens/font-tokens — se importa con `as formas`, nunca con
 //  `import: *`), no una función. "bocadillo" es una geometría entre
-//  varias futuras (círculo con muesca, cinta, estrella, blob…), no el
-//  nombre del sistema — por eso la función se llama `formas.bocadillo`,
-//  no `forma-bocadillo` suelta en el top-level de lib.typ. Cada
-//  geometría nueva es una función más aquí (`bocadillo`, y a futuro
-//  `circulo`, `cinta`, `estrella`, ...), todas bajo el mismo namespace;
-//  ninguna es "la" forma.
+//  varias (cinta, y a futuro círculo con muesca, estrella, blob…), no el
+//  nombre del sistema — por eso las funciones se llaman `formas.bocadillo`/
+//  `formas.cinta`, nunca `forma-*` sueltas en el top-level de lib.typ.
+//  Cada geometría nueva es una función más aquí, todas bajo el mismo
+//  namespace; ninguna es "la" forma.
 //
 //  Por qué SVG: un contorno COMPUESTO (rect redondeado + cola de
 //  bocadillo en un solo trazo, sin costura) es trivial en SVG (<path
@@ -95,5 +94,36 @@
     format: "svg",
     width: w,
     height: h + tail-h,
+  )
+}
+
+// Path SVG de una cinta (ribbon/banner): rectángulo con los dos extremos
+// cortados en V hacia adentro — el hexágono clásico de "banner". Privada:
+// el nombre expuesto es `formas.cinta`.
+#let _svg-cinta(w, h, muesca, hex) = {
+  let d = (
+    "M", "0", "0",
+    "L", str(w), "0",
+    "L", str(w - muesca), str(h / 2),
+    "L", str(w), str(h),
+    "L", "0", str(h),
+    "L", str(muesca), str(h / 2),
+    "Z",
+  ).join(" ")
+  "<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 " + str(w) + " " + str(h) + "'><path d='" + d + "' fill='" + hex + "'/></svg>"
+}
+
+// formas.cinta(...) — la FORMA sola (sin texto encima), mismo espíritu
+// que formas.bocadillo(). `muesca:` controla cuánto se hunde la V de cada
+// extremo (más grande = punta más afilada).
+#let cinta(w: 260pt, h: 60pt, muesca: 16pt, fill: black) = {
+  let w-n = w / 1pt
+  let h-n = h / 1pt
+  let m-n = muesca / 1pt
+  image(
+    bytes(_svg-cinta(w-n, h-n, m-n, fill.to-hex())),
+    format: "svg",
+    width: w,
+    height: h,
   )
 }
