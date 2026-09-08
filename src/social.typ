@@ -26,7 +26,6 @@
 // documento) — pero NO uses ese patrón para personalizar plantillas.
 
 #import "theme.typ": theme
-#import "idiomas.typ": gr, he
 
 // ============ 1. TOKENS DE DISEÑO ============
 
@@ -148,17 +147,84 @@
     #gradient-bg(from: c1, to: c2, theme: theme)
     #blob(-200pt, -150pt, 400, white)
     #blob(size.at(0) * 1pt - 250pt, size.at(1) * 1pt - 300pt, 450, black, opacity: 15%)
-    #place(center)[
+    // `center` a secas es una alineación de un solo eje (horizontal) — sin
+    // sumarle `horizon`, place() ancla verticalmente arriba por defecto y
+    // deja todo el tercio inferior del lienzo vacío. Con textos cortos como
+    // los de esta plantilla, el efecto es muy notorio.
+    #place(center + horizon)[
       #block(width: 85%)[
         #align(center)[
           #text(size: 90pt, fill: white.transparentize(50%), "\u{201C}")
           #text(font: theme.fonts.display, size: 58pt, weight: 700, fill: white, quote)
           #v(30pt)
           #text(font: theme.fonts.body, size: 30pt, fill: white.transparentize(25%), "— " + author)
-          #footer(handle, theme: theme)
         ]
       ]
     ]
+    // El pie va en su propio place() anclado a la esquina inferior — igual
+    // que nota-izq/nota-der en quote-social — en vez de vivir dentro del
+    // bloque centrado: allí, align(bottom+start) de footer() solo alineaba
+    // contra la altura del propio bloque (que se ajusta a su contenido), no
+    // contra el lienzo, así que terminaba pegado justo debajo de la cita en
+    // vez de en el borde inferior real.
+    #place(bottom + center, dy: -page-pad)[
+      #block(width: 85%)[
+        #footer(handle, theme: theme)
+      ]
+    ]
+  ])
+}
+
+// Lienzo genérico para blockquotes.typ — pensado para reemplazar a
+// quote-post cuando el contenido de la cita lo pide: en vez de un layout
+// fijo (comilla + display + autor, todo centrado), recibe cualquier bloque
+// ya armado con blockquote-editorial/-hero/-pull/-card/-bar/-avatar/-hand/
+// -poetry/-timeline/-lateral/-paralelo/-definition/-callout y solo resuelve
+// tres cosas: fondo, márgenes, y centrado vertical real.
+//
+// Centrado: ni pad()+align(horizon) (pad() encoge el contenedor a su
+// contenido — no hay alto de sobra contra el cual centrar, ver nota en
+// quote-social) ni place(center) a secas (alinea un solo eje — el bug que
+// tenía quote-post). Acá el contenido vive directo en el flujo del canvas
+// (que sí tiene alto FIJO vía page(height:..)) con v(1fr) arriba y abajo:
+// eso reparte el sobrante en partes iguales de verdad. El pie va DESPUÉS
+// del segundo v(1fr), como parte del mismo flujo — no en un place() aparte
+// — así el fr de arriba se calcula ya descontando su alto y nunca hay
+// riesgo de que una cita larga lo atropelle.
+//
+// `bg-color:` — usa SIEMPRE theme.colors.white para blockquotes sin fondo
+// propio (hero/pull/lateral/timeline/paralelo: pintan texto oscuro sobre
+// nada) en vez de theme.colors.light: en paletas monocromáticas como
+// "granates", `light` sigue siendo un rojo saturado (ver nota de
+// fondo-editorial en articulo.typ), no un neutro — blanco puro es lo único
+// que siempre contrasta, para cualquier paleta.
+#let cita-canvas(
+  contenido,
+  handle,
+  size: sizes.instagram,
+  bg-color: none,
+  gradient: none, // (from, to) — si se da, pisa bg-color con gradient-bg
+  blobs: true,
+  blob-color: white,
+  footer-color: none,
+  theme: theme.base,
+) = {
+  let bg-color = if bg-color == none { theme.colors.white } else { bg-color }
+  let footer-color = if footer-color == none { gray.darken(40%) } else { footer-color }
+  canvas(size, theme: theme, [
+    #if gradient != none {
+      gradient-bg(from: gradient.at(0), to: gradient.at(1), theme: theme)
+    } else {
+      bg(bg-color)
+    }
+    #if blobs [
+      #blob(-200pt, -160pt, 380, blob-color, opacity: 8%)
+      #blob(size.at(0) * 1pt - 220pt, size.at(1) * 1pt - 260pt, 420, blob-color, opacity: 10%)
+    ]
+    #v(1fr)
+    #pad(x: page-pad)[#contenido]
+    #v(1fr)
+    #pad(x: page-pad, bottom: page-pad * 0.65)[#footer(handle, color: footer-color, theme: theme)]
   ])
 }
 
@@ -454,6 +520,110 @@
   ])
 }
 
+// Cita social con atribución (foto/iniciales + nombre) dentro de la misma
+// tarjeta blanca, y notas laterales decorativas opcionales — inspirado en
+// tarjetas tipo LinkedIn. Para resaltar palabras dentro de `cita` usa el
+// #highlight() nativo de Typst, no una API propia:
+//   #quote-social([...quedar sometido al #highlight[dominio] y al #highlight[capricho].], "Nombre", iniciales: "LR")
+// `iniciales` es explícito (igual que en blockquote-avatar) — no se deriva
+// de `nombre`, para evitar el bug ya conocido si `nombre` no es texto plano.
+// `atribucion: "abajo" | "arriba"` — dónde va foto+nombre dentro de la
+// tarjeta, respecto a la cita.
+// `comilla: true` muestra la comilla decorativa sobre la cita; `false` la
+// quita (junto con el espaciado que la compensaba, no deja hueco).
+// `nota-izq`/`nota-der` son dict (icono:, texto:) o `none` para omitir el
+// lado. Las ilustraciones reales (figuras, puertas, cadenas...) no se
+// recrean con primitivas de Typst — `icono:` acepta cualquier content,
+// incluido `image(...)`, para sustituir el emoji por defecto con tu arte.
+#let quote-social(
+  cita,
+  nombre,
+  iniciales: "??",
+  foto: none,
+  atribucion: "abajo",
+  comilla: false,
+  nota-izq: none,
+  nota-der: none,
+  size: sizes.instagram,
+  color: none,
+  theme: theme.base,
+) = {
+  if atribucion not in ("abajo", "arriba") {
+    panic("atribucion desconocida: " + atribucion + " — usa \"abajo\" o \"arriba\"")
+  }
+  let color = if color == none { theme.colors.dark } else { color }
+  let avatar-tam = 76pt
+
+  let bloque-cita = [
+    #if comilla [
+      #text(size: 50pt, fill: color.transparentize(60%), "\u{201C}")
+      #v(-30pt)
+    ]
+    #text(font: theme.fonts.body, size: 34pt, fill: theme.colors.dark, cita)
+  ]
+
+  let bloque-atribucion = grid(
+    columns: (avatar-tam, 1fr),
+    gutter: 20pt,
+    align: (left, left + horizon),
+    if foto != none {
+      box(clip: true, radius: 100%, width: avatar-tam, height: avatar-tam)[
+        #image(foto, width: avatar-tam, height: avatar-tam, fit: "cover")
+      ]
+    } else {
+      avatar(iniciales, size: avatar-tam, theme: theme)
+    },
+    text(font: theme.fonts.body, size: 26pt, weight: 700, fill: theme.colors.dark, nombre),
+  )
+
+  let divisor = [
+    #v(32pt)
+    #line(length: 100%, stroke: 0.75pt + gray.lighten(70%))
+    #v(24pt)
+  ]
+
+  canvas(size, theme: theme, [
+    #bg(color)
+    #pad(page-pad)[
+      // v(1fr) antes y después reparte el espacio sobrante arriba/abajo por
+      // igual — a diferencia de align(horizon), que no centra nada aquí
+      // porque pad() ya encoge el contenedor al tamaño de su contenido
+      // (sin alto de sobra contra el cual centrar).
+      #v(1fr)
+      #block(
+        fill: theme.colors.white, radius: radius, inset: 40pt, width: 100%,
+      )[
+        #if atribucion == "arriba" [
+          #bloque-atribucion
+          #divisor
+          #bloque-cita
+        ] else [
+          #bloque-cita
+          #divisor
+          #bloque-atribucion
+        ]
+      ]
+      #v(1fr)
+      #if nota-izq != none {
+        place(bottom + left, dx: -20pt, dy: 30pt)[
+          #align(center)[
+            #text(size: 40pt, nota-izq.icono) #linebreak()
+            #text(font: theme.fonts.body, size: 20pt, fill: white, weight: 600, nota-izq.texto)
+          ]
+        ]
+      }
+      #if nota-der != none {
+        place(bottom + right, dx: 20pt, dy: 30pt)[
+          #align(center)[
+            #text(size: 40pt, nota-der.icono) #linebreak()
+            #text(font: theme.fonts.body, size: 20pt, fill: white, weight: 600, nota-der.texto)
+          ]
+        ]
+      }
+    ]
+  ])
+}
+
 // Encuesta / pregunta para stories
 #let poll-story(
   question,
@@ -546,386 +716,3 @@
   ])
 }
 
-// ============ 7. BLOCKQUOTES — variedad de citas (bloque reutilizable) ============
-// A diferencia de las plantillas anteriores, estas NO son un canvas: son
-// bloques de contenido para insertar dentro de cualquier plantilla o página
-// (una announce-post, un carousel-slide, o una página normal). Puerto de
-// las ideas de cristianamente.typ, reescalado a las proporciones de este
-// sistema (pensado para canvas de ~1080pt) y a la paleta de theme.typ.
-//
-// Convención compartida por las 7 — sin excepciones, para no repetir la
-// inconsistencia que encontramos en el original: `autor`/`fuente` siempre
-// nombrados y opcionales, `body` siempre primero y posicional, `theme:`
-// siempre presente y reenviada a cualquier componente interno.
-
-// Cita editorial — doble borde, comilla grande, itálica
-#let blockquote-editorial(body, autor: none, fuente: none, color: none, theme: theme.base) = {
-  let color = if color == none { theme.colors.primary } else { color }
-  block(width: 100%, above: 24pt, below: 24pt)[
-    #block(stroke: 1pt + color.transparentize(70%), inset: 5pt, radius: radius)[
-      #block(fill: theme.colors.white, stroke: 1.5pt + color.transparentize(70%), inset: (x: 40pt, y: 40pt), radius: radius, width: 100%)[
-        #text(size: 60pt, fill: color.transparentize(75%), font: theme.fonts.display, weight: 900)[\u{201C}]
-        #v(6pt)
-        #text(font: theme.fonts.body, style: "italic", size: 32pt, fill: theme.colors.dark, body)
-        #if autor != none or fuente != none [
-          #v(20pt)
-          #line(length: 100%, stroke: 0.75pt + color.transparentize(70%))
-          #v(14pt)
-          #text(font: theme.fonts.body, size: 18pt, weight: 700, tracking: 0.12em, fill: gray.darken(20%))[
-            #if autor != none { upper(autor) }
-            #if autor != none and fuente != none { "  ·  " }
-            #if fuente != none { upper(fuente) }
-          ]
-        ]
-      ]
-    ]
-  ]
-}
-
-// Cita con barra de acento a la izquierda — variante: "default" | "grande" | "acento"
-#let blockquote-bar(body, autor: none, fuente: none, color: none, variante: "default", theme: theme.base) = {
-  let color = if color == none { theme.colors.primary } else { color }
-  let tamano = if variante == "grande" { 44pt } else { 32pt }
-  let acentuada = variante == "acento"
-  block(width: 100%, above: 24pt, below: 24pt)[
-    #block(
-      fill: if acentuada { color.transparentize(93%) } else { none },
-      stroke: (left: 5pt + color),
-      inset: (left: 32pt, y: if acentuada { 24pt } else { 0pt }),
-      width: 100%,
-    )[
-      #text(font: theme.fonts.body, style: "italic", size: tamano, fill: theme.colors.dark, body)
-      #if autor != none or fuente != none [
-        #v(16pt)
-        #if autor != none [#text(font: theme.fonts.body, size: 22pt, weight: 700, fill: theme.colors.dark)[— #autor]]
-        #if fuente != none [#text(font: theme.fonts.body, size: 20pt, style: "italic", fill: gray.darken(10%))[ · #fuente]]
-      ]
-    ]
-  ]
-}
-
-// Tarjeta con barra superior de acento y pie de atribución
-#let blockquote-card(body, autor: none, fuente: none, color: none, theme: theme.base) = {
-  let color = if color == none { theme.colors.primary } else { color }
-  block(width: 100%, above: 24pt, below: 24pt)[
-    #block(fill: theme.colors.white, radius: radius, width: 100%, clip: true, stroke: 1pt + gray.lighten(70%))[
-      #block(fill: color, height: 6pt, width: 100%)[]
-      #block(inset: 36pt)[
-        #text(font: theme.fonts.body, style: "italic", size: 32pt, fill: theme.colors.dark, body)
-      ]
-      #if autor != none or fuente != none [
-        #block(fill: theme.colors.light, stroke: (top: 0.75pt + gray.lighten(70%)), inset: (x: 36pt, y: 20pt), width: 100%)[
-          #if autor != none [#text(font: theme.fonts.body, size: 22pt, weight: 700, fill: theme.colors.dark)[— #autor]]
-          #if fuente != none [#text(font: theme.fonts.body, size: 20pt, style: "italic", fill: gray.darken(10%))[ #fuente]]
-        ]
-      ]
-    ]
-  ]
-}
-
-// Cita dramática, centrada, a todo el ancho — para abrir un slide o sección
-#let blockquote-hero(body, autor: none, fuente: none, color: none, theme: theme.base) = {
-  let color = if color == none { theme.colors.secondary } else { color }
-  block(width: 100%, above: 36pt, below: 36pt)[
-    #align(center)[
-      #text(size: 86pt, fill: color.transparentize(70%), font: theme.fonts.display, weight: 900)[\u{201C}]
-      #v(-16pt)
-      #text(font: theme.fonts.display, weight: 700, size: 48pt, fill: theme.colors.dark, body)
-      #if autor != none or fuente != none [
-        #v(24pt)
-        #if autor != none [#text(font: theme.fonts.body, size: 24pt, weight: 700, tracking: 0.1em, fill: gray.darken(20%))[— #upper(autor)]]
-        #if fuente != none [#linebreak() #text(font: theme.fonts.body, style: "italic", size: 22pt, fill: gray.darken(10%), fuente)]
-      ]
-    ]
-  ]
-}
-
-// Tarjeta independiente con avatar — reutiliza avatar-row() de la sección 5.
-// `iniciales` es explícito (no se deriva de `autor`): así evitamos el bug
-// que encontramos en cristianamente.typ (crash si autor no era texto plano).
-#let blockquote-avatar(body, autor: none, fuente: none, iniciales: none, color: none, theme: theme.base) = {
-  let color = if color == none { theme.colors.primary } else { color }
-  block(
-    fill: theme.colors.white, stroke: 1pt + gray.lighten(70%), radius: radius, inset: 32pt, width: 100%,
-  )[
-    #text(font: theme.fonts.body, style: "italic", size: 28pt, fill: theme.colors.dark, body)
-    #if autor != none or iniciales != none [
-      #v(20pt)
-      #line(length: 100%, stroke: 0.75pt + gray.lighten(70%))
-      #v(16pt)
-      #if iniciales != none {
-        avatar-row(
-          if autor != none { autor } else { "" },
-          if fuente != none { fuente } else { "" },
-          iniciales,
-          bg-color: color,
-          theme: theme,
-        )
-      } else if autor != none {
-        text(font: theme.fonts.body, size: 24pt, weight: 700, fill: theme.colors.dark, autor)
-      }
-    ]
-  ]
-}
-
-// Cita manuscrita, centrada — usa Caveat (bundled en Fonts/, a diferencia de
-// Kalam en cristianamente.typ). Compilar con `--font-path Fonts`.
-#let blockquote-hand(body, autor: none, color: none, theme: theme.base) = {
-  let color = if color == none { theme.colors.secondary } else { color }
-  block(width: 100%, above: 28pt, below: 28pt)[
-    #align(center)[
-      #text(font: "Caveat", size: 40pt, fill: theme.colors.dark, body)
-      #if autor != none [
-        #v(10pt)
-        #text(font: "Caveat", size: 28pt, fill: color)[— #autor]
-      ]
-    ]
-  ]
-}
-
-// Acomoda varias blockquote-avatar en 2 o 3 columnas
-// Uso: blockquote-grid(columnas: 3, (blockquote-avatar(...), blockquote-avatar(...)))
-#let blockquote-grid(tarjetas, columnas: 2) = block(width: 100%, above: 24pt, below: 24pt)[
-  #grid(columns: (1fr,) * columnas, gutter: 24pt, ..tarjetas)
-]
-
-// Texto bíblico en paralelo — versículo completo en el idioma original
-// junto a su traducción, en dos columnas. Para hebreo pone la columna
-// original en RTL (grid() voltea el orden visual solo con dir: rtl, ver
-// idiomas.typ); para griego usa GFS Didot (o Libertinus Serif si
-// autentico: false) vía gr()/he() de idiomas.typ.
-#let blockquote-paralelo(
-  original,
-  traduccion,
-  idioma: "griego", // "griego" | "hebreo"
-  autentico: true,
-  referencia: none,
-  color: none,
-  theme: theme.base,
-) = {
-  let color = if color == none { theme.colors.primary } else { color }
-  let es-rtl = idioma == "hebreo"
-  block(width: 100%, above: 24pt, below: 24pt, fill: theme.colors.white, stroke: 1pt + gray.lighten(70%), radius: radius, inset: 28pt)[
-    #if referencia != none [
-      #text(font: theme.fonts.body, size: 18pt, weight: 700, fill: color, referencia)
-      #v(14pt)
-    ]
-    #let celda-original = [
-      #set text(dir: if es-rtl { rtl } else { ltr })
-      #set align(if es-rtl { right } else { left })
-      #if idioma == "hebreo" { he(text(size: 24pt, original)) } else { gr(text(size: 24pt, original), autentico: autentico) }
-    ]
-    #let celda-traduccion = [
-      #set text(font: theme.fonts.body, size: 20pt, style: "italic", fill: theme.colors.dark)
-      #traduccion
-    ]
-    #grid(
-      columns: (1fr, 1fr),
-      column-gutter: 28pt,
-      align: (horizon, horizon),
-      ..if es-rtl { (celda-traduccion, celda-original) } else { (celda-original, celda-traduccion) }
-    )
-  ]
-}
-
-// Cita con atribución lateral rotada — barra vertical con autor/fuente
-// (rotate(270deg), se lee girando la cabeza a la derecha) junto al cuerpo
-// de la cita, numerado opcionalmente. Puerto de un patrón editorial
-// (cita de Pascal con atribución de lado), con los tokens de este tema
-// en vez de fuentes sueltas.
-#let blockquote-lateral(
-  body,
-  autor: none,
-  fuente: none,
-  n: none,
-  color: none,
-  theme: theme.base,
-) = {
-  let color = if color == none { theme.colors.primary } else { color }
-  block(width: 100%, above: 24pt, below: 24pt)[
-    #grid(
-      columns: (auto, 1fr),
-      column-gutter: 18pt,
-      align: (bottom, top),
-      if autor != none or fuente != none {
-        align(bottom)[
-          #rotate(270deg, reflow: true)[
-            #text(font: theme.fonts.body, weight: 700, size: 16pt, fill: color)[
-              #if autor != none [#autor]
-              #if autor != none and fuente != none [ — ]
-              #if fuente != none [#text(style: "italic", fill: theme.colors.dark)[#fuente]]
-            ]
-          ]
-        ]
-      } else { [] },
-      [
-        #set par(justify: true)
-        #set text(font: theme.fonts.body, size: 15pt, fill: theme.colors.dark)
-        #if n != none [#text(weight: 700)[#n.] ]
-        #body
-      ],
-    )
-  ]
-}
-
-// ── NUEVOS · con finetuning (no-GFM) ──
-
-// Pull-quote — comilla gigante detrás del texto, filete corto, display 800.
-// Pensado para portadas/carrusel donde `blockquote-hero` centrado se queda corto.
-// `marca: none` lo deja minimal; `color:` controla comilla y filete.
-#let blockquote-pull(body, autor: none, fuente: none, marca: "“", color: none, theme: theme.base) = {
-  let color = if color == none { theme.colors.primary } else { color }
-  block(width: 100%, above: 28pt, below: 28pt)[
-    #if marca != none {
-      place(dx: -10pt, dy: -30pt)[
-        #text(font: theme.fonts.display, size: 180pt, fill: color.transparentize(88%), weight: 900, marca)
-      ]
-    }
-    #pad(x: 28pt, y: 12pt)[
-      #text(font: theme.fonts.display, weight: 800, size: 46pt, fill: theme.colors.dark, body)
-      #if autor != none or fuente != none [
-        #v(18pt)
-        #box(fill: color, height: 3pt, width: 48pt)
-        #v(10pt)
-        #text(font: theme.fonts.body, size: 20pt, weight: 700, fill: theme.colors.dark)[
-          #if autor != none [#autor]
-          #if fuente != none [#text(style: "italic", fill: gray.darken(10%))[ — #fuente]]
-        ]
-      ]
-    ]
-  ]
-}
-
-// Definición / glosario — porte de `definicion` de cristianamente.typ
-// `termino` + `/pronunciación/` + badge `origen` + cuerpo + pills `relacionados`.
-#let blockquote-definition(termino, body, pronunciacion: none, origen: none, relacionados: none, color: none, theme: theme.base) = {
-  let color = if color == none { theme.colors.primary } else { color }
-  block(width: 100%, above: 24pt, below: 24pt, fill: theme.colors.white, stroke: 1pt + gray.lighten(70%), radius: radius, inset: 32pt)[
-    #text(font: theme.fonts.display, weight: 900, size: 40pt, fill: theme.colors.dark, termino)
-    #if pronunciacion != none [#h(10pt) #text(font: theme.fonts.body, size: 18pt, fill: gray, style: "italic")[/#pronunciacion/]]
-    #if origen != none [#h(8pt) #box(fill: color.transparentize(88%), inset: (x: 8pt, y: 4pt), radius: 100pt)[#text(size: 14pt, fill: color, weight: 700, origen)]]
-    #v(14pt)
-    #set text(font: theme.fonts.body, size: 26pt, fill: theme.colors.dark)
-    #set par(leading: 0.85em)
-    #body
-    #if relacionados != none and relacionados.len() > 0 [
-      #v(14pt) #line(length: 100%, stroke: 0.75pt + gray.lighten(70%)) #v(10pt)
-      #text(size: 16pt, fill: gray, weight: 600)[Ver también: ]
-      #for (i, r) in relacionados.enumerate() [
-        #box(fill: theme.colors.light, inset: (x: 8pt, y: 4pt), radius: 100pt)[#text(size: 16pt, fill: gray.darken(20%), r)] #h(6pt)
-      ]
-    ]
-  ]
-}
-
-// Callout — tip/info/warning/marginal con icono + barra lateral.
-// Reemplazo con *intención* para `blockquote-bar` acentuado genérico.
-#let blockquote-callout(body, titulo: none, icono: "✦", variante: "tip", color: none, theme: theme.base) = {
-  let defaults = (tip: palette.accent, info: palette.primary, warn: rgb("#EAB308"), hand: palette.secondary)
-  let color = if color == none { defaults.at(variante, default: palette.accent) } else { color }
-  block(width: 100%, above: 20pt, below: 20pt, fill: color.transparentize(92%), stroke: (left: 5pt + color), inset: (x: 28pt, y: 22pt), radius: 12pt)[
-    #grid(columns: (auto, 1fr), gutter: 14pt, align: (top, top),
-      text(size: 28pt, icono),
-      [
-        #if titulo != none [#text(font: theme.fonts.body, size: 20pt, weight: 800, fill: color, upper(titulo)) #v(6pt)]
-        #if variante == "hand" {
-          text(font: "Caveat", size: 28pt, fill: theme.colors.dark, body)
-        } else {
-          text(font: theme.fonts.body, size: 26pt, fill: theme.colors.dark, body)
-        }
-      ]
-    )
-  ]
-}
-
-// Poesía / verso — respeta saltos, sin justificar, sangría colgante.
-#let blockquote-poetry(body, autor: none, color: none, theme: theme.base) = {
-  let color = if color == none { theme.colors.secondary } else { color }
-  block(width: 100%, above: 24pt, below: 24pt, fill: theme.colors.white, stroke: (left: 3pt + color.transparentize(50%)), inset: (x: 28pt, y: 20pt), radius: 8pt)[
-    #set text(font: theme.fonts.body, size: 26pt, fill: theme.colors.dark)
-    #set par(leading: 0.95em, justify: false, first-line-indent: 0pt, hanging-indent: 1em)
-    #body
-    #if autor != none [#v(10pt) #align(right)[#text(font: theme.fonts.body, size: 18pt, fill: gray, style: "italic")[— #autor]]]
-  ]
-}
-
-// Timeline — fecha a la izquierda + regla vertical + cuerpo.
-#let blockquote-timeline(fecha, body, color: none, theme: theme.base) = {
-  let color = if color == none { theme.colors.primary } else { color }
-  block(width: 100%, above: 18pt, below: 18pt)[
-    #grid(columns: (auto, auto, 1fr), gutter: 14pt, align: (top, top, top),
-      text(font: theme.fonts.body, size: 18pt, weight: 800, fill: color, fecha),
-      box(width: 3pt, height: 44pt, fill: color.transparentize(65%), radius: 2pt),
-      [#set text(font: theme.fonts.body, size: 22pt, fill: theme.colors.dark); #set par(leading: 0.85em); #body],
-    )
-  ]
-}
-
-// ── LEGOS — primitives componibles (edificio de legos) ──
-// Cada blockquote-* de arriba pasa a ser una *receta* con estos legos.
-// Exponerlos permite armar brutalista/glass/editorial sin pedir `estilo:` monolítico.
-
-#let bq-mark(texto, size: 60pt, fill: none, theme: theme.base, detras: false) = {
-  let fill = if fill == none { theme.colors.primary.transparentize(75%) } else { fill }
-  if detras {
-    place(dx: -10pt, dy: -30pt)[#text(font: theme.fonts.display, size: 180pt, fill: fill.transparentize(30%), weight: 900, texto)]
-  } else {
-    text(font: theme.fonts.display, size: size, fill: fill, weight: 900, texto)
-  }
-}
-
-#let bq-rule(color: none, width: 48pt, theme: theme.base) = {
-  let color = if color == none { theme.colors.primary } else { color }
-  box(fill: color, height: 3pt, width: width, radius: 1.5pt)
-}
-
-#let bq-rule-full(color: none, theme: theme.base) = {
-  let color = if color == none { theme.colors.primary } else { color }
-  line(length: 100%, stroke: 0.75pt + color.transparentize(70%))
-}
-
-#let bq-attribution(autor: none, fuente: none, modo: "pro", color: none, theme: theme.base) = {
-  let color = if color == none { theme.colors.dark } else { color }
-  if modo == "mono" {
-    // Brutalista: DM Mono + upper + caja de color
-    if autor != none or fuente != none {
-      let label = if autor != none and fuente != none { upper(autor) + " · " + upper(fuente) } else if autor != none { upper(autor) } else { upper(fuente) }
-      box(fill: theme.colors.primary, inset: (x: 6pt, y: 3pt))[#text(font: "DM Mono", size: 9pt, weight: 700, fill: white, label)]
-    }
-  } else if modo == "caps" {
-    text(font: theme.fonts.body, size: 9pt, weight: 700, tracking: 0.12em, fill: gray.darken(20%))[
-      #if autor != none { upper(autor) }
-      #if autor != none and fuente != none { "  ·  " }
-      #if fuente != none { upper(fuente) }
-    ]
-  } else {
-    // pro
-    [#if autor != none [#text(font: theme.fonts.body, size: 11pt, weight: 700, fill: color)[— #autor]] #if fuente != none [#text(font: theme.fonts.body, size: 10pt, style: "italic", fill: gray.darken(10%))[ · #fuente]]]
-  }
-}
-
-#let bq-frame(body, tipo: "soft", color: none, theme: theme.base, radius: none, inset: none) = {
-  let color = if color == none { theme.colors.primary } else { color }
-  if tipo == "hard" {
-    // Brutalista: radius 0, borde 3.5pt negro, sombra offset contenida (pad extra para no desbordar grillas)
-    let r = if radius == none { 0pt } else { radius }
-    let padv = if inset == none { 22pt } else { inset }
-    pad(right: 6pt, bottom: 6pt)[
-      #block(width: 100%, above: 12pt, below: 12pt, fill: black, radius: r, inset: 0pt)[
-        #block(fill: white, stroke: 3.5pt + black, radius: r, inset: padv, width: 100%, height: 100%)[#body]
-      ]
-    ]
-  } else if tipo == "glass" {
-    // Glass: filling translúcido + borde fino + gradient subyacente
-    let r = if radius == none { 16pt } else { radius }
-    let padv = if inset == none { 16pt } else { inset }
-    block(width: 100%, above: 12pt, below: 12pt, fill: gradient.linear(angle: 135deg, color.transparentize(82%), white.transparentize(30%)), stroke: 0.7pt + white.transparentize(20%), radius: r + 2pt, inset: 1pt)[
-      #block(fill: white.transparentize(35%), stroke: 0.6pt + color.transparentize(70%), radius: r, inset: padv, width: 100%)[#body]
-    ]
-  } else {
-    // soft = modern (default, compatible)
-    let r = if radius == none { 24pt } else { radius }
-    let padv = if inset == none { 32pt } else { inset }
-    block(width: 100%, above: 12pt, below: 12pt, fill: theme.colors.white, stroke: 1pt + gray.lighten(70%), radius: r, inset: padv)[#body]
-  }
-}
