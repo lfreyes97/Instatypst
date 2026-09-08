@@ -15,13 +15,22 @@
 //    scripture, vs, ch, pasaje -> bloques de cita bíblica (scripture.typ)
 //    + todo lo de social.typ: canvas, badge, headline, subhead, footer,
 //      quote-post, announce-post, tip-card, carousel-*, stat-card,
-//      testimonial-post, event-post, poll-story, versus-post,
-//      blockquote-*, avatar, avatar-row, stat, progress, divider…
+//      testimonial-post, event-post, poll-story, versus-post, quote-social,
+//      avatar, avatar-row, stat, progress, divider…
+//    + todo lo de blockquotes.typ: blockquote-*, bq-frame/bq-mark/bq-rule/
+//      bq-attribution (sistema de legos para citas, ver ese archivo)
+//    formas.bocadillo -> formas dibujadas con SVG embebido (formas.typ) —
+//      namespace, no función suelta: "bocadillo" es una geometría entre
+//      varias futuras, no el nombre del sistema. Feature nueva, todavía
+//      sin blockquote-* que la use (ver ese archivo)
 //
-//  `color-tokens`/`font-tokens` van con nombre en vez de `import: *` a
-//  propósito — ambos módulos exportan un dict llamado `tokens` con
-//  significados distintos (colores vs. fuentes); aplanarlos de golpe
-//  colisionaría.
+//  `color-tokens`/`font-tokens`/`formas` van con nombre en vez de
+//  `import: *` a propósito. `color-tokens`/`font-tokens`: ambos módulos
+//  exportan un dict llamado `tokens` con significados distintos (colores
+//  vs. fuentes); aplanarlos de golpe colisionaría. `formas`: es un
+//  namespace de geometrías (formas.bocadillo, y a futuro formas.circulo,
+//  formas.cinta...) — aplanarlo escondería que todas viven bajo el mismo
+//  sistema.
 //  ─────────────────────────────────────────────────────────────
 
 #import "theme.typ": theme
@@ -32,5 +41,7 @@
 #import "dropcaps.typ": capitular
 #import "articulo.typ": articulo, primer-parrafo, make-theme, fondo-editorial
 #import "scripture.typ": scripture, vs, ch, pasaje
-#import "idiomas.typ": lat, gr, he, translit, interlineal
+#import "idiomas.typ": lat, gr, he, translit, interlineal, orn
+#import "formas.typ" as formas
 #import "social.typ": *
+#import "blockquotes.typ": *
