@@ -19,6 +19,10 @@
 //      avatar, avatar-row, stat, progress, divider…
 //    + todo lo de blockquotes.typ: blockquote-*, bq-frame/bq-mark/bq-rule/
 //      bq-attribution (sistema de legos para citas, ver ese archivo)
+//    + todo lo de carrusel.typ: carrusel-slide, carrusel-slide-definicion,
+//      topbar, pie-carrusel, dots, numeral-fondo, referencia-carrusel
+//      (legos + motor para carrusel de Instagram, ver ese archivo — NO
+//      automático, vos seguís armando cada slide a mano)
 //    formas.bocadillo -> formas dibujadas con SVG embebido (formas.typ) —
 //      namespace, no función suelta: "bocadillo" es una geometría entre
 //      varias futuras, no el nombre del sistema. Feature nueva, todavía
@@ -45,3 +49,4 @@
 #import "formas.typ" as formas
 #import "social.typ": *
 #import "blockquotes.typ": *
+#import "carrusel.typ": *
