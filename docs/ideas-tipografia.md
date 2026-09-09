@@ -41,9 +41,25 @@ Nota del propio repo: "work in progress", calidad variable entre
 letras — habría que revisar cuáles letras están completas antes de
 prometer el alfabeto entero.
 
-**Pendiente de decidir, no hecho:** cuáles letras descargar (todo el
-alfabeto son ~52 archivos entre F1/F2 — dos capas × 26 letras) y de
-qué commit/tag exacto, antes de bajar nada del repo.
+**Prototipo hecho y confirmado (2026-09-09):** bajé F1/S.svg y F2/S.svg
+de verdad (`raw.githubusercontent.com/georgd/EB-Garamond-Initials/master/SVG/...`,
+19.4 KB + 0.7 KB), compuse ambos `<path>` (cada uno viewBox `0 0 1000
+1000` — coinciden exacto, sin traducir nada) con `theme.colors.primary`/
+`.dark` de la paleta `terracota` real, y renderizó — un fleurón/vid
+completo alrededor de una "S" sólida, calidad de manuscrito iluminado
+de verdad. Muy por encima de lo que da `capitular()` hoy.
+
+**Hallazgo real que limita el alcance:** el listado completo de las 28
+letras (vía API de GitHub, F1 y F2 coinciden exacto) confirma que
+**faltan G y T por completo** — no es que la calidad sea baja en esas
+dos, no existen. Cualquier `capitular-ornamentada()` que se construya
+necesita un fallback (usar el `capitular()` de siempre) para esas dos
+letras, no puede prometer el alfabeto completo.
+
+**Pendiente de decidir:** ¿bajar las 23 letras restantes (46 archivos,
+la mayoría bajo 30 KB — S llegó a 19.4 KB de las más pesadas) y armar
+`capitular-ornamentada()` de verdad, o quedarse con la S de muestra por
+ahora?
 
 ## Falta una fuente con cobertura de emoji
 
