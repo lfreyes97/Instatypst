@@ -4,13 +4,13 @@
 // sino bloques de contenido para insertar en cualquier plantilla o página.
 //
 // Importa: #import "blockquotes.typ": *
-// Solo depende de social.typ para 3 nombres (radius, avatar-row, palette) —
+// Solo depende de social.typ para 2 nombres (radius, avatar-row) —
 // dependencia en una sola dirección, igual que palettes.typ depende de
 // theme.typ/tokens.typ. Nada en social.typ llama de vuelta a este archivo.
 
 #import "theme.typ": theme
 #import "idiomas.typ": gr, he
-#import "social.typ": radius, avatar-row, palette
+#import "social.typ": radius, avatar-row
 
 // ============ 7. BLOCKQUOTES — variedad de citas (bloque reutilizable) ============
 // A diferencia de las plantillas anteriores, estas NO son un canvas: son
