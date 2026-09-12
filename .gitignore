@@ -9,6 +9,7 @@ Fonts/ZedMono_Nerd_Font/
 # Salidas de compilación — se regeneran con `typst compile`
 *.pdf
 out/
+salida/
 
 # Nix + direnv
 .direnv/
