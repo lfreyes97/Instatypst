@@ -58,6 +58,7 @@ src/                  código del paquete (entrypoint: src/lib.typ)
   idiomas.typ         lat/gr/he, translit e interlineal
   social.typ          plantillas de canvas (Instagram/stories/etc.)
   blockquotes.typ     legos bq-* + 14 blockquote-* (bloques, no canvas)
+  superbg/            fondos componibles: presets, constructores y motor por capas
 demo.typ              catálogo visual (no forma parte del paquete)
 docs/manual.typ       manual narrativo (no forma parte del paquete)
 examples/             ejemplos de uso de cada módulo (no forman parte del paquete)
@@ -160,6 +161,43 @@ typst compile --root . --font-path Fonts examples/articulo.typ
 - todo lo de `social.typ`: `canvas`, `badge`, `headline`, `subhead`, `footer`, `quote-post`, `announce-post`, `tip-card`, `carousel-cover`, `carousel-slide`, `stat-card`, `event-post`, `testimonial-post`, `quote-social`, `poll-story`, `versus-post`, `avatar`, `avatar-row`, `stat`, `progress`, `divider`
 - todo lo de `blockquotes.typ`: `bq-frame`/`bq-mark`/`bq-rule`/`bq-attribution` (legos) + 14 `blockquote-*` (incluye `blockquote-grid`/`blockquote-paralelo`/`blockquote-lateral`)
 - `lat`, `gr`, `he`, `translit`, `interlineal`, `orn` — capa de idiomas (`idiomas.typ`)
+- `superbg` — namespace para fondos: `superbg.superbg()`, `superbg.bg-aura()`, `superbg.bg-malla()`, `superbg.sizes`, etc.
+
+## Fondos componibles con superbg
+
+`superbg` vive dentro de Instatypst como namespace para convivir con los
+constructores existentes `bg()`, `gradient-bg()`, `blob()` y `aura-bg()`.
+Los fondos se insertan como primer hijo de `canvas()`, igual que los
+fondos nativos del sistema:
+
+```typst
+#import "@local/instatypst:0.1.0": *
+
+#canvas(sizes.instagram, theme: theme.base)[
+  #superbg.superbg("neon-aura", theme: theme.base, size: sizes.instagram)
+  #pad(page-pad)[
+    #headline([Fondo de marca], color: white, theme: theme.base)
+  ]
+]
+```
+
+El motor de capas permite mezclar fondos y patrones en una misma llamada:
+
+```typst
+#superbg.superbg((capas: (
+  (tipo: "gradiente", from: theme.base.colors.dark, to: theme.base.colors.primary),
+  (tipo: "aura", colores: (theme.base.colors.secondary, theme.base.colors.accent)),
+  (tipo: "patron", patron: "dots", color: white, opacidad: 12%),
+  (tipo: "vignette", intensidad: 28%),
+)), size: sizes.instagram, theme: theme.base)
+```
+
+La implementación y un ejemplo compilable están en `src/superbg/` y
+`examples/superbg-n3.typ`. Para ver preset, tema real y composición N3:
+
+```bash
+typst compile --root . --font-path Fonts examples/superbg-n3.typ
+```
 
 ## Nota sobre temas y `theme:`
 

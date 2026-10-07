@@ -27,6 +27,8 @@
 //      namespace, no función suelta: "bocadillo" es una geometría entre
 //      varias futuras, no el nombre del sistema. Feature nueva, todavía
 //      sin blockquote-* que la use (ver ese archivo)
+//    superbg -> namespace de fondos componibles (superbg.superbg,
+//      superbg.bg-aura, superbg.bg-malla, …)
 //
 //  `color-tokens`/`font-tokens`/`formas` van con nombre en vez de
 //  `import: *` a propósito. `color-tokens`/`font-tokens`: ambos módulos
@@ -50,3 +52,4 @@
 #import "social.typ": *
 #import "blockquotes.typ": *
 #import "carrusel.typ": *
+#import "superbg/lib.typ" as superbg
