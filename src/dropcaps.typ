@@ -1,3 +1,5 @@
+#import "theme.typ": theme
+
 #let _partibles = (strong, emph, underline, stroke, overline, highlight, smallcaps)
 #let _espacio = [ ].func()
 
@@ -319,3 +321,70 @@
 
   segunda
 })
+
+// ─────────────────────────────────────────────────────────────
+//  capitular-ornamentada — capitular iluminada de EB Garamond Initials
+//
+//  Glifos SVG de georgd/EB-Garamond-Initials (OFL-1.1, ver
+//  Assets/eb-initials/COPYING), basados en las capitulares de
+//  *De Peste Commentarius* (1589). Dos capas por letra, mismo viewBox
+//  0 0 1000 1000, superpuestas sin traducir nada:
+//    F1 -> ornamento de fondo (florituras)  -> color `ornamento:`
+//    F2 -> la letra en primer plano         -> color `fill:`
+//
+//  Mismos parámetros que capitular() (alto, hueco, sangria, justificar,
+//  profundidad, letra…), así que se puede cambiar una por otra.
+//  El repo de origen NO tiene G ni T (tampoco Á, É, Ñ…): para esas
+//  letras, o si el párrafo arranca con puntuación («, ¿, …), cae al
+//  capitular() de siempre con los mismos argumentos.
+// ─────────────────────────────────────────────────────────────
+#let _iniciales = (
+  "A", "B", "C", "D", "E", "F", "H", "I", "J", "K", "L", "M", "N",
+  "O", "P", "Q", "R", "S", "U", "V", "W", "X", "Y", "Z",
+)
+#let _iniciales-especiales = ("Ä": "Adieresis", "Ö": "Odieresis", "Ü": "Udieresis")
+
+#let _archivo-inicial(c) = {
+  let c = upper(c)
+  if c in _iniciales { c } else { _iniciales-especiales.at(c, default: none) }
+}
+
+#let _capa(capa, nombre, color) = image(
+  bytes(read("../Assets/eb-initials/" + capa + "/" + nombre + ".svg")
+    .replace("<path", "<path fill='" + color.to-hex() + "'")),
+  format: "svg", width: 100%, height: 100%,
+)
+
+// Solo la letra iluminada, sin párrafo: útil para portadas o composiciones
+// a mano. Devuelve none si la letra no existe en el set.
+#let inicial-ornamentada(c, size: 3em, fill: none, ornamento: none, theme: theme.base) = {
+  let nombre = _archivo-inicial(c)
+  if nombre == none { return none }
+  let fill = if fill == none { theme.colors.primary } else { fill }
+  let ornamento = if ornamento == none { theme.colors.accent } else { ornamento }
+  box(width: size, height: size, {
+    place(_capa("F1", nombre, ornamento))
+    _capa("F2", nombre, fill)
+  })
+}
+
+#let capitular-ornamentada(
+  cuerpo,
+  alto: 3,
+  fill: none,
+  ornamento: none,
+  theme: theme.base,
+  ..args,
+) = context {
+  let (l, resto) = _extraer(cuerpo)
+  let texto = _a-texto(l)
+  let ilum = if texto.clusters().len() == 1 {
+    inicial-ornamentada(texto, size: _resolver-alto(alto), fill: fill, ornamento: ornamento, theme: theme)
+  }
+  if ilum == none {
+    let fill = if fill == none { theme.colors.primary } else { fill }
+    capitular(cuerpo, alto: alto, fill: fill, ..args)
+  } else {
+    capitular(resto, letra: ilum, alto: alto, ..args)
+  }
+}

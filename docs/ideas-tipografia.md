@@ -5,7 +5,7 @@ cosas que vale la pena investigar antes de decidir cómo (o si)
 implementarlas. Distinto de `docs/oportunidades-mejora.md` (esa es
 auditoría de bugs confirmados compilando; esto es solo ideas).
 
-## Letras capitulares ornamentadas de EB Garamond
+## Letras capitulares ornamentadas de EB Garamond — HECHO
 
 `Fonts/EB_Garamond/` solo trae Regular, Italic, SC (small caps) y AllSC,
 en los dos ópticos (08/12) — verificado con `typst fonts --font-path
@@ -26,8 +26,9 @@ licencia **OFL-1.1** (misma familia de licencia que el resto de
 Commentarius* (1589, Jean Antoine Sarrasin), trabajo del mismo
 proyecto que `georgd/EB-Garamond` (la fuente que ya usamos). Estructura
 del repo: carpeta `SVG/` con los glifos vectoriales reales (además de
-`SFD/` fuente editable y fuentes OTF/TTF compiladas en `build/`) — el
-material SVG que hacía falta para portar, no una fuente nueva.
+`SFD/` fuente editable; la carpeta `build/` con OTF/TTF compiladas ya no
+existe en el repo, verificado 2026-10-07) — el material SVG que hacía
+falta para portar, no una fuente nueva.
 
 Diseño en **dos capas**, pensado para dos colores:
 - `EBGaramond-InitialsF1` — el ornamento de fondo (florituras).
@@ -56,10 +57,12 @@ dos, no existen. Cualquier `capitular-ornamentada()` que se construya
 necesita un fallback (usar el `capitular()` de siempre) para esas dos
 letras, no puede prometer el alfabeto completo.
 
-**Pendiente de decidir:** ¿bajar las 23 letras restantes (46 archivos,
-la mayoría bajo 30 KB — S llegó a 19.4 KB de las más pesadas) y armar
-`capitular-ornamentada()` de verdad, o quedarse con la S de muestra por
-ahora?
+**Hecho (2026-10-07):** se bajaron las 24 letras + Ä/Ö/Ü en ambas
+capas a `Assets/eb-initials/{F1,F2}/` (con `COPYING`, OFL-1.1) y se
+armaron `capitular-ornamentada()` e `inicial-ornamentada()` en
+`src/dropcaps.typ`. G, T, letras acentuadas (Á, É, Ñ…) y párrafos que
+arrancan con puntuación caen a `capitular()` normal. Muestra completa en
+`examples/capitulares-ornamentadas.typ`.
 
 ## Falta una fuente con cobertura de emoji
 
