@@ -11,6 +11,8 @@
 //    color-tokens.tokens / .token(key)  -> registro de color (tokens.typ)
 //    font-tokens.tokens / .family(key)  -> registro de tipografía (font-tokens.typ)
 //    capitular    -> letra capital automática (dropcaps.typ)
+//    capitular-ornamentada, inicial-ornamentada -> capitular iluminada
+//      de EB Garamond Initials, SVG en dos capas (dropcaps.typ)
 //    articulo, primer-parrafo, make-theme, fondo-editorial -> plantilla editorial (articulo.typ)
 //    scripture, vs, ch, pasaje -> bloques de cita bíblica (scripture.typ)
 //    + todo lo de social.typ: canvas, badge, headline, subhead, footer,
@@ -42,7 +44,7 @@
 #import "palettes.typ": palettes
 #import "font-tokens.typ" as font-tokens
 #import "font-pairings.typ": pairings
-#import "dropcaps.typ": capitular
+#import "dropcaps.typ": capitular, capitular-ornamentada, inicial-ornamentada
 #import "articulo.typ": articulo, primer-parrafo, make-theme, fondo-editorial
 #import "scripture.typ": scripture, vs, ch, pasaje
 #import "idiomas.typ": lat, gr, he, translit, interlineal, orn
