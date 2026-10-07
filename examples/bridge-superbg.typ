@@ -1,6 +1,6 @@
-// Puente superbg × Instatypst (vive en Instatypst/examples, usa paquete local).
+// Puente superbg × Instatypst (superbg vive en src/superbg/, importado por ruta).
 // Compilar: typst compile --root . --font-path Fonts examples/bridge-superbg.typ
-#import "@local/superbg:0.1.0": superbg, bg-patron
+#import "../src/superbg/lib.typ": superbg, bg-patron
 #import "../src/lib.typ": canvas, sizes, page-pad, headline, subhead, footer, theme
 
 #let marca = (theme.define)("marca-puente", colors: (primary: rgb("#0ea5e9"), secondary: rgb("#8b5cf6")))
