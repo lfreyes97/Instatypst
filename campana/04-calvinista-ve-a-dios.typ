@@ -1,26 +1,24 @@
-// Campaña Warfield — cita 04
+// Campaña Warfield — cita 04 · ACTO I «¿Qué es el calvinismo?»
 // Fuente: La teología de Calvino
-// Plantilla: cita-canvas + blockquote-bar (grande) — paleta "granates" + tipografía "editorial-clasico"
+// Tono: papel-vino · Tipografía: lectura-editorial · Formato: story (1080×1920)
+// Plantilla: blockquote-bar "grande" — la cita más larga del acto, en vertical de historia.
 // Compilar: typst compile --root . --font-path Fonts campana/04-calvinista-ve-a-dios.typ
 #import "../src/lib.typ": *
+#import "_comun.typ": tema-campana, firma, lienzo
 
-#let tema = make-theme(paleta: "granates", tipografia: "editorial-clasico")
+#let tema = tema-campana("papel-vino", "lectura-editorial")
 
-#let contenido = blockquote-bar(
-  [El calvinista es el hombre que ve a Dios detrás de todos los fenómenos, y en todo lo que ocurre reconoce la mano de Dios, obrando su voluntad.],
-  autor: "B.B. Warfield",
-  fuente: "La teología de Calvino",
-  variante: "grande",
-  color: tema.colors.primary,
-  theme: tema,
-)
-
-#cita-canvas(
-  contenido,
-  "presuposicionalismo.com",
-  size: sizes.instagram,
-  bg-color: tema.colors.white,
-  blob-color: tema.colors.primary,
-  footer-color: gray.darken(45%),
-  theme: tema,
+#lienzo(
+  [
+    #blockquote-bar(
+      [El calvinista es el hombre que ve a Dios detrás de todos los fenómenos, y en todo lo que ocurre reconoce la mano de Dios, obrando su voluntad.],
+      variante: "grande",
+      size: 84pt,
+      color: tema.colors.primary,
+      theme: tema,
+    )
+    #pad(left: 32pt)[#firma(tema, fuente: "La teología de Calvino", size: 28pt)]
+  ],
+  tema,
+  size: sizes.story,
 )

@@ -1,25 +1,25 @@
-// Campaña Warfield — cita 07
+// Campaña Warfield — cita 07 · ACTO II «La obra de la gracia»
 // Fuente: La imputación
-// Plantilla: cita-canvas + blockquote-card — paleta "grises" + tipografía "sans-versatil"
+// Tono: papel-noche · Tipografía: editorial-clasico · Formato: instagram (1080×1080)
+// Plantilla: blockquote-card — la tarjeta con barra superior sostiene bien una cita de tres cláusulas.
+// Nota tipográfica: «[La imputación]» es interpolación editorial, no palabra de Warfield;
+// va en redonda (#text(style: "normal")) contra el resto del cuerpo en itálica.
 // Compilar: typst compile --root . --font-path Fonts campana/07-imputacion-gozne.typ
 #import "../src/lib.typ": *
+#import "_comun.typ": tema-campana, firma, lienzo
 
-#let tema = make-theme(paleta: "grises", tipografia: "sans-versatil")
+#let tema = tema-campana("papel-noche", "editorial-clasico")
 
-#let contenido = blockquote-card(
-  [\[La imputación\] es el gozne sobre el cual giran estas tres grandes doctrinas —la pecaminosidad de la raza, la satisfacción de Cristo, la justificación por la fe— y la guardiana de su pureza.],
-  autor: "B.B. Warfield",
-  fuente: "La imputación",
-  color: tema.colors.primary,
-  theme: tema,
-)
-
-#cita-canvas(
-  contenido,
-  "presuposicionalismo.com",
+#lienzo(
+  [
+    #blockquote-card(
+      [#text(style: "normal")[\[La imputación\]] es el gozne sobre el cual giran estas tres grandes doctrinas —la pecaminosidad de la raza, la satisfacción de Cristo, la justificación por la fe— y la guardiana de su pureza.],
+      size: 64pt,
+      color: tema.colors.primary,
+      theme: tema,
+    )
+    #firma(tema, fuente: "La imputación", size: 24pt)
+  ],
+  tema,
   size: sizes.instagram,
-  bg-color: tema.colors.white,
-  blob-color: tema.colors.primary,
-  footer-color: gray.darken(45%),
-  theme: tema,
 )

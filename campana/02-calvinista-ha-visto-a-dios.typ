@@ -1,25 +1,23 @@
-// Campaña Warfield — cita 02
+// Campaña Warfield — cita 02 · ACTO I «¿Qué es el calvinismo?»
 // Fuente: El calvinismo: significado y usos del término
-// Plantilla: cita-canvas + blockquote-pull — paleta "granates" + tipografía "editorial-clasico"
+// Tono: tinta-vino (ancla oscura del acto) · Tipografía: lectura-editorial · Formato: twitter (1600×900)
+// Plantilla: blockquote-pull — comilla gigante detrás de una definición de siete palabras.
 // Compilar: typst compile --root . --font-path Fonts campana/02-calvinista-ha-visto-a-dios.typ
 #import "../src/lib.typ": *
+#import "_comun.typ": tema-campana, firma, lienzo
 
-#let tema = make-theme(paleta: "granates", tipografia: "editorial-clasico")
+#let tema = tema-campana("tinta-vino", "lectura-editorial")
 
-#let contenido = blockquote-pull(
-  [El calvinista es el hombre que ha visto a Dios.],
-  autor: "B.B. Warfield",
-  fuente: "El calvinismo: significado y usos del término",
-  color: tema.colors.primary,
-  theme: tema,
-)
-
-#cita-canvas(
-  contenido,
-  "presuposicionalismo.com",
+#lienzo(
+  [
+    #blockquote-pull(
+      [El calvinista es el hombre que ha visto a Dios.],
+      size: 115pt,
+      color: tema.colors.primary,
+      theme: tema,
+    )
+    #pad(x: 28pt)[#firma(tema, fuente: "El calvinismo: significado y usos del término", size: 26pt)]
+  ],
+  tema,
   size: sizes.twitter,
-  bg-color: tema.colors.white,
-  blob-color: tema.colors.primary,
-  footer-color: gray.darken(45%),
-  theme: tema,
 )

@@ -197,15 +197,31 @@
 )
 
 // Pie con marca
-#let footer(handle, logo: none, color: white, theme: theme.base) = align(
-  bottom + start,
-  grid(
-    columns: (auto, 1fr),
-    align: (left, right),
-    if logo != none { image(logo, height: 40pt) } else { h(0pt) },
-    text(font: theme.fonts.body, fill: color, size: 26pt, weight: 600, handle),
-  ),
-)
+// Es logo O handle, nunca los dos a la vez (mostrar ambos es repetir la
+// misma marca dos veces: el logo ya es el nombre). Con logo, va
+// centrado; sin logo, el handle de texto de siempre, a la derecha.
+//
+// `logo:` recibe una FUNCIÓN `altura => contenido` (no contenido ya
+// armado): footer() mide el alto que tendría el handle a su tamaño/fuente
+// y se la pasa, así logo y texto siempre guardan la misma altura — si el
+// logo pudiera pedir más alto por su cuenta, la fila del pie crecería más
+// que con puro texto y en una tarjeta ajustada eso basta para desbordar
+// el lienzo a una segunda página. (Ver `logo-presuposicionalismo` en
+// campana/_comun.typ, que arma esa función recoloreando el SVG — footer()
+// no sabe nada de esa lógica.)
+//
+// `scale:` agranda pie completo (texto y logo a la vez, manteniendo esa
+// igualdad): `cita-canvas` lo expone como `footer-scale:`.
+#let footer(handle, logo: none, color: white, scale: 1.0, theme: theme.base) = {
+  let txt = text(font: theme.fonts.body, fill: color, size: 30pt * scale, weight: 600, handle)
+  context {
+    let line-h = measure(txt).height
+    align(
+      bottom + start,
+      if logo != none { align(center, logo(line-h)) } else { align(right, txt) },
+    )
+  }
+}
 
 // ============ 4. PLANTILLAS LISTAS PARA USAR ============
 
@@ -285,24 +301,43 @@
   blobs: true,
   blob-color: white,
   footer-color: none,
+  logo: none,
+  footer-scale: 1.0,
+  // (izquierda, derecha) — reemplaza bg+blobs por dos franjas de aura
+  // desenfocada en los bordes (el margen de `page-pad`, que si no queda
+  // vacío) con una tarjeta sólida de `bg-color` en medio. El contenido no
+  // se mueve ni un punto: sigue con el mismo `pad(x: page-pad)` de
+  // siempre, porque la franja ocupa exactamente ese margen — cero riesgo
+  // de desbordar una tarjeta con la cita ya ajustada de alto.
+  frame: none,
   theme: theme.base,
 ) = {
   let bg-color = if bg-color == none { theme.colors.white } else { bg-color }
   let footer-color = if footer-color == none { gray.darken(40%) } else { footer-color }
   canvas(size, theme: theme, [
-    #if gradient != none {
+    #if frame != none {
+      let w = size.at(0)
+      let h = size.at(1)
+      aura-bg(
+        (frame.at(0), frame.at(0), frame.at(1), frame.at(1)),
+        size: size,
+        r: calc.max(w, h) * 0.37,
+        posiciones: ((0, 0), (0, h), (w, 0), (w, h)),
+      )
+      place(dx: page-pad, dy: 0pt, rect(width: w * 1pt - 2 * page-pad, height: h * 1pt, fill: bg-color))
+    } else if gradient != none {
       gradient-bg(from: gradient.at(0), to: gradient.at(1), theme: theme)
     } else {
       bg(bg-color)
     }
-    #if blobs [
-      #blob(-200pt, -160pt, 380, blob-color, opacity: 8%)
-      #blob(size.at(0) * 1pt - 220pt, size.at(1) * 1pt - 260pt, 420, blob-color, opacity: 10%)
+    #if blobs and frame == none [
+      #blob(-200pt, -160pt, 380, blob-color, opacity: 14%)
+      #blob(size.at(0) * 1pt - 220pt, size.at(1) * 1pt - 260pt, 420, blob-color, opacity: 18%)
     ]
     #v(1fr)
     #pad(x: page-pad)[#contenido]
     #v(1fr)
-    #pad(x: page-pad, bottom: page-pad * 0.65)[#footer(handle, color: footer-color, theme: theme)]
+    #pad(x: page-pad, bottom: page-pad * 0.65)[#footer(handle, logo: logo, color: footer-color, scale: footer-scale, theme: theme)]
   ])
 }
 

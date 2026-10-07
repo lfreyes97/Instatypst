@@ -1,27 +1,27 @@
-// Campaña Warfield — cita 17
+// Campaña Warfield — cita 17 · ACTO IV «Polémica y mundo»
 // Fuente: Apologética
-// Plantilla: cita-canvas + blockquote-bar (acento) — paleta "grises" + tipografía "geometrico-moderno"
+// Tono: tinta-grafito (ancla oscura del acto) · Tipografía: geometrico-moderno · Formato: twitter (1600×900)
+// Plantilla: blockquote-bar variante "acento" — la cita es una antítesis exacta
+// (racional / irracional); los dos resaltados son el contenido, no decoración.
 // Compilar: typst compile --root . --font-path Fonts campana/17-racional-creer-en-cristo.typ
 #import "../src/lib.typ": *
+#import "_comun.typ": tema-campana, firma, lienzo, realce
 
-#let tema = make-theme(paleta: "grises", tipografia: "geometrico-moderno")
+#let tema = tema-campana("tinta-grafito", "geometrico-moderno")
+#let marca = realce(tema, oscuro: true)
+#let clave(it) = text(weight: 700)[#highlight(fill: marca)[#it]]
 
-#let marca-h = tema.colors.primary.transparentize(70%)
-#let contenido = blockquote-bar(
-  [Creemos en Cristo porque es #highlight(fill: marca-h)[racional] creer en él, no aunque sea #highlight(fill: marca-h)[irracional].],
-  autor: "B.B. Warfield",
-  fuente: "Apologética",
-  variante: "acento",
-  color: tema.colors.primary,
-  theme: tema,
-)
-
-#cita-canvas(
-  contenido,
-  "presuposicionalismo.com",
+#lienzo(
+  [
+    #blockquote-bar(
+      [Creemos en Cristo porque es #clave[racional] creer en él, no aunque sea #clave[irracional].],
+      variante: "acento",
+      size: 104pt,
+      color: tema.colors.primary,
+      theme: tema,
+    )
+    #pad(left: 32pt)[#firma(tema, fuente: "Apologética", size: 26pt)]
+  ],
+  tema,
   size: sizes.twitter,
-  bg-color: tema.colors.white,
-  blob-color: tema.colors.primary,
-  footer-color: gray.darken(45%),
-  theme: tema,
 )

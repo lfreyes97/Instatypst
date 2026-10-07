@@ -1,24 +1,25 @@
-// Campaña Warfield — cita 10
+// Campaña Warfield — cita 10 · ACTO II «La obra de la gracia»
 // Fuente: "Redentor" y "redención"
-// Plantilla: cita-canvas + blockquote-poetry — paleta "vintage" + tipografía "revival-vintage"
+// Tono: papel-noche · Tipografía: editorial-clasico · Formato: instagram (1080×1080)
+// Plantilla: blockquote-poetry — filete lateral fino y sin justificar: la cita es un lamento,
+// no un argumento; conviene que respire como verso.
 // Compilar: typst compile --root . --font-path Fonts campana/10-lecho-de-muerte-de-una-palabra.typ
 #import "../src/lib.typ": *
+#import "_comun.typ": tema-campana, firma, lienzo
 
-#let tema = make-theme(paleta: "vintage", tipografia: "revival-vintage")
+#let tema = tema-campana("papel-noche", "editorial-clasico")
 
-#let contenido = blockquote-poetry(
-  [Estamos asistiendo al lecho de muerte de una palabra. Y es triste presenciar la muerte de cualquier cosa valiosa.],
-  autor: [B.B. Warfield — "Redentor" y "redención"],
-  color: tema.colors.secondary,
-  theme: tema,
-)
-
-#cita-canvas(
-  contenido,
-  "presuposicionalismo.com",
+#lienzo(
+  [
+    #blockquote-poetry(
+      [Estamos asistiendo al lecho de muerte de una palabra. \
+       Y es triste presenciar la muerte de cualquier cosa valiosa.],
+      size: 80pt,
+      color: tema.colors.primary,
+      theme: tema,
+    )
+    #firma(tema, fuente: "«Redentor» y «redención»", size: 24pt)
+  ],
+  tema,
   size: sizes.instagram,
-  bg-color: tema.colors.white,
-  blob-color: tema.colors.primary,
-  footer-color: gray.darken(45%),
-  theme: tema,
 )

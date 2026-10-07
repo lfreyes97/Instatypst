@@ -1,24 +1,23 @@
-// Campaña Warfield — cita 14
+// Campaña Warfield — cita 14 · ACTO III «El Espíritu»
 // Fuente: La persona y la obra del Espíritu Santo (Fortalecimiento espiritual)
-// Plantilla: cita-canvas + blockquote-poetry — paleta "bosque" + tipografía "manuscrito-calido"
+// Tono: papel-salvia · Tipografía: revival-vintage · Formato: twitter (1600×900)
+// Plantilla: blockquote-hero — aforismo de dos frases; el horizontal lo vuelve cita citable.
 // Compilar: typst compile --root . --font-path Fonts campana/14-amor-el-gran-ensanchador.typ
 #import "../src/lib.typ": *
+#import "_comun.typ": tema-campana, firma, lienzo
 
-#let tema = make-theme(paleta: "bosque", tipografia: "manuscrito-calido")
+#let tema = tema-campana("papel-salvia", "revival-vintage")
 
-#let contenido = blockquote-poetry(
-  [El amor es el gran ensanchador. Es el amor lo que estira el intelecto.],
-  autor: [B.B. Warfield — Fortalecimiento espiritual],
-  color: tema.colors.primary,
-  theme: tema,
-)
-
-#cita-canvas(
-  contenido,
-  "presuposicionalismo.com",
-  size: sizes.instagram,
-  bg-color: tema.colors.white,
-  blob-color: tema.colors.primary,
-  footer-color: gray.darken(45%),
-  theme: tema,
+#lienzo(
+  [
+    #blockquote-hero(
+      [El amor es el gran ensanchador. Es el amor lo que estira el intelecto.],
+      size: 104pt,
+      color: tema.colors.primary,
+      theme: tema,
+    )
+    #firma(tema, fuente: "Fortalecimiento espiritual", alineacion: center, size: 26pt)
+  ],
+  tema,
+  size: sizes.twitter,
 )

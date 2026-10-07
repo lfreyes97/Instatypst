@@ -1,26 +1,27 @@
-// Campaña Warfield — cita 13
+// Campaña Warfield — cita 13 · ACTO III «El Espíritu»
 // Fuente: La persona y la obra del Espíritu Santo (El Espíritu de fe)
-// Plantilla: cita-canvas + blockquote-hero — paleta "mediterraneo" + tipografía "editorial-expresivo"
+// Tono: tinta-salvia (ancla oscura del acto) · Tipografía: revival-vintage · Formato: story (1080×1920)
+// Plantilla: blockquote-pull — la cita más larga y más dramática de la campaña; el vertical
+// de historia deja que el imperativo repetido caiga en cascada.
+// Nota: IM FELL English no es variable (igual que Bebas en la 09), así que el `weight: 800`
+// interno de blockquote-pull no cambia nada; el énfasis lo lleva el resaltado.
 // Compilar: typst compile --root . --font-path Fonts campana/13-cree-este-evangelio.typ
 #import "../src/lib.typ": *
+#import "_comun.typ": tema-campana, firma, lienzo, realce
 
-#let tema = make-theme(paleta: "mediterraneo", tipografia: "editorial-expresivo")
+#let tema = tema-campana("tinta-salvia", "revival-vintage")
+#let marca = realce(tema, oscuro: true)
 
-#let marca-h = tema.colors.accent.transparentize(60%)
-#let contenido = blockquote-hero(
-  [Cree este Evangelio, y podrás y lo predicarás. Digan los hombres lo que quieran —déjalos herir, ridiculizar, perseguir, matar— #highlight(fill: marca-h)[cree este Evangelio] y lo predicarás.],
-  autor: "B.B. Warfield",
-  fuente: "El Espíritu de fe",
-  color: tema.colors.primary,
-  theme: tema,
-)
-
-#cita-canvas(
-  contenido,
-  "presuposicionalismo.com",
-  size: sizes.twitter,
-  bg-color: tema.colors.white,
-  blob-color: tema.colors.primary,
-  footer-color: gray.darken(45%),
-  theme: tema,
+#lienzo(
+  [
+    #blockquote-pull(
+      [#highlight(fill: marca)[Cree este Evangelio], y podrás y lo predicarás. Digan los hombres lo que quieran —déjalos herir, ridiculizar, perseguir, matar— #highlight(fill: marca)[cree este Evangelio] y lo predicarás.],
+      size: 92pt,
+      color: tema.colors.primary,
+      theme: tema,
+    )
+    #pad(x: 28pt)[#firma(tema, fuente: "El Espíritu de fe", size: 28pt)]
+  ],
+  tema,
+  size: sizes.story,
 )
