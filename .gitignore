@@ -17,3 +17,6 @@ svg-lab/*.png
 
 # Scratchpad de la sesión (renders temporales, pruebas)
 _to_delete/
+
+# Documentos privados de referencia — no se versionan
+Assets/*.docx
