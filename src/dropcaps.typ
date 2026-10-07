@@ -353,56 +353,138 @@
   if c in _iniciales { c } else { _iniciales-especiales.at(c, default: none) }
 }
 
-// `color=` además de `fill=`: G y T engruesan el trazo con
-// stroke="currentColor", que toma ese valor.
-#let _capa(capa, nombre, color) = image(
-  bytes(read("../Assets/eb-initials/" + capa + "/" + nombre + ".svg")
-    .replace("<path", "<path fill='" + color.to-hex() + "' color='" + color.to-hex() + "'")),
-  format: "svg", width: 100%, height: 100%,
+// Estilos de grabado (imitan capitulares de imprenta de los ss. XVI–XVII):
+//   "una-tinta"  -> ornamento y letra en la misma tinta, sobre el papel
+//   "invertida"  -> bloque de tinta con ornamento y letra calados (criblé):
+//                   el calado es transparente, deja ver el papel de la página
+//   "rubricada"  -> ornamento en tinta, letra en rojo (impresión a dos tintas)
+//   "tema"       -> ornamento en theme.colors.accent, letra en .primary
+// `marco: true` agrega el doble filete del taco de madera. `desgaste:`
+// (0–1) simula la impresión: bordes irregulares y huecos donde no cubrió
+// la tinta; cada letra usa su propia semilla, así no se gastan igual.
+// Con desgaste > 0 Typst rasteriza el filtro (deja de ser vectorial).
+#let _estilos = ("una-tinta", "invertida", "rubricada", "tema")
+#let _tinta = rgb("#1c1712")
+#let _rubrica = rgb("#a3271f")
+
+// Colores (ornamento, letra) ya resueltos según el estilo.
+#let _colores-inicial(estilo, tinta, fill, ornamento, theme) = {
+  assert(estilo in _estilos, message: "estilo desconocido \"" + estilo + "\" — disponibles: " + _estilos.join(", "))
+  let tinta = if tinta == none { _tinta } else { tinta }
+  let (orn, ltr) = if estilo == "tema" {
+    (theme.colors.accent, theme.colors.primary)
+  } else if estilo == "rubricada" {
+    (tinta, _rubrica)
+  } else {
+    (tinta, tinta)
+  }
+  (
+    if ornamento == none { orn } else { ornamento },
+    if fill == none { ltr } else { fill },
+  )
+}
+
+// Los <path> de una capa, recoloreados. `color=` además de `fill=`: G y T
+// engruesan el trazo con stroke="currentColor", que toma ese valor.
+#let _paths(capa, nombre, color) = (
+  read("../Assets/eb-initials/" + capa + "/" + nombre + ".svg")
+    .find(regex("(?s)<path.*</svg>"))
+    .replace("</svg>", "")
+    .replace("<path", "<path fill='" + color + "' color='" + color + "'")
 )
+
+#let _filtro-desgaste(k, semilla) = {
+  let k = calc.clamp(k, 0, 1)
+  ("<filter id='desgaste' x='-5%' y='-5%' width='110%' height='110%'>" +
+  "<feTurbulence type='fractalNoise' baseFrequency='0.05' numOctaves='3' seed='" + str(semilla) + "' result='r'/>" +
+  "<feDisplacementMap in='SourceGraphic' in2='r' scale='" + str(5 * k) + "' xChannelSelector='R' yChannelSelector='G' result='d'/>" +
+  "<feTurbulence type='fractalNoise' baseFrequency='0.022' numOctaves='3' seed='" + str(semilla + 7) + "' result='n'/>" +
+  "<feColorMatrix in='n' type='matrix' values='0 0 0 0 0  0 0 0 0 0  0 0 0 0 0  -14 0 0 0 " + str(9.6 + (1 - k) * 4) + "' result='mask'/>" +
+  "<feComposite in='d' in2='mask' operator='in'/></filter>")
+}
 
 // Solo la letra iluminada, sin párrafo: útil para portadas o composiciones
 // a mano. Devuelve none si la letra no existe en el set.
-#let inicial-ornamentada(c, size: 3em, fill: none, ornamento: none, theme: theme.base) = {
+#let inicial-ornamentada(
+  c,
+  size: 3em,
+  estilo: "una-tinta",
+  marco: true,
+  desgaste: 0,
+  tinta: none,
+  fill: none,
+  ornamento: none,
+  theme: theme.base,
+) = {
   let nombre = _archivo-inicial(c)
   if nombre == none { return none }
-  let fill = if fill == none { theme.colors.primary } else { fill }
-  let ornamento = if ornamento == none { theme.colors.accent } else { ornamento }
-  box(width: size, height: size, {
-    place(_capa("F1", nombre, ornamento))
-    _capa("F2", nombre, fill)
-  })
+  let (orn, ltr) = _colores-inicial(estilo, tinta, fill, ornamento, theme)
+  let orn = orn.to-hex()
+  let ltr = ltr.to-hex()
+
+  let cuerpo = if estilo == "invertida" {
+    // Bloque de tinta con el ornamento y la letra recortados por máscara.
+    let borde = if marco { -30 } else { 0 }
+    let lado = 1000 - 2 * borde
+    // La región de la máscara tiene que coincidir exacto con el bloque: con
+    // una región más grande, el renderizador de Typst desplaza el resultado
+    // (rsvg lo dibuja bien; es cosa de Typst).
+    let caja = "x='" + str(borde) + "' y='" + str(borde) + "' width='" + str(lado) + "' height='" + str(lado) + "'"
+    ("<mask id='calado' maskUnits='userSpaceOnUse' " + caja + "><rect " + caja + " fill='white'/>" +
+    _paths("F1", nombre, "black") + _paths("F2", nombre, "black") + "</mask>" +
+    "<rect " + caja + " fill='" + orn + "' mask='url(#calado)'/>")
+  } else {
+    _paths("F1", nombre, orn) + _paths("F2", nombre, ltr)
+  }
+  if marco {
+    cuerpo += "<rect x='-30' y='-30' width='1060' height='1060' fill='none' stroke='" + orn + "' stroke-width='14'/>"
+    cuerpo += "<rect x='-55' y='-55' width='1110' height='1110' fill='none' stroke='" + orn + "' stroke-width='5'/>"
+  }
+  let vb = if marco { "-70 -70 1140 1140" } else { "0 0 1000 1000" }
+  let filtro = if desgaste > 0 { _filtro-desgaste(desgaste, c.to-unicode()) } else { "" }
+  let g = if desgaste > 0 { "<g filter='url(#desgaste)'>" } else { "<g>" }
+  let svg = "<svg xmlns='http://www.w3.org/2000/svg' viewBox='" + vb + "'>" + filtro + g + cuerpo + "</g></svg>"
+  image(bytes(svg), format: "svg", width: size, height: size)
 }
 
 #let capitular-ornamentada(
   cuerpo,
   alto: 3,
   hueco: 0.3em,
+  estilo: "una-tinta",
+  marco: true,
+  desgaste: 0,
+  tinta: none,
   fill: none,
   ornamento: none,
   theme: theme.base,
   ..args,
 ) = context {
-  let fill = if fill == none { theme.colors.primary } else { fill }
+  // Color de la letra resuelto: lo usan también la puntuación colgada y
+  // el fallback a capitular() (acentuadas), para que no desentonen.
+  let (_, color-letra) = _colores-inicial(estilo, tinta, fill, ornamento, theme)
   let (l, resto) = _extraer(cuerpo)
   let cs = _a-texto(l).clusters()
   let i = cs.position(c => c.match(regex("\\p{L}")) != none)
   // Solo se separa el caso "puntuación + una letra" («T, ¿A, "E…);
   // cualquier otra forma rara cae a capitular() tal cual.
   if i == none or i != cs.len() - 1 {
-    return capitular(cuerpo, alto: alto, hueco: hueco, fill: fill, ..args)
+    return capitular(cuerpo, alto: alto, hueco: hueco, fill: color-letra, ..args)
   }
   let letra = cs.at(i)
-  let ilum = inicial-ornamentada(letra, size: _resolver-alto(alto), fill: fill, ornamento: ornamento, theme: theme)
+  let ilum = inicial-ornamentada(
+    letra, size: _resolver-alto(alto), estilo: estilo, marco: marco, desgaste: desgaste,
+    tinta: tinta, fill: fill, ornamento: ornamento, theme: theme,
+  )
   let inicial = if ilum == none { letra } else { ilum }
   // Puntuación inicial colgada en el margen, a tamaño de texto: no
   // crece con la capitular (un « gigante al lado de la letra se ve mal).
   if i > 0 {
-    let pre = text(size: text.size, fill: fill, cs.slice(0, i).join())
+    let pre = text(size: text.size, fill: color-letra, cs.slice(0, i).join())
     inicial = box({
       place(top + left, dx: -measure(pre).width - 0.1em, pre)
       inicial
     })
   }
-  capitular(resto, letra: inicial, alto: alto, hueco: hueco, fill: fill, ..args)
+  capitular(resto, letra: inicial, alto: alto, hueco: hueco, fill: color-letra, ..args)
 }
