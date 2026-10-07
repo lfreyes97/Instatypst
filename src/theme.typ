@@ -19,7 +19,7 @@
 //  ─────────────────────────────────────────────────────────────
 
 #import "tokens.typ": token
-#import "@local/superpelettes:0.1.0": luminance, contrast, is-aa, is-aaa, readable-on, auto-pair, auto-pair-tinted
+#import "contrast.typ": luminance, contrast, is-aa, is-aaa, readable-on, auto-pair, auto-pair-tinted
 
 // ===== Claves requeridas =====
 #let required-colors = ("primary", "secondary", "accent", "dark", "light", "white")
@@ -116,10 +116,9 @@
 // `contrast(x, black)` daba de menos, al punto de hacer que
 // `readable-on` eligiera el candidato equivocado en un caso real de
 // examples/api.typ (elegía "blanco" cuando "negro" daba casi 3x más
-// contraste). Ahora se importan de @local/superpelettes:0.1.0, que ya
-// fuerza `.rgb()` antes de leer canales -- una sola implementación
-// correcta en vez de dos (ésta y la de palettes.typ) reimplementando el
-// mismo bug cada una por su lado.
+// contraste). Ahora se importan de contrast.typ -- una sola
+// implementación correcta en vez de dos (ésta y la de palettes.typ)
+// reimplementando el mismo bug cada una por su lado.
 
 // ================= PERSISTENCIA (JSON) =================
 

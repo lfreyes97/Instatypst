@@ -240,7 +240,7 @@ El tema es un valor inmutable `(name, colors, fonts)`. Todo lo demás (paletas, 
 ))
 
 #h2[2.3 Contraste y legibilidad (WCAG 2.x)]
-Importado de `@local/superpelettes:0.1.0` (antes reimplementado acá mismo, con un bug real: `.components()` sin forzar `.rgb()` leía mal cualquier color en espacio `luma` -- `black` daba luminancia 0.7152 en vez de 0, y eso llegó a hacer que `readable-on` eligiera el candidato equivocado en `examples/api.typ`). Blanco puro → luminancia 1.0, contraste negro/blanco = 21.0.
+Vive en `src/contrast.typ` (antes reimplementado por separado en `theme.typ` y `palettes.typ`, los dos con un bug real: `.components()` sin forzar `.rgb()` leía mal cualquier color en espacio `luma` -- `black` daba luminancia 0.7152 en vez de 0, y eso llegó a hacer que `readable-on` eligiera el candidato equivocado en `examples/api.typ`). Blanco puro → luminancia 1.0, contraste negro/blanco = 21.0.
 
 #api-table((
   ([`theme.luminance(c)`], [Luminancia relativa 0–1], [`#theme.luminance(white) // ~1.0`]),

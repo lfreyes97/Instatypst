@@ -15,7 +15,7 @@
 
 #import "theme.typ": theme
 #import "tokens.typ": tokens, token
-#import "@local/superpelettes:0.1.0": luminance, auto-roles
+#import "contrast.typ": luminance
 
 // Los tokens (colores individuales nombrados) viven en tokens.typ —
 // compartidos con theme.typ, para que la marca base y las paletas
@@ -62,21 +62,37 @@
 #let mix(..items) = items.pos().map(_resolve)
 
 // ================= ANÁLISIS DE COLOR =================
-// luminance/auto-roles vivían reimplementados acá con el mismo bug que
-// theme.typ tenía por su lado: `.components()` sin forzar `.rgb()`
-// antes lee mal cualquier color en espacio `luma` (white/black). Ahora
-// se importan de @local/superpelettes:0.1.0 -- una sola implementación
-// correcta en vez de dos copias con el mismo bug cada una.
-//
-// `saturation` se queda acá (superpelettes no la expone suelta, solo la
-// usa internamente dentro de su propio `auto-roles`) pero con el mismo
-// fix: forzar `.rgb()` antes de leer canales.
+// luminance vive en contrast.typ, compartida con theme.typ -- antes
+// cada uno reimplementaba el mismo cálculo con el mismo bug
+// (`.components()` sin forzar `.rgb()` antes lee mal cualquier color en
+// espacio `luma`, como white/black).
 #let saturation(c) = {
   let x = c.rgb().components()
   let r = x.at(0) / 100
   let g = x.at(1, default: x.at(0)) / 100
   let b = x.at(2, default: x.at(0)) / 100
   calc.max(r, g, b) - calc.min(r, g, b)
+}
+
+// Roles automáticos desde cualquier lista de colores: el más oscuro ->
+// dark, el más claro -> light, y los tres del medio más saturados ->
+// primary/secondary/accent.
+#let auto-roles(cols) = {
+  let sorted-l = cols.sorted(key: c => luminance(c))
+  let dark = sorted-l.first()
+  let light = sorted-l.last()
+  let mids = cols.filter(c => c != dark and c != light)
+  if mids.len() == 0 { mids = (dark,) }
+  let ranked = mids.sorted(key: c => -saturation(c))
+  let pick(i) = if i < ranked.len() { ranked.at(i) } else { ranked.at(calc.rem(i, ranked.len())) }
+  (
+    dark: dark,
+    light: light,
+    primary: pick(0),
+    secondary: pick(1),
+    accent: pick(2),
+    white: white,
+  )
 }
 
 // Convierte una paleta de la biblioteca en tema (compatible con theme.typ / social.typ)

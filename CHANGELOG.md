@@ -1,13 +1,14 @@
 # Changelog
 
-## [sin publicar] — fusión con `superpelettes` + rename semántico de tokens
+## [sin publicar] — contraste WCAG vendorizado + rename semántico de tokens
 
-Hecho en sesión de Claude Code sobre `rapiquote` (cambios aplicados acá
-pero **sin commitear** -- quedan en el working tree). Contexto completo
+Hecho en sesión de Claude Code sobre `rapiquote`. Contexto completo
 para quien retome esto: `rapiquote` y este repo compartían el mismo
 sistema de color (mismos 96 tokens `familia-NNN`, mismo bug de
 contraste). En `rapiquote` se arregló primero y se generalizó en un
-paquete hermano, `superpelettes`; esto trae ese arreglo de vuelta acá.
+paquete hermano, `superpelettes`; acá se trajo ese arreglo de vuelta
+pero vendorizado directo en `src/contrast.typ` (ver sección
+"Cambiado"), no como dependencia del paquete `@local`.
 
 ### Arreglado (bug real, no solo estilo)
 
@@ -42,17 +43,13 @@ blanco -- la respuesta estaba al revés. Ya corregido: ahora elige
   viejas colapsaron en el mismo color real al medirlas; se
   reconstruyeron a mano con colores genuinamente distintos para no
   perder la variedad visual de la paleta.
-- **Nueva dependencia dura:** `theme.typ`/`palettes.typ` importan
-  `luminance`/`contrast`/`is-aa`/`is-aaa`/`readable-on`/`auto-pair`/
-  `auto-pair-tinted`/`auto-roles` de `@local/superpelettes:0.1.0` en
-  vez de reimplementarlos. Sin ese paquete instalado en el namespace
-  `local`, nada que importe `theme.typ`/`palettes.typ` compila (o sea,
-  casi todo el paquete). Instalar:
-  ```sh
-  mkdir -p ~/.local/share/typst/packages/local/superpelettes
-  ln -sfn /ruta/a/superpelettes ~/.local/share/typst/packages/local/superpelettes/0.1.0
-  ```
-  (ver el README de `superpelettes` para su propio `link.sh`.)
+- **`src/contrast.typ` nuevo:** `luminance`/`contrast`/`is-aa`/`is-aaa`/
+  `readable-on`/`auto-pair`/`auto-pair-tinted` vendorizados desde
+  `superpelettes` (ya con el fix de `.rgb()`), sin que el paquete haga
+  falta instalado en ningún lado -- `theme.typ` y `palettes.typ`
+  importan de este archivo local. `auto-roles` queda en `palettes.typ`
+  mismo (usa su `saturation` ya existente + `luminance` de
+  `contrast.typ`). Cero dependencias nuevas, el repo compila solo.
 
 ### Agregado (no rompe nada)
 
@@ -74,11 +71,14 @@ blanco -- la respuesta estaba al revés. Ya corregido: ahora elige
 
 ### Archivos tocados
 
-`src/theme.typ`, `src/tokens.typ`, `src/palettes.typ`, `demo.typ`
-(conteo "Tokens (96)" → "(81)"), `docs/manual.typ` (dos snippets con
-claves viejas + conteo), `README.md` (nueva sección "Dependencias" +
-instrucciones de instalación local vía symlink).
+`src/contrast.typ` (nuevo), `src/theme.typ`, `src/tokens.typ`,
+`src/palettes.typ`, `demo.typ` (conteo "Tokens (96)" → "(81)"),
+`docs/manual.typ` (dos snippets con claves viejas + conteo + referencia
+a `@local/superpelettes` actualizada a `src/contrast.typ`), `README.md`
+(línea de `contrast.typ` en la estructura; se quitó la sección
+"Dependencias", ya no aplica).
 
 Verificado compilando los 14 `examples/*.typ`, `demo.typ` (46
 páginas), `docs/manual.typ` y `ornamentos/ornamentos.typ` -- todo
-compila limpio.
+compila limpio, sin ningún paquete `@local` instalado más allá de
+`instatypst` mismo.
