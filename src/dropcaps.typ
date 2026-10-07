@@ -334,15 +334,17 @@
 //
 //  Mismos parámetros que capitular() (alto, hueco, sangria, justificar,
 //  profundidad, letra…), así que se puede cambiar una por otra.
-//  El repo de origen NO tiene G ni T (tampoco Á, É, Ñ…): para esas
-//  letras cae al capitular() de siempre con los mismos argumentos.
+//  El repo de origen NO trae G ni T: esas dos se generaron aparte desde
+//  la fuente EB Garamond con el ornamento de C/I (ver
+//  Assets/eb-initials/generar-G-T.py). Las acentuadas (Á, É, Ñ…) no
+//  existen: caen al capitular() de siempre con los mismos argumentos.
 //  La puntuación inicial («, ¿, …) cuelga en el margen a tamaño de
 //  texto en vez de agrandarse con la letra. `hueco` por defecto es más
 //  ancho que en capitular() porque el cuadro del ornamento llega al borde.
 // ─────────────────────────────────────────────────────────────
 #let _iniciales = (
-  "A", "B", "C", "D", "E", "F", "H", "I", "J", "K", "L", "M", "N",
-  "O", "P", "Q", "R", "S", "U", "V", "W", "X", "Y", "Z",
+  "A", "B", "C", "D", "E", "F", "G", "H", "I", "J", "K", "L", "M",
+  "N", "O", "P", "Q", "R", "S", "T", "U", "V", "W", "X", "Y", "Z",
 )
 #let _iniciales-especiales = ("Ä": "Adieresis", "Ö": "Odieresis", "Ü": "Udieresis")
 
@@ -351,9 +353,11 @@
   if c in _iniciales { c } else { _iniciales-especiales.at(c, default: none) }
 }
 
+// `color=` además de `fill=`: G y T engruesan el trazo con
+// stroke="currentColor", que toma ese valor.
 #let _capa(capa, nombre, color) = image(
   bytes(read("../Assets/eb-initials/" + capa + "/" + nombre + ".svg")
-    .replace("<path", "<path fill='" + color.to-hex() + "'")),
+    .replace("<path", "<path fill='" + color.to-hex() + "' color='" + color.to-hex() + "'")),
   format: "svg", width: 100%, height: 100%,
 )
 
