@@ -60,8 +60,11 @@ letras, no puede prometer el alfabeto completo.
 **Hecho (2026-10-07):** se bajaron las 24 letras + Ä/Ö/Ü en ambas
 capas a `Assets/eb-initials/{F1,F2}/` (con `COPYING`, OFL-1.1) y se
 armaron `capitular-ornamentada()` e `inicial-ornamentada()` en
-`src/dropcaps.typ`. G, T, letras acentuadas (Á, É, Ñ…) y párrafos que
-arrancan con puntuación caen a `capitular()` normal. Muestra completa en
+`src/dropcaps.typ`. G y T se generaron aparte
+(`Assets/eb-initials/generar-G-T.py`): letra de la fuente EB Garamond
+calibrada contra C/I y engrosada para igualar el trazo dibujado, sobre
+el ornamento de C/I. Las acentuadas (Á, É, Ñ…) caen a `capitular()`
+normal; la puntuación inicial cuelga en el margen. Muestra completa en
 `examples/capitulares-ornamentadas.typ`.
 
 ## Falta una fuente con cobertura de emoji
