@@ -1,7 +1,7 @@
 // Capitulares iluminadas de EB Garamond Initials (dos capas SVG).
 // Página 1: el set completo para revisar letra por letra (el repo de
 // origen avisa que la calidad varía). Página 2: en párrafo, incluidos
-// los casos que caen a capitular() normal (G, T, puntuación inicial).
+// G y T (caen a capitular() normal) y la puntuación inicial colgada.
 // Compilar: typst compile --root . --font-path Fonts examples/capitulares-ornamentadas.typ
 #import "../src/lib.typ": *
 
@@ -31,8 +31,10 @@
 
 #capitular-ornamentada(alto: 4, theme: tema, ornamento: tema.colors.secondary)[Señor, tú nos has sido refugio de generación en generación. #relleno]
 
-Sin ilustración (G, T y puntuación inicial caen a `capitular()`):
+Sin ilustración (G y T caen a `capitular()`); la puntuación inicial cuelga en el margen:
 
 #capitular-ornamentada(theme: tema)[Gracia y paz a vosotros, de Dios nuestro Padre. #relleno]
 
 #capitular-ornamentada(theme: tema)[«Todo lo puedo en Cristo que me fortalece.» #relleno]
+
+#capitular-ornamentada(theme: tema)[¿Quién nos separará del amor de Cristo? #relleno]
