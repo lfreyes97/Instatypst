@@ -19,6 +19,7 @@
 //  ─────────────────────────────────────────────────────────────
 
 #import "tokens.typ": token
+#import "@local/superpelettes:0.1.0": luminance, contrast, is-aa, is-aaa, readable-on, auto-pair, auto-pair-tinted
 
 // ===== Claves requeridas =====
 #let required-colors = ("primary", "secondary", "accent", "dark", "light", "white")
@@ -28,10 +29,10 @@
 #let base = (
   name: "default",
   colors: (
-    primary: token("indigo-400"),
-    secondary: token("pink-400"),
-    accent: token("amber-550"),
-    dark: token("slate-900"),
+    primary: token("índigo"),
+    secondary: token("frambuesa"),
+    accent: token("ámbar"),
+    dark: token("grafito"),
     light: token("slate-25"),
     white: white,
   ),
@@ -106,49 +107,19 @@
 #let darken(key, amount, t: base) = color(key, t: t).darken(amount)
 #let fade(key, opacity, t: base) = color(key, t: t).transparentize(100% - opacity)
 
-// ================= UTILIDADES DE CONTRASTE (WCAG 2.x) =================
-
-// `.components()` devuelve canales como `ratio` (ej. 100%), no como
-// número plano — hay que normalizarlos dividiendo por 100% (no por 100:
-// eso los aplastaba dos veces, ej. blanco puro daba luminancia ~0.01 en
-// vez de 1.0, y contrast(negro, blanco) daba ~1.0 en vez de 21.0).
-#let _chan(v) = {
-  let x = v / 100%
-  if x <= 0.04045 { x / 12.92 } else { calc.pow((x + 0.055) / 1.055, 2.4) }
-}
-
-#let luminance(c) = {
-  let comps = c.components()
-  let r = comps.at(0)
-  let g = comps.at(1, default: r)
-  let b = comps.at(2, default: r)
-  0.2126 * _chan(r) + 0.7152 * _chan(g) + 0.0722 * _chan(b)
-}
-
-// Ratio de contraste entre dos colores (1.0 – 21.0)
-#let contrast(a, b) = {
-  let l1 = luminance(a)
-  let l2 = luminance(b)
-  (calc.max(l1, l2) + 0.05) / (calc.min(l1, l2) + 0.05)
-}
-
-// ¿Cumple AA (4.5) / AAA (7)?
-#let is-aa(a, b) = contrast(a, b) >= 4.5
-#let is-aaa(a, b) = contrast(a, b) >= 7.0
-
-// Elige el candidato con mejor contraste sobre `bg`
-#let readable-on(bg, ..candidates) = {
-  let best = none
-  let best-r = -1.0
-  for c in candidates.pos() {
-    let r = contrast(c, bg)
-    if r > best-r {
-      best-r = r
-      best = c
-    }
-  }
-  best
-}
+// ================= CONTRASTE WCAG 2.x =================
+// luminance/contrast/is-aa/is-aaa/readable-on/auto-pair/auto-pair-tinted
+// venían reimplementados acá con un bug real: `.components()` sin forzar
+// `.rgb()` antes lee mal los canales de cualquier color en espacio `luma`
+// (white/black, literales que `base.colors.white` y el propio
+// `readable-on(bg, white, black)` usan todo el tiempo) -- confirmado:
+// `contrast(x, black)` daba de menos, al punto de hacer que
+// `readable-on` eligiera el candidato equivocado en un caso real de
+// examples/api.typ (elegía "blanco" cuando "negro" daba casi 3x más
+// contraste). Ahora se importan de @local/superpelettes:0.1.0, que ya
+// fuerza `.rgb()` antes de leer canales -- una sola implementación
+// correcta en vez de dos (ésta y la de palettes.typ) reimplementando el
+// mismo bug cada una por su lado.
 
 // ================= PERSISTENCIA (JSON) =================
 
@@ -188,6 +159,8 @@
   "is-aa": is-aa,
   "is-aaa": is-aaa,
   "readable-on": readable-on,
+  "auto-pair": auto-pair,
+  "auto-pair-tinted": auto-pair-tinted,
   export: export,
   load: load,
 )

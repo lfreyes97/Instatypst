@@ -48,7 +48,7 @@ comentario en `flake.nix` si tu versión de nixpkgs usa otros nombres).
 ```
 src/                  código del paquete (entrypoint: src/lib.typ)
   theme.typ           API de temas — colores + fuentes, validación, derivación
-  tokens.typ          registro de 96 colores individuales nombrados
+  tokens.typ          registro de 81 colores con nombre semántico (no familia-NNN)
   palettes.typ        15 paletas curadas + auto-asignación de roles
   font-tokens.typ     registro de 49+ fuentes verificadas (familia real, ejes variables)
   font-pairings.typ   8 parejas tipográficas curadas (display/body/mono)
@@ -85,21 +85,50 @@ vas a dejar el archivo dentro de `examples/` de este mismo repo. Con
 `--compilar` lo compila de una vez (usa `Fonts/` de este repo por
 defecto; `--fonts <ruta>` para otra).
 
+## Dependencias
+
+`theme.typ` y `palettes.typ` importan `luminance`/`contrast`/`is-aa`/
+`is-aaa`/`readable-on`/`auto-pair`/`auto-pair-tinted`/`auto-roles` de
+`@local/superpelettes:0.1.0` en vez de reimplementarlos (ver
+`## Uso` de ese repo hermano) -- antes había dos copias del mismo
+cálculo de contraste (una en `theme.typ`, otra en `palettes.typ`),
+ambas con el mismo bug real: `.components()` sin forzar `.rgb()` antes
+lee mal cualquier color en espacio `luma` (`white`/`black` -- llegó a
+hacer que `readable-on` eligiera el candidato equivocado en
+`examples/api.typ`). Para que esto compile, `superpelettes` tiene que
+estar instalado en el mismo namespace `local`:
+
+```sh
+mkdir -p ~/.local/share/typst/packages/local/superpelettes
+ln -sfn /ruta/a/superpelettes ~/.local/share/typst/packages/local/superpelettes/0.1.0
+```
+
+(ver el README de `superpelettes` para instalarlo con su propio `link.sh`).
+
 ## Uso
 
 ### Como paquete instalado localmente
 
-Ya está copiado a `~/.local/share/typst/packages/local/instatypst/0.1.0/`
+Se instala en `~/.local/share/typst/packages/local/instatypst/0.1.0/`
 (sin `Fonts/`, sin `examples/` — solo `src/` + `typst.toml`, igual que
-quedaría un paquete real). Se importa desde cualquier proyecto en esta
-máquina, sin rutas relativas:
+quedaría un paquete real). Para desarrollo, un symlink de `src/` y
+`typst.toml` es más cómodo que copiar (los cambios quedan en vivo):
+
+```sh
+mkdir -p ~/.local/share/typst/packages/local/instatypst/0.1.0
+ln -sfn "$(pwd)/src" ~/.local/share/typst/packages/local/instatypst/0.1.0/src
+ln -sfn "$(pwd)/typst.toml" ~/.local/share/typst/packages/local/instatypst/0.1.0/typst.toml
+```
+
+Se importa desde cualquier proyecto en esta máquina, sin rutas relativas:
 
 ```typst
 #import "@local/instatypst:0.1.0": *
 ```
 
-Si copias `src/` a otra máquina, hay que repetir la instalación ahí
-(`cp -r src typst.toml <destino>/packages/local/instatypst/0.1.0/`).
+Si vas a *publicar* una copia fija en vez de symlinkear (p. ej. para
+llevarla a otra máquina), ahí sí copiá: `cp -r src typst.toml
+<destino>/packages/local/instatypst/0.1.0/`.
 
 **Fuentes:** el paquete no trae las fuentes consigo — eso no es parte de
 cómo funciona el sistema de paquetes de Typst. Quien lo use necesita pasar

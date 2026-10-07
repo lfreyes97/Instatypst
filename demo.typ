@@ -43,7 +43,7 @@
     #text(size: 9pt, weight: 700)[1. Fundaciones]
     #v(4pt)
     #set text(size: 8pt, fill: luma(30%))
-    - Paletas (15) · Tokens (96)
+    - Paletas (15) · Tokens (81)
     - Parejas tipográficas (8) · Tokens (49+)
     - Theme API
   ],

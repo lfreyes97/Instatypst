@@ -186,7 +186,7 @@ typst compile --root . --font-path Fonts examples/articulo.typ
 ```typ
 src/lib.typ              # entrypoint — re-exporta todo
   theme.typ              # API de temas (colores + fuentes, contraste WCAG)
-  tokens.typ             # 96 colores individuales nombrados
+  tokens.typ             # 81 colores individuales (nombre semántico, no familia-NNN)
   palettes.typ           # 15 paletas curadas + auto-roles
   font-tokens.typ        # 49+ fuentes verificadas
   font-pairings.typ      # 8 parejas tipográficas (display/body/mono)
@@ -240,7 +240,7 @@ El tema es un valor inmutable `(name, colors, fonts)`. Todo lo demás (paletas, 
 ))
 
 #h2[2.3 Contraste y legibilidad (WCAG 2.x)]
-Implementado en `src/theme.typ:109` con _normalización correcta_ (`_chan(v) = v/100%`, no `v/100`): blanco puro → luminancia 1.0, contraste negro/blanco = 21.0.
+Importado de `@local/superpelettes:0.1.0` (antes reimplementado acá mismo, con un bug real: `.components()` sin forzar `.rgb()` leía mal cualquier color en espacio `luma` -- `black` daba luminancia 0.7152 en vez de 0, y eso llegó a hacer que `readable-on` eligiera el candidato equivocado en `examples/api.typ`). Blanco puro → luminancia 1.0, contraste negro/blanco = 21.0.
 
 #api-table((
   ([`theme.luminance(c)`], [Luminancia relativa 0–1], [`#theme.luminance(white) // ~1.0`]),
@@ -271,14 +271,14 @@ Implementado en `src/theme.typ:109` con _normalización correcta_ (`_chan(v) = v
 = Colores — tokens y paletas <cap-paletas>
 #h1[3 · Colores — tokens y paletas]
 
-#h2[3.1 `color-tokens` — 96 colores individuales]
-Viven en `src/tokens.typ:1`, compartidos con `theme.base` y con `palettes`. Acceso namespaced para no chocar con `font-tokens`:
+#h2[3.1 `color-tokens` — 81 colores individuales]
+Viven en `src/tokens.typ:1`, compartidos con `theme.base` y con `palettes`. Acceso namespaced para no chocar con `font-tokens`. Nombre semántico, no `familia-NNN` (ver el mapeo viejo→nuevo al inicio de `src/tokens.typ` -- varias claves viejas resultaron, medidas en OKLCH, el mismo color real):
 
 ```typ
 #import "src/lib.typ": *
-#color-tokens.token("sky-400")   // → color
-#color-tokens.tokens.at("red-500")
-#color-tokens.tokens.len() // 96
+#color-tokens.token("denim")   // → color
+#color-tokens.tokens.at("coral")
+#color-tokens.tokens.len() // 81
 ```
 
 Se re-exportan también como `palettes.token`/`palettes.tokens` por compatibilidad (`src/palettes.typ:23`).
@@ -289,7 +289,7 @@ Cada paleta es una lista de claves de tokens. Nombres en `src/palettes.typ:25`: 
 #api-table((
   ([`palettes.names() / .library`], [Lista y dict completo], [`#palettes.names()`]),
   ([`palettes.get(name)`], [Array de colores resueltos], [`#palettes.get("neon")`]),
-  ([`palettes.mix(..items)`], [Paleta ad-hoc (tokens o colores sueltos)], [`#palettes.mix("sky-400", rgb("#123"))`]),
+  ([`palettes.mix(..items)`], [Paleta ad-hoc (tokens o colores sueltos)], [`#palettes.mix("denim", rgb("#123"))`]),
   ([`palettes.as-theme(name)`], [Convierte a tema vía `auto-roles`], [`#let t = (palettes.as-theme)("terracota")`]),
   ([`palettes.auto-roles(cols)`], [Asigna primary/secondary/accent/dark/light/white por luminancia + saturación], [`#palettes.auto-roles(palettes.get("neon"))`]),
   ([`palettes.swatch / .card / .catalog`], [Visuales para docs/demo], [`#(palettes.catalog)(columns: 3)`]),
@@ -568,6 +568,35 @@ En hebreo, #he[בְּרֵאשִׁית] — RTL automático.
 ```
 
 Válido para tu propio contenido; no para parametrizar plantillas (ver #link(<cap-temas>)[cap. 2]).
+
+#h2[9.3 Fondos componibles — `superbg`]
+`superbg` vive vendorizado en `src/superbg/` y se re-exporta desde `lib.typ` como namespace (no con `import: *`, para no chocar con `bg()`/`gradient-bg()`/`blob()` nativos de este mismo capítulo). Se usa como primer hijo de `canvas()` — reemplaza al fondo nativo, el contenido va igual después.
+
+Tres niveles, una sola puerta (`superbg.superbg`):
+- *Nivel 1 — presets*: `superbg.superbg("neon-aura", theme:, size:)` — nombre de preset, resuelto con los colores del tema si se pasa `theme:`.
+- *Nivel 2 — constructores explícitos*: `superbg.bg-gradiente(from:, to:, angulo:)`, `superbg.bg-aura(colores, size:)`, `superbg.bg-malla(..)`, `superbg.bg-topo(..)`, `superbg.bg-patron(patron:, color:, paso:)`, entre otros — se combinan con `+` o se pasan sueltos a `superbg.superbg(..)`.
+- *Nivel 3 — motor de capas*: un dict `(capas: (...))`, cada capa con su `tipo:` (`"plano" | "gradiente" | "aura" | "malla" | "patron" | "vignette" | "topo" | "halftone" | "rayos" | "memphis" | "imagen" | "frame" | "vidrio"`) apiladas en orden — ver `src/superbg/core.typ:21` para los parámetros de cada una.
+
+#example-canvas(```typ
+#canvas(sizes.instagram, theme: theme.base)[
+  #superbg.superbg((capas: (
+    (tipo: "gradiente", from: palette.dark, to: palette.primary),
+    (tipo: "aura", colores: (palette.secondary, palette.accent)),
+    (tipo: "patron", patron: "dots", color: white, opacidad: 12%),
+    (tipo: "vignette", intensidad: 28%),
+  )), size: sizes.instagram, theme: theme.base)
+  #pad(page-pad)[
+    #headline([Fondo de marca], color: white, theme: theme.base)
+  ]
+]
+```, opciones: (
+  ("superbg.superbg(spec, size:, theme:, ruta:, colores:, centro:)", "motor público — spec es string (preset) | content (N2 ya compuesto) | dict de capas (N3)"),
+  ("theme:", "opcional y duck-typing — cualquier dict con `.colors` sirve; sin tema, todo se pasa explícito"),
+  ("superbg.lista-presets()", "nombres de preset disponibles (`src/superbg/presets.typ`)"),
+  ("superbg.sizes", "mismo dict de tamaños que `sizes` de este capítulo — no hace falta mezclarlos"),
+))
+
+No independiza de Instatypst: `superbg/` no importa nada de este paquete, así que también se usa suelto como `@local/superbg:0.1.0` (ver `examples/bridge-superbg.typ`). Dentro de Instatypst, en cambio, siempre vendorizado — sin dependencia externa para compilar `src/lib.typ`.
 
 // ═══════════════════════════════════════════════════════════
 = Componentes base <cap-componentes>
