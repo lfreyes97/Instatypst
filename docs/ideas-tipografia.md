@@ -64,7 +64,18 @@ armaron `capitular-ornamentada()` e `inicial-ornamentada()` en
 (`Assets/eb-initials/generar-G-T.py`): letra de la fuente EB Garamond
 calibrada contra C/I y engrosada para igualar el trazo dibujado, sobre
 el ornamento de C/I. Las acentuadas (Á, É, Ñ…) caen a `capitular()`
-normal; la puntuación inicial cuelga en el margen. Muestra completa en
+normal; la puntuación inicial cuelga en el margen.
+
+**Estilos de grabado (2026-10-07):** la idea es imitar las capitulares
+de imprenta clásica (tacos de madera/metal, ss. XVI–XVII), no un dibujo
+a dos colores de marca. `estilo:` "una-tinta" (por defecto), "invertida"
+(criblé: bloque de tinta con ornamento y letra calados, transparentes),
+"rubricada" (negro + rojo) y "tema" (el accent/primary de antes).
+`marco:` doble filete del taco; `desgaste:` 0–1 simula la impresión
+(bordes irregulares + huecos de tinta, semilla por letra). Con desgaste
+el filtro se rasteriza. Ojo: Typst desplaza un `<mask>` cuya región es
+más grande que el elemento enmascarado (rsvg no) — la región tiene que
+coincidir exacto con el bloque. Muestra completa en
 `examples/capitulares-ornamentadas.typ`.
 
 ## Falta una fuente con cobertura de emoji
