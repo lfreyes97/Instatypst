@@ -3,7 +3,7 @@
 // Plantilla: cita-canvas + blockquote-hero — paleta "noche-azul" + tipografía "brutalista"
 // Compilar: typst compile --root . --font-path Fonts campana/09-elegidos-para-ser-buenos.typ
 #import "../src/lib.typ": *
-
+#set text(size: 26pt)
 #let tema = make-theme(paleta: "noche-azul", tipografia: "brutalista")
 
 #let marca-h = tema.colors.primary.transparentize(65%)
