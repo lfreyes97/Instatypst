@@ -127,7 +127,7 @@
   if indice == 0 { (none, c, none) } else { (c, none, none) }
 }
 
-#let _antes = regex("[" + "\"'" + "\u{00A0}\u{2000}-\u{200F}\u{2028}-\u{202F}\u{205F}-\u{3000}" + "\u{00AB}\u{201C}\u{2018}(\[\{" + "]+")
+#let _antes = regex("[" + "\"'" + "\u{00A0}\u{2000}-\u{200F}\u{2028}-\u{202F}\u{205F}-\u{3000}" + "\u{00AB}\u{00BF}\u{00A1}\u{201C}\u{2018}(\[\{" + "]+")
 #let _despues = regex("[" + ".\"'" + ",;:!?\u{00BB}\u{201D}\u{2019})\]\}" + "\u{0300}-\u{036F}" + "]+")
 
 #let _inicial(c) = {
@@ -335,8 +335,10 @@
 //  Mismos parámetros que capitular() (alto, hueco, sangria, justificar,
 //  profundidad, letra…), así que se puede cambiar una por otra.
 //  El repo de origen NO tiene G ni T (tampoco Á, É, Ñ…): para esas
-//  letras, o si el párrafo arranca con puntuación («, ¿, …), cae al
-//  capitular() de siempre con los mismos argumentos.
+//  letras cae al capitular() de siempre con los mismos argumentos.
+//  La puntuación inicial («, ¿, …) cuelga en el margen a tamaño de
+//  texto en vez de agrandarse con la letra. `hueco` por defecto es más
+//  ancho que en capitular() porque el cuadro del ornamento llega al borde.
 // ─────────────────────────────────────────────────────────────
 #let _iniciales = (
   "A", "B", "C", "D", "E", "F", "H", "I", "J", "K", "L", "M", "N",
@@ -371,20 +373,32 @@
 #let capitular-ornamentada(
   cuerpo,
   alto: 3,
+  hueco: 0.3em,
   fill: none,
   ornamento: none,
   theme: theme.base,
   ..args,
 ) = context {
+  let fill = if fill == none { theme.colors.primary } else { fill }
   let (l, resto) = _extraer(cuerpo)
-  let texto = _a-texto(l)
-  let ilum = if texto.clusters().len() == 1 {
-    inicial-ornamentada(texto, size: _resolver-alto(alto), fill: fill, ornamento: ornamento, theme: theme)
+  let cs = _a-texto(l).clusters()
+  let i = cs.position(c => c.match(regex("\\p{L}")) != none)
+  // Solo se separa el caso "puntuación + una letra" («T, ¿A, "E…);
+  // cualquier otra forma rara cae a capitular() tal cual.
+  if i == none or i != cs.len() - 1 {
+    return capitular(cuerpo, alto: alto, hueco: hueco, fill: fill, ..args)
   }
-  if ilum == none {
-    let fill = if fill == none { theme.colors.primary } else { fill }
-    capitular(cuerpo, alto: alto, fill: fill, ..args)
-  } else {
-    capitular(resto, letra: ilum, alto: alto, ..args)
+  let letra = cs.at(i)
+  let ilum = inicial-ornamentada(letra, size: _resolver-alto(alto), fill: fill, ornamento: ornamento, theme: theme)
+  let inicial = if ilum == none { letra } else { ilum }
+  // Puntuación inicial colgada en el margen, a tamaño de texto: no
+  // crece con la capitular (un « gigante al lado de la letra se ve mal).
+  if i > 0 {
+    let pre = text(size: text.size, fill: fill, cs.slice(0, i).join())
+    inicial = box({
+      place(top + left, dx: -measure(pre).width - 0.1em, pre)
+      inicial
+    })
   }
+  capitular(resto, letra: inicial, alto: alto, hueco: hueco, fill: fill, ..args)
 }
