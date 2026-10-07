@@ -10,6 +10,7 @@ Fonts/ZedMono_Nerd_Font/
 *.pdf
 out/
 salida/
+svg-lab/*.png
 
 # Nix + direnv
 .direnv/
