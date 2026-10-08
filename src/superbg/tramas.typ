@@ -40,10 +40,12 @@
     pts.push("<circle cx='" + str(x) + "' cy='" + str(y) + "' r='" + str(r) + "' fill='" + color.to-hex() + "' fill-opacity='" + op + "'/>")
   } }
   let svg = "<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 " + str(w) + " " + str(h) + "'>" + pts.join("") + "</svg>"
+  // `.replace("−", "-")` en cada bytes(svg) de superbg: str() escribe los
+  // negativos con U+2212 («−»), que el SVG no entiende y descarta la forma.
   if fondo == none {
-    place(image(bytes(svg), format: "svg", width: 100%, height: 100%))
+    place(image(bytes(svg.replace("−", "-")), format: "svg", width: 100%, height: 100%))
   } else {
-    place(rect(width: 100%, height: 100%, fill: fondo)) + place(image(bytes(svg), format: "svg", width: 100%, height: 100%))
+    place(rect(width: 100%, height: 100%, fill: fondo)) + place(image(bytes(svg.replace("−", "-")), format: "svg", width: 100%, height: 100%))
   }
 }
 
@@ -79,8 +81,8 @@
   }).join("")
   let svg = "<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 " + str(w) + " " + str(h) + "'>" + cunas + "</svg>"
   if fondo == none {
-    place(image(bytes(svg), format: "svg", width: 100%, height: 100%))
+    place(image(bytes(svg.replace("−", "-")), format: "svg", width: 100%, height: 100%))
   } else {
-    place(rect(width: 100%, height: 100%, fill: fondo)) + place(image(bytes(svg), format: "svg", width: 100%, height: 100%))
+    place(rect(width: 100%, height: 100%, fill: fondo)) + place(image(bytes(svg.replace("−", "-")), format: "svg", width: 100%, height: 100%))
   }
 }

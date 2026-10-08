@@ -130,7 +130,7 @@
     "<g filter='url(#b)'>" + elipses + "</g>",
     panel-capas,
     "</svg>",
-  ).join("")
+  ).join("").replace("−", "-") // str() escribe los negativos con U+2212, que el SVG no entiende
 }
 
 #let aura-bg(colores, size: sizes.instagram, r: auto, blur: auto, posiciones: auto, panel: none, panel-blur: auto, tinte: white) = {
@@ -206,9 +206,9 @@
 // y se la pasa, así logo y texto siempre guardan la misma altura — si el
 // logo pudiera pedir más alto por su cuenta, la fila del pie crecería más
 // que con puro texto y en una tarjeta ajustada eso basta para desbordar
-// el lienzo a una segunda página. (Ver `logo-presuposicionalismo` en
-// campana/_comun.typ, que arma esa función recoloreando el SVG — footer()
-// no sabe nada de esa lógica.)
+// el lienzo a una segunda página. (La campaña de campana/ no pasa por
+// footer(): su `logo()` en _comun.typ recolorea el SVG y fija el alto
+// según el ancho del lienzo.)
 //
 // `scale:` agranda pie completo (texto y logo a la vez, manteniendo esa
 // igualdad): `cita-canvas` lo expone como `footer-scale:`.

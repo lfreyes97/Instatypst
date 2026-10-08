@@ -38,8 +38,8 @@
   }).join("")
   let svg = "<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 " + str(w) + " " + str(h) + "'>" + curvas + "</svg>"
   if fondo == none {
-    place(image(bytes(svg), format: "svg", width: 100%, height: 100%))
+    place(image(bytes(svg.replace("−", "-")), format: "svg", width: 100%, height: 100%))
   } else {
-    place(rect(width: 100%, height: 100%, fill: fondo)) + place(image(bytes(svg), format: "svg", width: 100%, height: 100%))
+    place(rect(width: 100%, height: 100%, fill: fondo)) + place(image(bytes(svg.replace("−", "-")), format: "svg", width: 100%, height: 100%))
   }
 }

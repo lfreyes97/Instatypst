@@ -39,7 +39,7 @@
     "<g filter='url(#b)'>" + elipses + "</g>",
     panel-capas,
     "</svg>",
-  ).join("")
+  ).join("").replace("−", "-") // str() escribe los negativos con U+2212, que el SVG no entiende
 }
 
 // Aura desenfocada real (SVG + feGaussianBlur). `colores:` se reparte en

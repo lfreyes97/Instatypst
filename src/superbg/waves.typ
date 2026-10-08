@@ -60,8 +60,8 @@
     "<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 " + str(w) + " " + str(h) + "'><rect x='0' y='0' width='" + str(w) + "' height='" + str(h) + "' fill='" + fondo.to-hex() + "'/></svg>"
   }
   if fondo == none {
-    place(image(bytes(svg), format: "svg", width: 100%, height: 100%))
+    place(image(bytes(svg.replace("−", "-")), format: "svg", width: 100%, height: 100%))
   } else {
-    place(image(bytes(fondo-svg), format: "svg", width: 100%, height: 100%)) + place(image(bytes(svg), format: "svg", width: 100%, height: 100%))
+    place(image(bytes(fondo-svg.replace("−", "-")), format: "svg", width: 100%, height: 100%)) + place(image(bytes(svg.replace("−", "-")), format: "svg", width: 100%, height: 100%))
   }
 }

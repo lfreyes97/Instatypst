@@ -19,7 +19,7 @@
   let circulos = ((0, 0, r, izq.to-hex()), (0, h, r, izq.to-hex()), (w, 0, r, der.to-hex()), (w, h, r, der.to-hex()))
   let svg = _svg-aura(w, h, r * 0.55, circulos)
   (
-    place(image(bytes(svg), format: "svg", width: 100%, height: 100%)),
+    place(image(bytes(svg.replace("−", "-")), format: "svg", width: 100%, height: 100%)),
     place(dx: margen, rect(width: 100% - 2 * margen, height: 100%, fill: centro)),
   ).join()
 }

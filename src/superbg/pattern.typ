@@ -86,7 +86,7 @@
   let color = if color == none { _tcolor(theme, "dark", rgb("#111111")) } else { color }
   let hex-fondo = if fondo == none { none } else { fondo.to-hex() }
   let svg = _svg-patron(size.at(0), size.at(1), patron, color.to-hex(), paso, grosor, radio, opacidad / 1%, hex-fondo)
-  place(image(bytes(svg), format: "svg", width: 100%, height: 100%))
+  place(image(bytes(svg.replace("−", "-")), format: "svg", width: 100%, height: 100%))
 }
 
 // Atajo legible para viñeta (no pide paso/radio).
