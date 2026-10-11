@@ -34,7 +34,10 @@
 //    carteles -> namespace de presets de color sólido + tipografía
 //      (carteles.suizo, carteles.demostracion, …) y sus piezas
 //      (carteles.reticula, carteles.cuerpo-al-ancho, carteles.rayar),
-//      ver ese archivo
+//      ver ese archivo; los de orla de fleurones (carteles.cita-orlada,
+//      carteles.capitulo-orlado, carteles.pregunta-orlada) en orlas.typ
+//    fleurones -> namespace de orlas, bandas y mallas con IM FELL
+//      FLOWERS (fleurones.banda, .marco, .diaper, .roseta…)
 //
 //  `color-tokens`/`font-tokens`/`formas` van con nombre en vez de
 //  `import: *` a propósito. `color-tokens`/`font-tokens`: ambos módulos
@@ -60,3 +63,4 @@
 #import "carrusel.typ": *
 #import "superbg/lib.typ" as superbg
 #import "carteles.typ" as carteles
+#import "fleurones.typ" as fleurones

@@ -17,9 +17,14 @@
 //                                  mide exactamente `ancho` (en context)
 //    rayar(cuerpo, …)         -> tachado en línea: recto o a lápiz,
 //                                con letras vaciadas opcionales
+//
+//  Presets con orla de fleurones e IM FELL (viven en orlas.typ):
+//    cita-orlada, capitulo-orlado, pregunta-orlada, lienzo-orlado,
+//    temas-orla
 // ─────────────────────────────────────────────────────────────
 
 #import "superbg/lib.typ" as superbg
+#import "orlas.typ": lienzo-orlado, cita-orlada, capitulo-orlado, pregunta-orlada, temas as temas-orla
 
 // Retícula de columnas sobre `ancho` (largo). `x.at(i)`: borde
 // izquierdo de la columna i (desde 0); `span.at(n)`: ancho de n columnas

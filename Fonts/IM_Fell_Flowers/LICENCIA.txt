@@ -1,0 +1,16 @@
+IM FELL FLOWERS 1 y 2 — © 2004 Igino Marini, www.iginomarini.com
+
+Texto de la licencia tal como viene en la tabla `name` (ID 13) de
+IMFeFlow1.otf e IMFeFlow2.otf (los signos raros son del original):
+
+This font is a nearly free font. You can use it freely but:
+a) If you want to use it in publications on any kind of media you have to put in the following quote as a note: ´The Fell Types are digitally reproduced by Igino Marini. www.iginomarini.comª and let the designer know where you used it.
+b) You canít change the font and its contents (including outlines, kerning and other data as well).
+c) You can distribute it freely with license aside but not sell it in any way.
+Any other different use has to be authorized by the designer.
+
+En la práctica: toda pieza publicada que use estas fuentes debe llevar
+la nota «The Fell Types are digitally reproduced by Igino Marini.
+www.iginomarini.com» (en una imagen para redes, en el texto que la
+acompaña), y no se pueden modificar ni vender. Se redistribuyen acá
+junto a esta licencia, como ella permite.
