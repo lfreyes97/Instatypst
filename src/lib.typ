@@ -31,6 +31,9 @@
 //      sin blockquote-* que la use (ver ese archivo)
 //    superbg -> namespace de fondos componibles (superbg.superbg,
 //      superbg.bg-aura, superbg.bg-malla, …)
+//    carteles -> namespace de presets de color sólido + tipografía
+//      (carteles.suizo, …) y sus piezas (carteles.reticula,
+//      carteles.cuerpo-al-ancho), ver ese archivo
 //
 //  `color-tokens`/`font-tokens`/`formas` van con nombre en vez de
 //  `import: *` a propósito. `color-tokens`/`font-tokens`: ambos módulos
@@ -55,3 +58,4 @@
 #import "blockquotes.typ": *
 #import "carrusel.typ": *
 #import "superbg/lib.typ" as superbg
+#import "carteles.typ" as carteles
