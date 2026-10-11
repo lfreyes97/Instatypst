@@ -18,6 +18,12 @@
 //    rayar(cuerpo, …)         -> tachado en línea: recto o a lápiz,
 //                                con letras vaciadas opcionales
 //
+//  Presets en archivo propio (cada uno con su lámina de origen):
+//    escalera      (04) la frase baja en peldaños hasta un clímax, sobre
+//                  curvas de nivel (curvas-de-nivel) — escalera.typ
+//    gozne, llamada (07) cita con llamadas + diagrama radial — gozne.typ
+//    linea-tiempo  (16) estaciones sobre una línea vertical — linea-tiempo.typ
+//
 //  Presets con orla de fleurones e IM FELL (viven en orlas.typ):
 //    cita-orlada, capitulo-orlado, pregunta-orlada, lienzo-orlado,
 //    temas-orla
@@ -25,6 +31,9 @@
 
 #import "superbg/lib.typ" as superbg
 #import "orlas.typ": lienzo-orlado, cita-orlada, capitulo-orlado, pregunta-orlada, temas as temas-orla
+#import "escalera.typ": escalera, curvas-de-nivel
+#import "gozne.typ": gozne, llamada
+#import "linea-tiempo.typ": linea-tiempo
 
 // Retícula de columnas sobre `ancho` (largo). `x.at(i)`: borde
 // izquierdo de la columna i (desde 0); `span.at(n)`: ancho de n columnas
