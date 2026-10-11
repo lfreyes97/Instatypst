@@ -12,7 +12,7 @@
 # los dibujados, así que se engruesan con stroke-width 8 en currentColor
 # (dropcaps.typ pone `color=` igual al fill al recolorear).
 #
-# Uso (desde la raíz del repo): python3 Assets/eb-initials/generar-G-T.py
+# Uso (desde la raíz del repo): python3 scripts/generar-G-T.py
 import io, subprocess
 from PIL import Image
 from fontTools.ttLib import TTFont
@@ -20,7 +20,7 @@ from fontTools.pens.svgPathPen import SVGPathPen
 from fontTools.pens.transformPen import TransformPen
 from fontTools.pens.boundsPen import BoundsPen
 
-D = 'Assets/eb-initials'
+D = 'src/assets/eb-initials'
 font = TTFont('Fonts/EB_Garamond/EBGaramond12-Regular.ttf')
 gs = font.getGlyphSet()
 cmap = font.getBestCmap()

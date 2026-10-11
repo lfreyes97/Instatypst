@@ -34,7 +34,7 @@ Diseño en **dos capas**, pensado para dos colores:
 - `EBGaramond-InitialsF1` — el ornamento de fondo (florituras).
 - `EBGaramond-InitialsF2` — la letra en primer plano.
 
-Portarlas sería el mismo patrón que los 6 blobs de `Assets/shapes.2svg`
+Portarlas sería el mismo patrón que los 6 blobs de `shapes.2svg` (ver `src/formas.typ`)
 (recortar viewBox real, recolorear con `fill.to-hex()`), pero con DOS
 `<path>` por letra en vez de uno — F1 con `theme.colors.accent` (o
 `.secondary`), F2 con `theme.colors.primary`/`.dark`, superpuestos.
@@ -58,10 +58,10 @@ necesita un fallback (usar el `capitular()` de siempre) para esas dos
 letras, no puede prometer el alfabeto completo.
 
 **Hecho (2026-10-07):** se bajaron las 24 letras + Ä/Ö/Ü en ambas
-capas a `Assets/eb-initials/{F1,F2}/` (con `COPYING`, OFL-1.1) y se
+capas a `src/assets/eb-initials/{F1,F2}/` (con `COPYING`, OFL-1.1) y se
 armaron `capitular-ornamentada()` e `inicial-ornamentada()` en
 `src/dropcaps.typ`. G y T se generaron aparte
-(`Assets/eb-initials/generar-G-T.py`): letra de la fuente EB Garamond
+(`scripts/generar-G-T.py`): letra de la fuente EB Garamond
 calibrada contra C/I y engrosada para igualar el trazo dibujado, sobre
 el ornamento de C/I. Las acentuadas (Á, É, Ñ…) caen a `capitular()`
 normal; la puntuación inicial cuelga en el margen.

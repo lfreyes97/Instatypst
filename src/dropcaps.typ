@@ -326,7 +326,7 @@
 //  capitular-ornamentada — capitular iluminada de EB Garamond Initials
 //
 //  Glifos SVG de georgd/EB-Garamond-Initials (OFL-1.1, ver
-//  Assets/eb-initials/COPYING), basados en las capitulares de
+//  src/assets/eb-initials/COPYING), basados en las capitulares de
 //  *De Peste Commentarius* (1589). Dos capas por letra, mismo viewBox
 //  0 0 1000 1000, superpuestas sin traducir nada:
 //    F1 -> ornamento de fondo (florituras)  -> color `ornamento:`
@@ -336,7 +336,7 @@
 //  profundidad, letra…), así que se puede cambiar una por otra.
 //  El repo de origen NO trae G ni T: esas dos se generaron aparte desde
 //  la fuente EB Garamond con el ornamento de C/I (ver
-//  Assets/eb-initials/generar-G-T.py). Las acentuadas (Á, É, Ñ…) no
+//  scripts/generar-G-T.py). Las acentuadas (Á, É, Ñ…) no
 //  existen: caen al capitular() de siempre con los mismos argumentos.
 //  La puntuación inicial («, ¿, …) cuelga en el margen a tamaño de
 //  texto en vez de agrandarse con la letra. `hueco` por defecto es más
@@ -387,7 +387,7 @@
 // Los <path> de una capa, recoloreados. `color=` además de `fill=`: G y T
 // engruesan el trazo con stroke="currentColor", que toma ese valor.
 #let _paths(capa, nombre, color) = (
-  read("../Assets/eb-initials/" + capa + "/" + nombre + ".svg")
+  read("assets/eb-initials/" + capa + "/" + nombre + ".svg")
     .find(regex("(?s)<path.*</svg>"))
     .replace("</svg>", "")
     .replace("<path", "<path fill='" + color + "' color='" + color + "'")

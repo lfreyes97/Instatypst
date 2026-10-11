@@ -10,12 +10,12 @@
 // ─────────────────────────────────────────────────────────────
 
 #import "../src/lib.typ": sizes
+#import "logo.typ" as marca
 
 // 4:5 — el vertical del feed (no está en `sizes` de social.typ).
 #let formatos = sizes + (retrato: (1080, 1350))
 
-// Logo de Assets/Logo.svg recoloreado: el SVG trae `currentColor`, que
-// Typst no resuelve (cae a negro sin avisar).
+// Logo de logo.typ (Typst puro, sin SVG): `color` se pasa directo.
 // El tamaño es relativo al lienzo, no un valor fijo: el alto del logo es
 // una fracción de √(ancho × alto), así ocupa la misma parte de la lámina
 // sea cuadrada, retrato, story o apaisada. Medirlo solo por el ancho
@@ -25,11 +25,8 @@
 #let logo-proporcion = 1 / 30 // alto del logo ÷ √área (36 pt en 1080×1080)
 #let logo(color, lienzo) = {
   let (w, h) = lienzo
-  image(
-    bytes(read("../Assets/Logo.svg").replace("currentColor", color.to-hex())),
-    format: "svg",
-    height: calc.sqrt(w * h) * logo-proporcion * 1pt,
-  )
+  let alto = calc.sqrt(w * h) * logo-proporcion * 1pt
+  marca.logo(width: alto * 628 / 153, color: color) // caja de 628 × 153
 }
 
 // Texto plano de un contenido (para medir palabra por palabra).

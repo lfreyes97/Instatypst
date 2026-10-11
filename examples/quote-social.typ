@@ -1,4 +1,4 @@
-// Demo de quote-social() — cita con foto real (Assets/avatar.jpg), resaltado
+// Demo de quote-social() — cita con foto real (examples/avatar.jpg), resaltado
 // nativo con #highlight(), y las dos posiciones de atribucion: (declarativo,
 // no hay que reordenar nada a mano — solo cambia el parámetro).
 // Compilar: typst compile --root . examples/quote-social.typ
@@ -10,7 +10,7 @@
   "Luis Felipe Reyes de los Reyes",
   iniciales: "LR",
   atribucion: "arriba",
-  foto: "/Assets/avatar.jpg",
+  foto: "/examples/avatar.jpg",
   color: rgb("#13ddab"),
   size: sizes.story,
 )

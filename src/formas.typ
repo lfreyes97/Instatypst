@@ -135,7 +135,7 @@
   )
 }
 
-// ── Blobs orgánicos — porteados de Assets/shapes.2svg ──
+// ── Blobs orgánicos — porteados de shapes.2svg (Illustrator; en el historial de git, ea1c93f) ──
 // Illustrator exportó 6 siluetas orgánicas (curvas bezier `c`/`C` de
 // verdad, no arcos ni líneas rectas como bocadillo/cinta) dentro de un
 // lienzo de 750×500 con las 6 mezcladas y texto de muestra encima. Cada
