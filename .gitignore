@@ -11,6 +11,7 @@ Fonts/ZedMono_Nerd_Font/
 out/
 salida/
 svg-lab/*.png
+campana/*.png
 
 # Nix + direnv
 .direnv/
