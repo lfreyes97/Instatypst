@@ -15,7 +15,11 @@
 //    reticula(ancho, …)       -> columnas: .x.at(i), .span.at(n), .util, .col
 //    cuerpo-al-ancho(hacer, ancho) -> tamaño con el que hacer(tamaño)
 //                                  mide exactamente `ancho` (en context)
+//    rayar(cuerpo, …)         -> tachado en línea: recto o a lápiz,
+//                                con letras vaciadas opcionales
 // ─────────────────────────────────────────────────────────────
+
+#import "superbg/lib.typ" as superbg
 
 // Retícula de columnas sobre `ancho` (largo). `x.at(i)`: borde
 // izquierdo de la columna i (desde 0); `span.at(n)`: ancho de n columnas
@@ -39,6 +43,34 @@
 // El ancho del texto es lineal en el tamaño: se mide una vez a 100pt y
 // se escala. Usar dentro de `context`.
 #let cuerpo-al-ancho(hacer, ancho) = 100pt * (ancho / measure(hacer(100pt)).width)
+
+// Tachado en línea, para negar una palabra o un prefijo dentro de la
+// frase (se usa como cualquier texto: #rayar[ir]racional).
+//   trazo: "recto" -> strike de Typst a media altura de las mayúsculas
+//                     (lámina 17)
+//          "lapiz" -> línea de corrector a mano alzada, apenas
+//                     inclinada y más larga que la palabra (lámina 09)
+//   vaciar: (fondo: color, contorno: stroke) -> las letras quedan en
+//           contorno, rellenas con el color del fondo
+#let rayar(cuerpo, color: rgb("#d0342c"), trazo: "recto", grosor: auto, vaciar: none) = {
+  let cuerpo = if vaciar == none { cuerpo } else { text(fill: vaciar.fondo, stroke: vaciar.contorno, cuerpo) }
+  if trazo == "recto" {
+    let g = if grosor == auto { 0.053em } else { grosor }
+    strike(stroke: g + color, offset: -0.26em, extent: 0.08em, cuerpo)
+  } else if trazo == "lapiz" {
+    let g = if grosor == auto { 0.086em } else { grosor }
+    box(context {
+      let w = measure(cuerpo).width
+      cuerpo
+      place(top + left, line(
+        start: (-0.24em, 0.52em), end: (w + 0.28em, 0.34em),
+        stroke: (paint: color, thickness: g, cap: "round"),
+      ))
+    })
+  } else {
+    panic("rayar: trazo debe ser \"recto\" o \"lapiz\", no " + repr(trazo))
+  }
+}
 
 // ── carteles.suizo ──────────────────────────────────────────
 // Cartel suizo (lámina 01): una palabra-remate ocupa todo el ancho útil
@@ -164,5 +196,137 @@
     // ── pie ──
     place(bottom + left, dx: margen, dy: -112pt, line(length: r.util, stroke: 2.5pt + tinta))
     if marca != none { place(bottom + left, dx: r.x.at(0), dy: -margen + 3pt, marca) }
+  })
+}
+
+// ── carteles.demostracion ───────────────────────────────────
+// La cita como demostración numerada, en pizarra (lámina 17): renglones
+// numerados en mono; la palabra que se sostiene, enorme, con ⊢; la que
+// no se sigue, con ⊬. Una raya de deducción punteada separa los grupos.
+//
+//   grupos   array de grupos; cada grupo, un array de renglones (un solo
+//            grupo puede pasarse plano). Un renglón es:
+//              contenido        -> renglón de lectura
+//              (afirma: c)      -> c enorme en `claro`, signo ⊢ en acento
+//              (niega: c)       -> c enorme en `texto`, signo ⊬ apagado
+//            y acepta `signo:` y `cuerpo:` para pisar los de siempre.
+//            El tamaño enorme, por defecto, llena la columna (hasta
+//            `cuerpo-max`, para que una palabra corta no se dispare).
+//   autor, obra    pie en mono, abajo a la izquierda
+//   marca          contenido abajo a la derecha (p. ej. el logo)
+//   inicio         y del primer grupo; auto = el bloque reparte el aire
+//                  libre 1:2 (arriba:abajo) entre el margen y el pie
+//
+// Si el bloque no cabe en el alto (apaisado, demasiados renglones),
+// todo se achica en la misma proporción.
+#let demostracion(
+  grupos,
+  formato: (1080, 1080),
+  autor: none,
+  obra: none,
+  marca: none,
+  fondo: rgb("#0d1014"),
+  claro: rgb("#f4f1ea"),
+  texto: rgb("#c3c9d1"),
+  apagado: rgb("#8b95a1"),
+  acento: rgb("#f2b33d"),
+  fuente: "Instrument Sans",
+  fuente-mono: "DM Mono",
+  cuerpo-lectura: 58pt,
+  cuerpo-max: 232pt,
+  margen: 84pt,
+  aire-raya: (arriba: 76pt, abajo: 44pt),
+  cuadricula: true,
+  inicio: auto,
+) = {
+  let (ancho, alto) = (formato.at(0) * 1pt, formato.at(1) * 1pt)
+  let caja = ancho - 2 * margen
+  let (col-n, col-signo) = (64pt, 48pt)
+  // un solo grupo plano -> lista de un grupo
+  let grupos = if grupos.len() > 0 and type(grupos.at(0)) != array { (grupos,) } else { grupos }
+
+  let mono(cuerpo, color: apagado, size: 24pt) = text(font: fuente-mono, size: size, fill: color, cuerpo)
+  let numero(i) = mono(if i < 10 { "0" + str(i) } else { str(i) })
+  let destacar(c, tono, s) = box(text(size: s, weight: 700, fill: tono, tracking: -0.02em, c))
+
+  // celdas de un grupo, con todo escalado por `e` (1 = tamaños de siempre)
+  let filas(grupo, desde, e) = {
+    let celdas = ()
+    for (k, r) in grupo.enumerate() {
+      celdas.push(numero(desde + k))
+      if type(r) == dictionary {
+        let afirma = "afirma" in r
+        let c = if afirma { r.afirma } else { r.niega }
+        let tono = if afirma { claro } else { texto }
+        let s = r.at("cuerpo", default: auto)
+        // llena la columna, pero una palabra corta no pasa de `cuerpo-max`
+        let s = if s == auto {
+          calc.min(cuerpo-max, cuerpo-al-ancho(t => destacar(c, tono, t), 0.98 * (caja - col-n - col-signo)))
+        } else { s }
+        celdas.push(destacar(c, tono, s * e))
+        let signo = r.at("signo", default: if afirma { "⊢" } else { "⊬" })
+        celdas.push(text(font: fuente-mono, size: 52pt * e, fill: if afirma { acento } else { apagado }, signo))
+      } else {
+        celdas.push(text(size: cuerpo-lectura * e, r))
+        celdas.push([])
+      }
+    }
+    block(width: caja, grid(
+      columns: (col-n, 1fr, col-signo),
+      align: (left + horizon, left + horizon, right + horizon),
+      row-gutter: 18pt * e,
+      ..celdas,
+    ))
+  }
+
+  page(width: ancho, height: alto, margin: 0pt, fill: fondo, {
+    set text(font: fuente, fill: texto, lang: "es", hyphenate: false)
+
+    // ── retícula de cuaderno de cálculo, muy tenue ──
+    if cuadricula {
+      place(superbg.bg-patron(patron: "grid", color: claro, paso: 54, grosor: 1, opacidad: 5%, size: formato))
+    }
+
+    // ── pie ──
+    let pie = block(width: caja, grid(
+      columns: (1fr, auto),
+      align: (left + bottom, right + bottom),
+      if autor != none or obra != none {
+        mono(color: texto)[— #autor \ #h(1.2em)#text(fill: apagado, obra)]
+      },
+      if marca != none { marca },
+    ))
+    place(bottom + left, dx: margen, dy: -76pt, pie)
+
+    context {
+      // numeración corrida entre grupos
+      let desde = (1,)
+      for g in grupos { desde.push(desde.last() + g.len()) }
+      let medir(e) = {
+        let bloques = grupos.enumerate().map(((i, g)) => filas(g, desde.at(i), e))
+        let alto-total = bloques.map(b => measure(b).height).sum() + (grupos.len() - 1) * (aire-raya.arriba + aire-raya.abajo) * e
+        (bloques, alto-total)
+      }
+      // espacio disponible: entre el margen y el pie
+      let techo = margen
+      let piso = alto - 76pt - measure(pie).height - 40pt
+      let e = 1.0
+      let (bloques, total) = medir(e)
+      while total > piso - techo and e > 0.3 {
+        e -= 0.05
+        (bloques, total) = medir(e)
+      }
+      let y = if inicio == auto { techo + (piso - techo - total) / 3 } else { inicio }
+      for (i, b) in bloques.enumerate() {
+        if i > 0 {
+          y += aire-raya.arriba * e
+          // raya de deducción, desde la columna del texto
+          place(dx: margen + col-n, dy: y, line(length: caja - col-n, stroke: (paint: apagado, thickness: 2pt, dash: (6pt, 8pt))))
+          y += aire-raya.abajo * e
+        }
+        place(dx: margen, dy: y, b)
+        y += measure(b).height
+      }
+    }
   })
 }

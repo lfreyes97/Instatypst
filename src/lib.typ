@@ -32,8 +32,9 @@
 //    superbg -> namespace de fondos componibles (superbg.superbg,
 //      superbg.bg-aura, superbg.bg-malla, …)
 //    carteles -> namespace de presets de color sólido + tipografía
-//      (carteles.suizo, …) y sus piezas (carteles.reticula,
-//      carteles.cuerpo-al-ancho), ver ese archivo
+//      (carteles.suizo, carteles.demostracion, …) y sus piezas
+//      (carteles.reticula, carteles.cuerpo-al-ancho, carteles.rayar),
+//      ver ese archivo
 //
 //  `color-tokens`/`font-tokens`/`formas` van con nombre en vez de
 //  `import: *` a propósito. `color-tokens`/`font-tokens`: ambos módulos
