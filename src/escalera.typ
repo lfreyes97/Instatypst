@@ -23,6 +23,8 @@
 //   color     "tinta" | "suave" | "acento" | un color
 //   tracking  0pt por defecto
 //   y         auto = reparto automático · un largo = fijo, desde arriba
+#import "curvas.typ" as _cv
+
 // ── curvas de nivel ─────────────────────────────────────────
 // Mapa topográfico de la lámina 04: anillos alrededor de `cumbre`
 // ((x, y) en largos), cada uno un poco corrido hacia arriba a la
@@ -85,6 +87,9 @@
 //   cumbre     auto = bajo el centro del clímax (las curvas convergen
 //              donde cae el remate) · (x, y) = fija
 //   anillos    auto = los que hagan falta para cubrir el lienzo
+//              `curvas:` también acepta un campo de curvas.campo(…): se
+//              dibuja su ventana `indice` (desde 0), así una serie de
+//              escaleras con el mismo campo forma un deck continuo
 //   decorado   contenido de fondo propio, detrás de todo
 //
 // Automático: los cuerpos se escalan al ancho del formato (base 1080),
@@ -116,6 +121,7 @@
   curvas: auto,
   cumbre: auto,
   anillos: auto,
+  indice: 0,
   decorado: none,
 ) = {
   let (ancho, alto) = (formato.at(0) * 1pt, formato.at(1) * 1pt)
@@ -213,7 +219,10 @@
       let yc = if climax-y != auto { climax-y } else { y }
 
       // ── curvas de nivel: convergen bajo el clímax ──
-      if curvas != none {
+      if type(curvas) == dictionary {
+        // un campo de curvas.typ: la ventana de esta diapositiva
+        _cv.ventana(curvas, indice)
+      } else if curvas != none {
         let cima = if cumbre != auto { cumbre } else {
           let wc = measure(text(size: cuerpo-climax * kw * e, weight: 600, style: "italic", tracking: -0.02em, climax)).width
           let x = if alinear == left { margen + wc / 2 } else if alinear == right { ancho - margen - wc / 2 } else { ancho / 2 }

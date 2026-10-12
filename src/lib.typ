@@ -39,6 +39,9 @@
 //      carteles.capitulo-orlado, carteles.pregunta-orlada) en orlas.typ
 //    fleurones -> namespace de orlas, bandas y mallas con IM FELL
 //      FLOWERS (fleurones.banda, .marco, .diaper, .roseta…)
+//    curvas -> fondos de curvas CONTINUOS entre diapositivas:
+//      curvas.campo(tipo, diapositivas: n, …) + curvas.ventana(c, i)
+//      (topo, ondas, flujo, paralelas, cinta, orbitas), ver ese archivo
 //
 //  `color-tokens`/`font-tokens`/`formas` van con nombre en vez de
 //  `import: *` a propósito. `color-tokens`/`font-tokens`: ambos módulos
@@ -65,3 +68,4 @@
 #import "superbg/lib.typ" as superbg
 #import "carteles.typ" as carteles
 #import "fleurones.typ" as fleurones
+#import "curvas.typ" as curvas
