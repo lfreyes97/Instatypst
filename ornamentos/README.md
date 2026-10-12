@@ -45,3 +45,30 @@ letra = una floritura, no texto legible), añade su familia real (la que
 resuelve `typst fonts --variants`) a `ALFABETO_DINGBAT_FAMILIAS` en
 `catalogar-ornamentos.py` — si no, el escáner la trata como texto normal y
 no la cataloga.
+
+## IM FELL FLOWERS: catálogo aparte
+
+Las dos fuentes de flores de Igino Marini (`Fonts/IM_Fell_Flowers/`)
+no entran en el catálogo de arriba: guardan sus motivos en las letras
+A–Z/a–z, no en codepoints ornamentales, y no son un alfabeto-dingbat
+de una floritura por letra sino piezas de orla que se combinan. Tienen
+su propio catálogo y hoja de pruebas:
+
+```
+fleurones.typ               catálogo + hoja de pruebas (fuente)
+fleurones.json              clasificación (generada, no editar a mano)
+fleurones.pdf               catálogo compilado
+clasificar-fleurones.py     clasificador: rasteriza cada glifo y mide
+                            simetrías, su giro de 180°/90° y si encadena
+```
+
+```bash
+python3 ornamentos/clasificar-fleurones.py
+typst compile --root . --font-path Fonts ornamentos/fleurones.typ ornamentos/fleurones.pdf
+```
+
+Hallazgos del clasificador: las fuentes no tienen pares en espejo —la
+pieza complementaria siempre es un giro de 180° (R↔S, A↔D; en FLOWERS 2
+cada minúscula es su mayúscula girada)—, y todo FLOWERS 1 encadena
+(su tinta toca los dos costados): la fuente entera es material de orla.
+El motor que las compone vive en `src/fleurones.typ`.

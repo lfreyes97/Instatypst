@@ -1,0 +1,1003 @@
+{
+ "IM FELL FLOWERS 1": {
+  "A": {
+   "avance": 852,
+   "encadena": true,
+   "giro": "D",
+   "glifo": "A",
+   "proporcion": 0.59,
+   "simetria": [],
+   "xmax": 848,
+   "xmin": 4,
+   "ymax": 715,
+   "ymin": -708
+  },
+  "B": {
+   "avance": 1513,
+   "encadena": true,
+   "glifo": "B",
+   "proporcion": 0.96,
+   "simetria": [],
+   "xmax": 1511,
+   "xmin": 0,
+   "ymax": 786,
+   "ymin": -785
+  },
+  "C": {
+   "avance": 1502,
+   "encadena": true,
+   "glifo": "C",
+   "proporcion": 1.0,
+   "simetria": [],
+   "xmax": 1500,
+   "xmin": 0,
+   "ymax": 750,
+   "ymin": -750
+  },
+  "D": {
+   "avance": 850,
+   "encadena": true,
+   "giro": "A",
+   "glifo": "D",
+   "proporcion": 0.59,
+   "simetria": [],
+   "xmax": 850,
+   "xmin": 6,
+   "ymax": 714,
+   "ymin": -709
+  },
+  "E": {
+   "avance": 1211,
+   "cuarto": "G",
+   "encadena": true,
+   "glifo": "E",
+   "proporcion": 0.94,
+   "simetria": [
+    "giro"
+   ],
+   "xmax": 1206,
+   "xmin": 5,
+   "ymax": 638,
+   "ymin": -640
+  },
+  "F": {
+   "avance": 498,
+   "encadena": true,
+   "giro": "H",
+   "glifo": "F",
+   "proporcion": 1.02,
+   "simetria": [],
+   "xmax": 495,
+   "xmin": 5,
+   "ymax": 247,
+   "ymin": -232
+  },
+  "G": {
+   "avance": 1281,
+   "cuarto": "E",
+   "encadena": true,
+   "glifo": "G",
+   "proporcion": 1.06,
+   "simetria": [
+    "giro"
+   ],
+   "xmax": 1280,
+   "xmin": 2,
+   "ymax": 600,
+   "ymin": -601
+  },
+  "H": {
+   "avance": 498,
+   "encadena": true,
+   "giro": "F",
+   "glifo": "H",
+   "proporcion": 1.02,
+   "simetria": [],
+   "xmax": 495,
+   "xmin": 5,
+   "ymax": 246,
+   "ymin": -233
+  },
+  "I": {
+   "avance": 1619,
+   "encadena": true,
+   "glifo": "I",
+   "proporcion": 1.19,
+   "simetria": [],
+   "xmax": 1625,
+   "xmin": 0,
+   "ymax": 687,
+   "ymin": -677
+  },
+  "J": {
+   "avance": 1660,
+   "encadena": true,
+   "glifo": "J",
+   "proporcion": 1.22,
+   "simetria": [],
+   "xmax": 1658,
+   "xmin": -7,
+   "ymax": 687,
+   "ymin": -679
+  },
+  "K": {
+   "avance": 1040,
+   "encadena": true,
+   "giro": "M",
+   "glifo": "K",
+   "proporcion": 0.95,
+   "simetria": [],
+   "xmax": 1030,
+   "xmin": 3,
+   "ymax": 533,
+   "ymin": -553
+  },
+  "L": {
+   "avance": 1981,
+   "encadena": true,
+   "glifo": "L",
+   "proporcion": 1.37,
+   "simetria": [],
+   "xmax": 1980,
+   "xmin": 0,
+   "ymax": 728,
+   "ymin": -717
+  },
+  "M": {
+   "avance": 1040,
+   "encadena": true,
+   "giro": "K",
+   "glifo": "M",
+   "proporcion": 0.95,
+   "simetria": [],
+   "xmax": 1036,
+   "xmin": 9,
+   "ymax": 534,
+   "ymin": -552
+  },
+  "N": {
+   "avance": 1457,
+   "cuarto": "L",
+   "encadena": true,
+   "glifo": "N",
+   "proporcion": 0.73,
+   "simetria": [],
+   "xmax": 1450,
+   "xmin": 6,
+   "ymax": 990,
+   "ymin": -990
+  },
+  "O": {
+   "avance": 624,
+   "encadena": true,
+   "glifo": "O",
+   "proporcion": 0.5,
+   "simetria": [],
+   "xmax": 623,
+   "xmin": 0,
+   "ymax": 624,
+   "ymin": -615
+  },
+  "P": {
+   "avance": 1193,
+   "encadena": true,
+   "glifo": "P",
+   "proporcion": 0.94,
+   "simetria": [
+    "giro"
+   ],
+   "xmax": 1191,
+   "xmin": 2,
+   "ymax": 629,
+   "ymin": -634
+  },
+  "Q": {
+   "avance": 619,
+   "encadena": true,
+   "glifo": "Q",
+   "proporcion": 0.5,
+   "simetria": [],
+   "xmax": 618,
+   "xmin": -3,
+   "ymax": 619,
+   "ymin": -624
+  },
+  "R": {
+   "avance": 630,
+   "encadena": true,
+   "giro": "S",
+   "glifo": "R",
+   "proporcion": 0.76,
+   "simetria": [],
+   "xmax": 628,
+   "xmin": 0,
+   "ymax": 421,
+   "ymin": -404
+  },
+  "S": {
+   "avance": 628,
+   "encadena": true,
+   "giro": "R",
+   "glifo": "S",
+   "proporcion": 0.76,
+   "simetria": [],
+   "xmax": 626,
+   "xmin": 0,
+   "ymax": 403,
+   "ymin": -417
+  },
+  "T": {
+   "avance": 752,
+   "encadena": true,
+   "glifo": "T",
+   "proporcion": 0.61,
+   "simetria": [
+    "giro"
+   ],
+   "xmax": 750,
+   "xmin": 2,
+   "ymax": 608,
+   "ymin": -611
+  },
+  "U": {
+   "avance": 1311,
+   "cuarto": "V",
+   "encadena": true,
+   "glifo": "U",
+   "proporcion": 0.96,
+   "simetria": [
+    "giro"
+   ],
+   "xmax": 1303,
+   "xmin": 8,
+   "ymax": 674,
+   "ymin": -672
+  },
+  "V": {
+   "avance": 1356,
+   "cuarto": "U",
+   "encadena": true,
+   "glifo": "V",
+   "proporcion": 1.04,
+   "simetria": [
+    "giro"
+   ],
+   "xmax": 1351,
+   "xmin": 5,
+   "ymax": 649,
+   "ymin": -646
+  },
+  "W": {
+   "avance": 909,
+   "encadena": true,
+   "glifo": "W",
+   "proporcion": 0.98,
+   "simetria": [
+    "giro"
+   ],
+   "xmax": 900,
+   "xmin": 9,
+   "ymax": 455,
+   "ymin": -452
+  },
+  "X": {
+   "avance": 455,
+   "encadena": true,
+   "glifo": "X",
+   "proporcion": 0.51,
+   "simetria": [],
+   "xmax": 452,
+   "xmin": 3,
+   "ymax": 444,
+   "ymin": -443
+  },
+  "Y": {
+   "avance": 913,
+   "encadena": true,
+   "glifo": "Y",
+   "proporcion": 1.02,
+   "simetria": [],
+   "xmax": 910,
+   "xmin": 3,
+   "ymax": 444,
+   "ymin": -446
+  },
+  "Z": {
+   "avance": 453,
+   "encadena": true,
+   "glifo": "Z",
+   "proporcion": 0.5,
+   "simetria": [],
+   "xmax": 450,
+   "xmin": 3,
+   "ymax": 444,
+   "ymin": -442
+  },
+  "a": {
+   "avance": 474,
+   "encadena": true,
+   "giro": "c",
+   "glifo": "a",
+   "proporcion": 0.87,
+   "simetria": [],
+   "xmax": 472,
+   "xmin": 3,
+   "ymax": 272,
+   "ymin": -269
+  },
+  "b": {
+   "avance": 901,
+   "encadena": true,
+   "glifo": "b",
+   "proporcion": 1.01,
+   "simetria": [
+    "giro"
+   ],
+   "xmax": 898,
+   "xmin": 3,
+   "ymax": 442,
+   "ymin": -442
+  },
+  "c": {
+   "avance": 474,
+   "encadena": true,
+   "giro": "a",
+   "glifo": "c",
+   "proporcion": 0.87,
+   "simetria": [],
+   "xmax": 471,
+   "xmin": 2,
+   "ymax": 271,
+   "ymin": -270
+  }
+ },
+ "IM FELL FLOWERS 2": {
+  "1": {
+   "avance": 1299,
+   "encadena": false,
+   "glifo": "one",
+   "proporcion": 1.76,
+   "simetria": [],
+   "xmax": 1245,
+   "xmin": 54,
+   "ymax": 676,
+   "ymin": 0
+  },
+  "2": {
+   "avance": 1209,
+   "encadena": false,
+   "glifo": "two",
+   "proporcion": 1.76,
+   "simetria": [],
+   "xmax": 1155,
+   "xmin": 54,
+   "ymax": 625,
+   "ymin": 0
+  },
+  "A": {
+   "avance": 1754,
+   "encadena": false,
+   "giro": "a",
+   "glifo": "A",
+   "proporcion": 1.69,
+   "simetria": [],
+   "xmax": 1754,
+   "xmin": 72,
+   "ymax": 996,
+   "ymin": 0
+  },
+  "B": {
+   "avance": 962,
+   "encadena": true,
+   "giro": "b",
+   "glifo": "B",
+   "proporcion": 1.93,
+   "simetria": [],
+   "xmax": 954,
+   "xmin": 8,
+   "ymax": 465,
+   "ymin": -25
+  },
+  "C": {
+   "avance": 343,
+   "cuarto": "c",
+   "encadena": false,
+   "glifo": "C",
+   "proporcion": 0.96,
+   "simetria": [
+    "vertical",
+    "horizontal",
+    "giro"
+   ],
+   "xmax": 335,
+   "xmin": 8,
+   "ymax": 316,
+   "ymin": -26
+  },
+  "D": {
+   "avance": 1637,
+   "encadena": true,
+   "giro": "d",
+   "glifo": "D",
+   "proporcion": 3.24,
+   "simetria": [],
+   "xmax": 1607,
+   "xmin": 30,
+   "ymax": 461,
+   "ymin": -25
+  },
+  "E": {
+   "avance": 1637,
+   "encadena": true,
+   "glifo": "E",
+   "proporcion": 1.67,
+   "simetria": [
+    "giro"
+   ],
+   "xmax": 1607,
+   "xmin": -28,
+   "ymax": 981,
+   "ymin": 0
+  },
+  "F": {
+   "avance": 1637,
+   "encadena": true,
+   "glifo": "F",
+   "proporcion": 1.65,
+   "simetria": [
+    "giro"
+   ],
+   "xmax": 1607,
+   "xmin": -9,
+   "ymax": 981,
+   "ymin": 0
+  },
+  "G": {
+   "avance": 1637,
+   "encadena": false,
+   "giro": "g",
+   "glifo": "G",
+   "proporcion": 2.98,
+   "simetria": [],
+   "xmax": 1594,
+   "xmin": 44,
+   "ymax": 495,
+   "ymin": -25
+  },
+  "H": {
+   "avance": 1637,
+   "encadena": false,
+   "glifo": "H",
+   "proporcion": 1.5,
+   "simetria": [
+    "giro"
+   ],
+   "xmax": 1594,
+   "xmin": 24,
+   "ymax": 1000,
+   "ymin": -50
+  },
+  "I": {
+   "avance": 1637,
+   "encadena": false,
+   "glifo": "I",
+   "proporcion": 1.49,
+   "simetria": [
+    "giro"
+   ],
+   "xmax": 1607,
+   "xmin": 44,
+   "ymax": 1000,
+   "ymin": -50
+  },
+  "J": {
+   "avance": 819,
+   "cuarto": "m",
+   "encadena": false,
+   "giro": "K",
+   "glifo": "J",
+   "proporcion": 1.06,
+   "simetria": [],
+   "xmax": 801,
+   "xmin": 24,
+   "ymax": 711,
+   "ymin": -25
+  },
+  "K": {
+   "avance": 819,
+   "cuarto": "l",
+   "encadena": false,
+   "giro": "k",
+   "glifo": "K",
+   "proporcion": 1.06,
+   "simetria": [],
+   "xmax": 795,
+   "xmin": 18,
+   "ymax": 711,
+   "ymin": -25
+  },
+  "L": {
+   "avance": 777,
+   "cuarto": "K",
+   "encadena": false,
+   "giro": "l",
+   "glifo": "L",
+   "proporcion": 0.95,
+   "simetria": [],
+   "xmax": 753,
+   "xmin": 24,
+   "ymax": 744,
+   "ymin": -25
+  },
+  "M": {
+   "avance": 777,
+   "cuarto": "k",
+   "encadena": false,
+   "giro": "m",
+   "glifo": "M",
+   "proporcion": 0.95,
+   "simetria": [],
+   "xmax": 753,
+   "xmin": 24,
+   "ymax": 745,
+   "ymin": -24
+  },
+  "N": {
+   "avance": 1809,
+   "encadena": true,
+   "glifo": "N",
+   "proporcion": 2.16,
+   "simetria": [],
+   "xmax": 1793,
+   "xmin": 16,
+   "ymax": 796,
+   "ymin": -25
+  },
+  "O": {
+   "avance": 518,
+   "encadena": false,
+   "glifo": "O",
+   "proporcion": 0.97,
+   "simetria": [
+    "giro"
+   ],
+   "xmax": 502,
+   "xmin": 16,
+   "ymax": 478,
+   "ymin": -25
+  },
+  "P": {
+   "avance": 447,
+   "encadena": false,
+   "giro": "p",
+   "glifo": "P",
+   "proporcion": 1.11,
+   "simetria": [
+    "vertical"
+   ],
+   "xmax": 431,
+   "xmin": 16,
+   "ymax": 349,
+   "ymin": -25
+  },
+  "Q": {
+   "avance": 508,
+   "encadena": false,
+   "giro": "q",
+   "glifo": "Q",
+   "proporcion": 0.9,
+   "simetria": [
+    "vertical"
+   ],
+   "xmax": 492,
+   "xmin": 16,
+   "ymax": 505,
+   "ymin": -25
+  },
+  "R": {
+   "avance": 647,
+   "encadena": false,
+   "giro": "r",
+   "glifo": "R",
+   "proporcion": 1.1,
+   "simetria": [],
+   "xmax": 631,
+   "xmin": 16,
+   "ymax": 536,
+   "ymin": -25
+  },
+  "S": {
+   "avance": 444,
+   "encadena": true,
+   "giro": "s",
+   "glifo": "S",
+   "proporcion": 1.24,
+   "simetria": [],
+   "xmax": 438,
+   "xmin": 6,
+   "ymax": 323,
+   "ymin": -25
+  },
+  "T": {
+   "avance": 444,
+   "encadena": true,
+   "giro": "t",
+   "glifo": "T",
+   "proporcion": 1.27,
+   "simetria": [
+    "horizontal"
+   ],
+   "xmax": 438,
+   "xmin": 6,
+   "ymax": 316,
+   "ymin": -25
+  },
+  "U": {
+   "avance": 883,
+   "encadena": true,
+   "glifo": "U",
+   "proporcion": 2.55,
+   "simetria": [
+    "giro"
+   ],
+   "xmax": 877,
+   "xmin": 6,
+   "ymax": 316,
+   "ymin": -26
+  },
+  "V": {
+   "avance": 801,
+   "encadena": true,
+   "giro": "v",
+   "glifo": "V",
+   "proporcion": 2.1,
+   "simetria": [],
+   "xmax": 795,
+   "xmin": 8,
+   "ymax": 350,
+   "ymin": -25
+  },
+  "W": {
+   "avance": 601,
+   "encadena": true,
+   "giro": "w",
+   "glifo": "W",
+   "proporcion": 1.35,
+   "simetria": [],
+   "xmax": 597,
+   "xmin": 6,
+   "ymax": 414,
+   "ymin": -25
+  },
+  "X": {
+   "avance": 867,
+   "encadena": false,
+   "giro": "x",
+   "glifo": "X",
+   "proporcion": 1.15,
+   "simetria": [],
+   "xmax": 839,
+   "xmin": 28,
+   "ymax": 678,
+   "ymin": -25
+  },
+  "Y": {
+   "avance": 744,
+   "encadena": true,
+   "giro": "y",
+   "glifo": "Y",
+   "proporcion": 0.98,
+   "simetria": [],
+   "xmax": 731,
+   "xmin": 12,
+   "ymax": 711,
+   "ymin": -25
+  },
+  "Z": {
+   "avance": 1548,
+   "encadena": true,
+   "giro": "z",
+   "glifo": "Z",
+   "proporcion": 2.68,
+   "simetria": [],
+   "xmax": 1540,
+   "xmin": 8,
+   "ymax": 546,
+   "ymin": -25
+  },
+  "a": {
+   "avance": 1754,
+   "encadena": false,
+   "giro": "A",
+   "glifo": "a",
+   "proporcion": 1.69,
+   "simetria": [],
+   "xmax": 1682,
+   "xmin": 0,
+   "ymax": 996,
+   "ymin": 0
+  },
+  "b": {
+   "avance": 962,
+   "encadena": true,
+   "giro": "B",
+   "glifo": "b",
+   "proporcion": 1.93,
+   "simetria": [],
+   "xmax": 954,
+   "xmin": 8,
+   "ymax": 975,
+   "ymin": 485
+  },
+  "c": {
+   "avance": 343,
+   "cuarto": "C",
+   "encadena": false,
+   "glifo": "c",
+   "proporcion": 0.96,
+   "simetria": [
+    "vertical",
+    "horizontal",
+    "giro"
+   ],
+   "xmax": 334,
+   "xmin": 7,
+   "ymax": 976,
+   "ymin": 634
+  },
+  "d": {
+   "avance": 1637,
+   "encadena": true,
+   "giro": "D",
+   "glifo": "d",
+   "proporcion": 3.24,
+   "simetria": [],
+   "xmax": 1606,
+   "xmin": 29,
+   "ymax": 975,
+   "ymin": 489
+  },
+  "g": {
+   "avance": 1637,
+   "encadena": false,
+   "giro": "G",
+   "glifo": "g",
+   "proporcion": 2.98,
+   "simetria": [],
+   "xmax": 1592,
+   "xmin": 42,
+   "ymax": 975,
+   "ymin": 455
+  },
+  "j": {
+   "avance": 819,
+   "cuarto": "M",
+   "encadena": false,
+   "giro": "k",
+   "glifo": "j",
+   "proporcion": 1.06,
+   "simetria": [],
+   "xmax": 795,
+   "xmin": 18,
+   "ymax": 975,
+   "ymin": 239
+  },
+  "k": {
+   "avance": 819,
+   "cuarto": "m",
+   "encadena": false,
+   "giro": "K",
+   "glifo": "k",
+   "proporcion": 1.06,
+   "simetria": [],
+   "xmax": 795,
+   "xmin": 18,
+   "ymax": 1025,
+   "ymin": 289
+  },
+  "l": {
+   "avance": 777,
+   "cuarto": "k",
+   "encadena": false,
+   "giro": "m",
+   "glifo": "l",
+   "proporcion": 0.95,
+   "simetria": [],
+   "xmax": 752,
+   "xmin": 23,
+   "ymax": 975,
+   "ymin": 206
+  },
+  "m": {
+   "avance": 777,
+   "cuarto": "K",
+   "encadena": false,
+   "giro": "l",
+   "glifo": "m",
+   "proporcion": 0.95,
+   "simetria": [],
+   "xmax": 752,
+   "xmin": 23,
+   "ymax": 1024,
+   "ymin": 255
+  },
+  "n": {
+   "avance": 1809,
+   "encadena": true,
+   "glifo": "n",
+   "proporcion": 2.16,
+   "simetria": [],
+   "xmax": 1791,
+   "xmin": 14,
+   "ymax": 975,
+   "ymin": 154
+  },
+  "o": {
+   "avance": 518,
+   "encadena": false,
+   "glifo": "o",
+   "proporcion": 0.97,
+   "simetria": [
+    "giro"
+   ],
+   "xmax": 502,
+   "xmin": 16,
+   "ymax": 975,
+   "ymin": 472
+  },
+  "p": {
+   "avance": 447,
+   "encadena": false,
+   "giro": "P",
+   "glifo": "p",
+   "proporcion": 1.11,
+   "simetria": [
+    "vertical"
+   ],
+   "xmax": 430,
+   "xmin": 15,
+   "ymax": 975,
+   "ymin": 601
+  },
+  "q": {
+   "avance": 508,
+   "encadena": false,
+   "giro": "Q",
+   "glifo": "q",
+   "proporcion": 0.9,
+   "simetria": [
+    "vertical"
+   ],
+   "xmax": 492,
+   "xmin": 16,
+   "ymax": 975,
+   "ymin": 445
+  },
+  "r": {
+   "avance": 647,
+   "encadena": false,
+   "giro": "R",
+   "glifo": "r",
+   "proporcion": 1.1,
+   "simetria": [],
+   "xmax": 630,
+   "xmin": 15,
+   "ymax": 975,
+   "ymin": 414
+  },
+  "s": {
+   "avance": 444,
+   "encadena": true,
+   "giro": "S",
+   "glifo": "s",
+   "proporcion": 1.24,
+   "simetria": [],
+   "xmax": 438,
+   "xmin": 6,
+   "ymax": 975,
+   "ymin": 627
+  },
+  "t": {
+   "avance": 444,
+   "encadena": true,
+   "giro": "T",
+   "glifo": "t",
+   "proporcion": 1.27,
+   "simetria": [
+    "horizontal"
+   ],
+   "xmax": 438,
+   "xmin": 6,
+   "ymax": 975,
+   "ymin": 634
+  },
+  "u": {
+   "avance": 883,
+   "encadena": true,
+   "glifo": "u",
+   "proporcion": 2.55,
+   "simetria": [
+    "giro"
+   ],
+   "xmax": 876,
+   "xmin": 5,
+   "ymax": 976,
+   "ymin": 634
+  },
+  "v": {
+   "avance": 801,
+   "encadena": true,
+   "giro": "V",
+   "glifo": "v",
+   "proporcion": 2.1,
+   "simetria": [],
+   "xmax": 792,
+   "xmin": 5,
+   "ymax": 975,
+   "ymin": 600
+  },
+  "w": {
+   "avance": 601,
+   "encadena": true,
+   "giro": "W",
+   "glifo": "w",
+   "proporcion": 1.35,
+   "simetria": [],
+   "xmax": 594,
+   "xmin": 3,
+   "ymax": 975,
+   "ymin": 536
+  },
+  "x": {
+   "avance": 867,
+   "encadena": false,
+   "giro": "X",
+   "glifo": "x",
+   "proporcion": 1.15,
+   "simetria": [],
+   "xmax": 838,
+   "xmin": 27,
+   "ymax": 975,
+   "ymin": 272
+  },
+  "y": {
+   "avance": 744,
+   "encadena": true,
+   "giro": "Y",
+   "glifo": "y",
+   "proporcion": 0.98,
+   "simetria": [],
+   "xmax": 732,
+   "xmin": 13,
+   "ymax": 975,
+   "ymin": 239
+  },
+  "z": {
+   "avance": 1548,
+   "encadena": true,
+   "giro": "Z",
+   "glifo": "z",
+   "proporcion": 2.68,
+   "simetria": [],
+   "xmax": 1540,
+   "xmin": 8,
+   "ymax": 975,
+   "ymin": 404
+  },
+  "": {
+   "avance": 778,
+   "encadena": false,
+   "glifo": "uniE000",
+   "proporcion": 0.67,
+   "simetria": [
+    "vertical",
+    "horizontal",
+    "giro"
+   ],
+   "xmax": 639,
+   "xmin": 139,
+   "ymax": 746,
+   "ymin": 0
+  }
+ }
+}

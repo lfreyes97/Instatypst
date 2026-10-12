@@ -87,13 +87,48 @@
   place(dx: sep, dy: sep, rect(width: w - 2 * sep, height: h - 2 * sep, stroke: 0.45pt + claro))
 })
 
-// Medallón: F1 «Q» espejado en cuatro cuadrantes.
-#let medallon(lado, color) = {
-  let q = caja(f1, "Q", lado / 2, lado / 2, color)
+// Ancho natural de `cs` a un alto de tinta `h` (sin estirar la caja).
+#let ancho-natural(f, cs, h) = {
+  let (adv, lo, hi) = _medir(f, cs)
+  h * adv / (hi - lo)
+}
+
+// Banda que alterna el motivo derecho y girado 180°: con un glifo
+// asimétrico arma la guarda de ida y vuelta de las orlas de imprenta.
+// (En FLOWERS 2 cada minúscula ya es su mayúscula girada: "Aa" en una
+// banda común da lo mismo.)
+#let alternar(f, c, largo, alto, color, hueco: 0pt) = {
+  let u = ancho-natural(f, c, alto)
+  let n = calc.max(1, int(calc.round((largo + hueco) / (u + hueco))))
+  let w = (largo - (n - 1) * hueco) / n
+  box(width: largo, height: alto, stack(dir: ltr, spacing: hueco, ..range(n).map(i => {
+    let g = caja(f, c, w, alto, color)
+    if calc.odd(i) { rotate(180deg, g) } else { g }
+  })))
+}
+
+// Roseta en espejo: el glifo en un cuadrante, reflejado en los otros
+// tres (los ejes de reflexión se cruzan en el centro).
+#let espejo4(f, c, lado, color) = {
+  let q = caja(f, c, lado / 2, lado / 2, color)
   let fx(b) = scale(x: -100%, b)
   let fy(b) = scale(y: -100%, b)
   box(width: lado, height: lado, grid(columns: 2, rows: 2, fy(q), fy(fx(q)), q, fx(q)))
 }
+
+// Roseta por giro: el glifo cuatro veces, girando 90° alrededor del
+// centro (molinete).
+#let giro4(f, c, lado, color) = {
+  let q = caja(f, c, lado / 2, lado / 2, color)
+  box(width: lado, height: lado, grid(
+    columns: 2, rows: 2,
+    q, rotate(90deg, q),
+    rotate(270deg, q), rotate(180deg, q),
+  ))
+}
+
+// Medallón: F1 «Q» espejado en cuatro cuadrantes.
+#let medallon(lado, color) = espejo4(f1, "Q", lado, color)
 
 // Roseta: los cuatro molinetes de F2 en cruz.
 #let roseta(lado, color) = box(width: lado, height: lado, grid(
