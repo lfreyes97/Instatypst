@@ -38,7 +38,9 @@
 //      ver ese archivo; los de orla de fleurones (carteles.cita-orlada,
 //      carteles.capitulo-orlado, carteles.pregunta-orlada) en orlas.typ
 //    fleurones -> namespace de orlas, bandas y mallas con IM FELL
-//      FLOWERS (fleurones.banda, .marco, .diaper, .roseta…)
+//      FLOWERS. Presets por uso: fleurones.orla (marcos), .guarda
+//      (solo horizontal), .vineta, .roseta, .cabecera, .separador,
+//      .asterismo, .remate; y el motor (.banda, .marco, .diaper…)
 //    curvas -> fondos de curvas CONTINUOS entre diapositivas:
 //      curvas.campo(tipo, diapositivas: n, …) + curvas.ventana(c, i)
 //      (topo, ondas, flujo, paralelas, cinta, orbitas), ver ese archivo

@@ -71,11 +71,87 @@
     dibujada para unirse con la siguiente. En FLOWERS 1 lo hacen todas:
     la fuente entera es material de orla.
 
-  La *hoja de pruebas* que sigue a las fichas pone cada glifo en cinco
+  Primero, los *presets*: lo que el paquete ya trae configurado, cada
+  glifo en el uso que le sienta (no todos sirven para marco). Después,
+  las fichas y la *hoja de pruebas* que sigue a las fichas pone cada glifo en cinco
   usos: banda, banda alternada con su giro, roseta en espejo, roseta por
   giro y marco. Las cadenas que usa Magnalia (`fleurones.cadenas`) son
   ojivas RS, cartuchos IJ (F1), follaje N, flores D y eslabones U (F2).
 ]
+
+// ── Presets: cada glifo en su uso ──
+#let nom(n) = text(font: "IM FELL English SC", size: 10pt, tracking: 0.05em, n)
+#let pie(cuerpo) = text(size: 7.5pt, fill: gris, cuerpo)
+#let desc(f, cs) = corto(f) + " " + cs.clusters().map(nombre).join()
+
+#pagebreak()
+#heading(level: 1, text(font: "IM FELL English SC", size: 16pt, tracking: 0.08em)[Presets · marcos])
+#dato[`fleurones.orla(nombre, ancho, alto, color)` — cadenas que aguantan los cuatro lados. Grosor y aire vienen dados; los marcos van aquí a la mitad.]
+#v(6pt)
+#grid(
+  columns: (1fr,) * 4, column-gutter: 10pt, row-gutter: 12pt,
+  ..fl.cadenas.pairs().map(((n, c)) => align(center, {
+    fl.orla(n, 4cm, 2.9cm, tinta, grosor: c.grosor / 2)
+    v(3pt)
+    nom(n)
+    linebreak()
+    pie[#desc(..c.motivo) · esq. #desc(..c.esquina)]
+  })),
+)
+
+#pagebreak()
+#heading(level: 1, text(font: "IM FELL English SC", size: 16pt, tracking: 0.08em)[Presets · guardas])
+#dato[`fleurones.guarda(nombre, largo, color)` — tienen arriba y abajo: solo en horizontal (cabeceras, pies, separadores).]
+#v(6pt)
+#for (n, g) in fl.guardas.pairs() {
+  grid(columns: (2.6cm, 1fr), align: horizon,
+    [#nom(n) \ #pie(desc(..g.motivo))],
+    fl.guarda(n, 15.4cm, tinta, alto: g.alto * 0.7))
+  v(5pt)
+}
+
+#pagebreak()
+#heading(level: 1, text(font: "IM FELL English SC", size: 16pt, tracking: 0.08em)[Presets · viñetas y rosetas])
+#dato[`fleurones.vineta(nombre, alto, color)` — sueltas; las apaisadas sirven solas de cabecera o pie.]
+#v(6pt)
+#grid(
+  columns: (1fr,) * 6, column-gutter: 8pt, row-gutter: 14pt,
+  ..fl.vinetas.pairs().map(((n, g)) => align(center, {
+    box(height: 1.3cm, align(horizon, fl.vineta(n, if fl.ancho-natural(..g, 1cm) > 1.6cm { 0.75cm } else { 1cm }, tinta)))
+    v(2pt)
+    nom(n)
+  })),
+)
+#v(12pt)
+#dato[`fleurones.roseta(lado, color, tipo: nombre)` — un glifo cuatro veces, en espejo o por giro.]
+#v(6pt)
+#grid(
+  columns: (1fr,) * 5, column-gutter: 8pt, row-gutter: 14pt,
+  ..fl.rosetas.map(n => align(center, {
+    fl.roseta(2.2cm, rojo, tipo: n)
+    v(2pt)
+    nom(n)
+  })),
+)
+
+#pagebreak()
+#heading(level: 1, text(font: "IM FELL English SC", size: 16pt, tracking: 0.08em)[Presets · composiciones])
+#v(6pt)
+#let muestra-comp(titulo, codigo, cuerpo) = block(breakable: false, below: 16pt, grid(
+  columns: (5.2cm, 1fr), align: (left + horizon, center + horizon),
+  [#nom(titulo) \ #pie(raw(codigo))], cuerpo))
+#muestra-comp("cabecera", "cabecera(ancho, color, guarda: …)", stack(spacing: 10pt,
+  fl.cabecera(11cm, tinta, linea: rojo),
+  fl.cabecera(11cm, rojo, guarda: "cresteria", linea: tinta),
+  fl.cabecera(11cm, tinta, guarda: "hojarasca", linea: rojo)))
+#muestra-comp("separador", "separador(ancho, color, vineta: …)", stack(spacing: 12pt,
+  fl.separador(9cm, rojo, linea: tinta),
+  fl.separador(9cm, tinta, vineta: "acanto", alto: 26pt, linea: rojo),
+  fl.separador(9cm, tinta, vineta: "lis", alto: 22pt, grosor: 0.6pt)))
+#muestra-comp("asterismo", "asterismo(alto, color, vineta: …)", stack(dir: ltr, spacing: 30pt,
+  fl.asterismo(1.2cm, tinta), fl.asterismo(1.2cm, rojo, vineta: "flor"), fl.asterismo(1.2cm, tinta, vineta: "lis")))
+#muestra-comp("remate", "remate(alto, color, vineta: …, filas: …)", stack(dir: ltr, spacing: 30pt,
+  fl.remate(2cm, tinta), fl.remate(2.4cm, rojo, vineta: "flor", filas: (5, 3, 1)), fl.remate(2cm, tinta, vineta: "lis", filas: (4, 3, 2, 1))))
 
 // ── Fichas ──
 #for f in (fl.f1, fl.f2) {

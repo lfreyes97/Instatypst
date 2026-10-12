@@ -9,8 +9,11 @@ b) You canít change the font and its contents (including outlines, kerning and 
 c) You can distribute it freely with license aside but not sell it in any way.
 Any other different use has to be authorized by the designer.
 
-En la práctica: toda pieza publicada que use estas fuentes debe llevar
-la nota «The Fell Types are digitally reproduced by Igino Marini.
-www.iginomarini.com» (en una imagen para redes, en el texto que la
-acompaña), y no se pueden modificar ni vender. Se redistribuyen acá
-junto a esta licencia, como ella permite.
+En la práctica: toda publicación que use estas fuentes lleva la nota
+«The Fell Types are digitally reproduced by Igino Marini.
+www.iginomarini.com» (en Typst: `fleurones.credito`) y se le avisa a
+Marini dónde se usaron. La licencia pide una nota, no que vaya sobre la
+imagen: en un libro va en la página de créditos, en redes en el pie de
+foto, en un deck en la última diapositiva. No se pueden modificar ni
+vender; se redistribuyen acá junto a esta licencia, como ella permite.
+(Las IM FELL de texto —English, Pica…— son OFL: no piden nota.)

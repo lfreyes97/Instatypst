@@ -16,11 +16,13 @@
 //              o un diccionario con las mismas claves que `temas.vino`
 //    orla      "completa" · "arriba" · "abajo" · "arriba-abajo" ·
 //              "izquierda" · "derecha" · "lateral" · "columna" · "ninguna"
-//    cadena    "ojivas" · "cartuchos" · "follaje" · "flores" · "eslabones"
+//    cadena    cualquier marco de `fleurones.cadenas`: las cinco de
+//              Magnalia ("ojivas" · "cartuchos" · "follaje" · "flores" ·
+//              "eslabones") o las nuevas ("celosia", "trenza", "lises"…)
 //
-//  Licencia de IM FELL FLOWERS: toda pieza publicada lleva la nota «The
-//  Fell Types are digitally reproduced by Igino Marini.
-//  www.iginomarini.com» (ver Fonts/IM_Fell_Flowers/LICENCIA.txt).
+//  Licencia de IM FELL FLOWERS: la publicación lleva la nota de
+//  `fleurones.credito` donde el medio lo pida (créditos, pie de foto…);
+//  estas piezas no la estampan (ver Fonts/IM_Fell_Flowers/LICENCIA.txt).
 // ─────────────────────────────────────────────────────────────
 
 #import "fleurones.typ" as fl
@@ -62,7 +64,7 @@
   let tipo = _tipo(formato)
   let c = if type(tema) == str { temas.at(tema) } else { tema }
   let M = 34pt
-  let (fa, ga, fe, ge, T) = fl.cadenas.at(cadena)
+  let T = fl.cadenas.at(cadena).grosor
   let G = fl.grosor-tira(cadena)
   let libre = 70pt // margen de los lados sin orla
   let tira(largo) = fl.tira(largo, cadena, c.orn, c.hondo, c.fil)
@@ -70,7 +72,7 @@
     set text(font: fell, fill: c.texto, lang: "es", hyphenate: false)
     set par(justify: false, first-line-indent: 0pt, spacing: 0pt)
     if orla == "completa" {
-      place(top + left, dx: M, dy: M, fl.marco(W - 2 * M, H - 2 * M, T, fa, ga, fe, ge, c.orn))
+      place(top + left, dx: M, dy: M, fl.orla(cadena, W - 2 * M, H - 2 * M, c.orn))
       place(top + left, dx: M - 6pt, dy: M - 6pt,
         rect(width: W - 2 * M + 12pt, height: H - 2 * M + 12pt, stroke: 1.2pt + c.hondo))
       place(top + left, dx: M + T + 7pt, dy: M + T + 7pt,

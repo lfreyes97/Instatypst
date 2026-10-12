@@ -5,8 +5,8 @@
 // (salvo una fracción de píxel en la roseta: su glifo 2L se mide ahora
 // con fontTools, 1/1000 em distinto de la tabla a mano).
 //
-// IM FELL FLOWERS pide la nota «The Fell Types are digitally reproduced
-// by Igino Marini. www.iginomarini.com» en toda pieza publicada.
+// IM FELL FLOWERS pide, al publicar, la nota de `fleurones.credito`
+// donde el medio lo pida (pie de foto, créditos); no va en la imagen.
 // Compilar: typst compile --root . --font-path Fonts examples/presets/orlas.typ
 #import "../../src/lib.typ": carteles, sizes
 #let mag = (encabezado: [Magnalia Dei], autor: [Herman Bavinck])

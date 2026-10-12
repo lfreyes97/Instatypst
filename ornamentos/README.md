@@ -72,3 +72,19 @@ pieza complementaria siempre es un giro de 180° (R↔S, A↔D; en FLOWERS 2
 cada minúscula es su mayúscula girada)—, y todo FLOWERS 1 encadena
 (su tinta toca los dos costados): la fuente entera es material de orla.
 El motor que las compone vive en `src/fleurones.typ`.
+
+Encadenar no basta para servir de marco: un motivo con «arriba»
+(crestería, lises, copas) se ve caído de costado. Por eso el paquete
+trae los glifos ya repartidos por uso —las primeras páginas del
+catálogo—, elegidos a ojo sobre la hoja de pruebas:
+
+| uso | función | presets |
+|---|---|---|
+| marcos (4 lados) | `fleurones.orla(nombre, ancho, alto, color)` | `fleurones.cadenas`: 20 (las 5 de Magnalia + celosía, trenza, damasco, lises, corazones, margaritas…) |
+| guardas (solo horizontal) | `fleurones.guarda(nombre, largo, color)` | `fleurones.guardas`: 14 (guirnalda, crestería, hojarasca, vaivén…) |
+| viñetas sueltas | `fleurones.vineta(nombre, alto, color)` | `fleurones.vinetas`: 18 (cruz, flor, lis, mano, acanto…) |
+| rosetas | `fleurones.roseta(lado, color, tipo:)` | `fleurones.rosetas`: 9 |
+| composiciones | `cabecera`, `separador`, `asterismo`, `remate` | toman una guarda o una viñeta por nombre |
+
+Cada preset fija glifo, esquina, grosor y aire para lienzos de ~1080 px.
+Demo en diapositivas: `examples/presets/fleurones.typ`.
