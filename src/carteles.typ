@@ -23,6 +23,10 @@
 //                  curvas de nivel (curvas-de-nivel) — escalera.typ
 //    gozne, llamada (07) cita con llamadas + diagrama radial — gozne.typ
 //    linea-tiempo  (16) estaciones sobre una línea vertical — linea-tiempo.typ
+//    esquela       (10) aviso fúnebre de imprenta: orla de luto, cruz, el
+//                  «difunto» en versalitas — esquela.typ
+//    folio         (11) folio de salterio: pergamino pautado, capitular
+//                  iluminada, glosa al margen — folio.typ
 //
 //  Presets con orla de fleurones e IM FELL (viven en orlas.typ):
 //    cita-orlada, capitulo-orlado, pregunta-orlada, lienzo-orlado,
@@ -34,6 +38,8 @@
 #import "escalera.typ": escalera, curvas-de-nivel
 #import "gozne.typ": gozne, llamada
 #import "linea-tiempo.typ": linea-tiempo
+#import "esquela.typ": esquela
+#import "folio.typ": folio
 
 // Retícula de columnas sobre `ancho` (largo). `x.at(i)`: borde
 // izquierdo de la columna i (desde 0); `span.at(n)`: ancho de n columnas
