@@ -19,10 +19,16 @@
 //  página) — llamalas seguidas, SIN #pagebreak() entre medio: canvas()
 //  ya arranca página nueva cada vez (verificado: dos canvas() seguidos
 //  sin pagebreak producen 2 páginas, no una).
+//
+//  `fondo:` va debajo de todo. Con un campo de curvas.typ cada
+//  diapositiva dibuja SU ventana (la n-ésima, según `n:`): las curvas
+//  que salen por el borde derecho entran por el izquierdo de la
+//  siguiente y el carrusel se lee como una sola tira.
 // ─────────────────────────────────────────────────────────────
 
 #import "theme.typ": theme
 #import "social.typ": canvas, sizes, page-pad
+#import "curvas.typ" as _curvas
 
 #let _pad2(n) = if n < 10 { "0" + str(n) } else { str(n) }
 
@@ -83,6 +89,25 @@
   ]
 }
 
+// Fondo de la diapositiva n (desde 1):
+//   none        nada (el color de fondo del tema)
+//   campo       un curvas.campo(…): se dibuja su ventana n − 1, continua
+//               con la anterior y la siguiente; su formato debe ser `size`
+//   función     n => contenido, para un fondo distinto en cada una
+//   contenido   el mismo fondo en todas
+#let fondo-carrusel(fondo, n, size) = {
+  if fondo == none { return none }
+  if type(fondo) == dictionary and "tipo" in fondo {
+    assert(
+      (fondo.W, fondo.H) == (size.at(0), size.at(1)),
+      message: "fondo: el campo de curvas es de " + str(fondo.W) + "×" + str(fondo.H) + " y la diapositiva de " + str(size.at(0)) + "×" + str(size.at(1)),
+    )
+    return _curvas.ventana(fondo, n - 1)
+  }
+  if type(fondo) == function { return place(top + left, fondo(n)) }
+  place(top + left, fondo)
+}
+
 // ── Motor: carrusel-slide — título + cuerpo, con referencia opcional. ──
 // `numeral:` (opcional) pone un número gigante de fondo, para diapositivas
 // tipo "razón 1 de 5". `body-italic:` atenúa el cuerpo (para el kicker de
@@ -101,13 +126,16 @@
   referencia: none,
   swipe: true,
   size: sizes.instagram,
+  fondo: none,
   color: none,
   theme: theme.base,
 ) = {
   let color = if color == none { theme.colors.primary } else { color }
   canvas(size, theme: theme, [
-    #if numeral != none { numeral-fondo(numeral, theme: theme) }
+    #fondo-carrusel(fondo, n, size)
     #pad(page-pad)[
+      // Dentro del pad: dx/dy se miden desde el margen, como en el original.
+      #if numeral != none { numeral-fondo(numeral, theme: theme) }
       #topbar(label, n, total: total, theme: theme)
       #v(1fr)
       #block(width: 100%)[
@@ -144,11 +172,13 @@
   body: none,
   swipe: true,
   size: sizes.instagram,
+  fondo: none,
   color: none,
   theme: theme.base,
 ) = {
   let color = if color == none { theme.colors.primary } else { color }
   canvas(size, theme: theme, [
+    #fondo-carrusel(fondo, n, size)
     #pad(page-pad)[
       #topbar(label, n, total: total, theme: theme)
       #v(1fr)
