@@ -11,6 +11,14 @@
 //  `sizes`) y devuelve un page(). Sin marca propia: el logo entra por
 //  `marca:` como contenido ya hecho, así el paquete no conoce a nadie.
 //
+//  Presets en este archivo:
+//    liso          lo mínimo: un fondo (color o superbg) + texto que
+//                  llena la caja; con papel viejo y tinta gastada
+//    suizo         (01) remate a todo el ancho sobre retícula visible
+//    demostracion  (17) la cita como demostración numerada, en pizarra
+//    plano         (14) grid blueprint: retícula de heliografía, cota y
+//                  cajetín — plano.typ
+//
 //  Piezas sueltas, reusables fuera de los presets:
 //    reticula(ancho, …)       -> columnas: .x.at(i), .span.at(n), .util, .col
 //    cuerpo-al-ancho(hacer, ancho) -> tamaño con el que hacer(tamaño)
@@ -34,12 +42,14 @@
 // ─────────────────────────────────────────────────────────────
 
 #import "superbg/lib.typ" as superbg
+#import "contrast.typ": readable-on
 #import "orlas.typ": lienzo-orlado, cita-orlada, capitulo-orlado, pregunta-orlada, temas as temas-orla
 #import "escalera.typ": escalera, curvas-de-nivel
 #import "gozne.typ": gozne, llamada
 #import "linea-tiempo.typ": linea-tiempo
 #import "esquela.typ": esquela
 #import "folio.typ": folio
+#import "plano.typ": plano
 
 // Retícula de columnas sobre `ancho` (largo). `x.at(i)`: borde
 // izquierdo de la columna i (desde 0); `span.at(n)`: ancho de n columnas
@@ -216,6 +226,93 @@
     // ── pie ──
     place(bottom + left, dx: margen, dy: -112pt, line(length: r.util, stroke: 2.5pt + tinta))
     if marca != none { place(bottom + left, dx: r.x.at(0), dy: -margen + 3pt, marca) }
+  })
+}
+
+// Color de base de un fondo: el color mismo, o el de la primera capa
+// `plano`/`papel` (o con `fondo:` de color) de un fondo de superbg.
+// none si no se puede saber (contenido ya armado, aura sola…).
+#let _color-base(fondo) = {
+  if type(fondo) == color { return fondo }
+  let capas = if type(fondo) == str { superbg.preset-capas(fondo) } else if type(fondo) == array { fondo } else if type(fondo) == dictionary { fondo.at("capas", default: (fondo,)) } else { () }
+  for c in capas {
+    if type(c) != dictionary { continue }
+    let t = c.at("tipo", default: none)
+    if t == "papel" { return c.at("color", default: rgb("#efe4c8")) }
+    if t == "plano" and type(c.at("color", default: none)) == color { return c.color }
+    if type(c.at("fondo", default: none)) == color { return c.fondo }
+  }
+  none
+}
+
+// ── carteles.liso ───────────────────────────────────────────
+// Lo mínimo: un fondo y el texto. Sin retícula, sin adornos.
+// El texto toma el mayor cuerpo que cabe en la caja (hasta
+// `cuerpo-max`), así una frase corta grita y una larga se acomoda.
+//
+//   texto    contenido; los cortes de línea, a mano si se quieren
+//   autor    firma debajo del texto, chica
+//   marca    contenido abajo a la izquierda (p. ej. el logo)
+//   fondo    un color (liso de verdad) o cualquier fondo de superbg:
+//            nombre de preset ("papel-viejo", "papel-escaneado",
+//            "noche"…), capa, array de capas o contenido ya armado
+//   tinta    auto = blanco o negro, el de más contraste con el color de
+//            base del fondo (negro de imprenta si no se puede saber)
+//   desgaste 0–1: la tinta gastada de una impresión vieja: el texto
+//            sale con huecos por donde se ve el papel
+//            (superbg.tinta-gastada)
+//   alinear  left · center (horizontal; en vertical va al centro óptico,
+//            un poco por encima de la mitad)
+#let liso(
+  texto,
+  formato: (1080, 1350),
+  autor: none,
+  marca: none,
+  fondo: rgb("#141414"),
+  tinta: auto,
+  fuente: "Hanken Grotesk",
+  peso: 700,
+  cuerpo: auto,
+  cuerpo-max: 150pt,
+  alinear: left,
+  margen: 96pt,
+  desgaste: 0,
+) = {
+  let (ancho, alto) = (formato.at(0) * 1pt, formato.at(1) * 1pt)
+  let base = _color-base(fondo)
+  let tinta = if tinta != auto { tinta } else if base != none { readable-on(base, white, black) } else { rgb("#1c1712") }
+  let caja = ancho - 2 * margen
+  // espacio reservado abajo para la marca, para que el texto no la pise
+  let pie = if marca != none { 96pt } else { 0pt }
+
+  page(width: ancho, height: alto, margin: 0pt, fill: if type(fondo) == color { fondo } else { base }, {
+    let tinta = if desgaste > 0 { superbg.tinta-gastada(tinta, intensidad: desgaste) } else { tinta }
+    set text(font: fuente, fill: tinta, lang: "es", hyphenate: false)
+    set par(leading: 0.28em, justify: false)
+
+    if type(fondo) != color { superbg.superbg(fondo, size: formato) }
+
+    let bloque(c) = block(width: caja, align(alinear, {
+      text(size: c, weight: peso, tracking: -0.02em, texto)
+      if autor != none {
+        v(c * 0.45)
+        text(size: calc.max(24pt, c * 0.26), weight: 400, tracking: 0.01em)[— #autor]
+      }
+    }))
+
+    context {
+      let hueco = alto - 2 * margen - pie
+      let c = if cuerpo == auto { cuerpo-max } else { cuerpo }
+      if cuerpo == auto {
+        while c > 28pt and measure(bloque(c)).height > hueco { c -= 2pt }
+      }
+      let b = bloque(c)
+      // centro óptico: el aire de arriba es 2/3 del de abajo
+      let y = margen + (hueco - measure(b).height) * 0.4
+      place(top + left, dx: margen, dy: y, b)
+    }
+
+    if marca != none { place(bottom + left, dx: margen, dy: -margen + 24pt, marca) }
   })
 }
 
