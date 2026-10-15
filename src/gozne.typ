@@ -1,7 +1,7 @@
 // ─────────────────────────────────────────────────────────────
 //  gozne.typ — preset «gozne»: cita + diagrama radial de dibujo técnico
 //
-//  Cosechado de la lámina 07 (campana/07-imputacion-gozne.typ): de un
+//  Cosechado de la lámina 07 (trabajos/campana/07-imputacion-gozne.typ): de un
 //  lado la cita entera, con llamadas numeradas voladas; del otro, un
 //  gozne visto desde arriba —el perno es la idea central— con N hojas
 //  que giran sobre él, cada una con su disco numerado y su rótulo, igual
