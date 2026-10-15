@@ -14,6 +14,7 @@
 #import "topo.typ": bg-topo
 #import "tramas.typ": bg-halftone, bg-rayos
 #import "memphis.typ": bg-memphis
+#import "papel.typ": bg-papel, bg-cafe, bg-mancha-cafe
 
 // Dibuja UNA capa dict. `size` se propaga a las capas SVG que lo
 // necesitan (aura/patrón/viñeta/frame). `theme` se reenvía para
@@ -55,12 +56,18 @@
     bg-rayos(color: c.at("color", default: none), fondo: c.at("fondo", default: white), size: size, n: c.at("n", default: 24), centro: c.at("centro", default: auto), opacidad: c.at("opacidad", default: 12%), theme: theme)
   } else if t == "memphis" {
     bg-memphis(colores: c.at("colores", default: auto), fondo: c.at("fondo", default: auto), size: size, densidad: c.at("densidad", default: 26), semilla: c.at("semilla", default: 3), grosor: c.at("grosor", default: 5), opacidad: c.at("opacidad", default: 85%), theme: theme)
+  } else if t == "papel" {
+    bg-papel(color: c.at("color", default: rgb("#efe4c8")), mancha: c.at("mancha", default: rgb("#8a6a3a")), manchas: c.at("manchas", default: 55%), fibras: c.at("fibras", default: 30%), grano: c.at("grano", default: 35%), oxido: c.at("oxido", default: 9), bordes: c.at("bordes", default: 40%), escaneo: c.at("escaneo", default: false), lomo: c.at("lomo", default: "izquierda"), cafe: c.at("cafe", default: 0), color-cafe: c.at("color-cafe", default: rgb("#8a5a2b")), semilla: c.at("semilla", default: 11), size: size)
+  } else if t == "cafe" {
+    bg-cafe(tazas: c.at("tazas", default: 2), gotas: c.at("gotas", default: 3), color: c.at("color", default: rgb("#8a5a2b")), intensidad: c.at("intensidad", default: 1), radio: c.at("radio", default: auto), semilla: c.at("semilla", default: 3), size: size)
+  } else if t == "mancha-cafe" {
+    bg-mancha-cafe(cual: c.at("cual", default: "A"), x: c.at("x", default: 0.7), y: c.at("y", default: 0.25), ancho: c.at("ancho", default: 0.45), tinte: c.at("tinte", default: auto), opacidad: c.at("opacidad", default: 50%), giro: c.at("giro", default: 0deg), espejar: c.at("espejar", default: false), size: size)
   } else if t == "preset" {
     // Se resuelve en presets.typ para evitar ciclo de imports —
     // core no conoce nombres, delega por hook dinámico.
     panic("superbg: capa preset sin resolver — llama a superbg() desde lib.typ, no a _capa() directo")
   } else {
-    panic("superbg: tipo de capa desconocido \"" + t + "\" — usa plano | gradiente | blob | aura | malla | patron | vignette | ruido | halftone | rayos | olas | topo | memphis | imagen | frame | vidrio")
+    panic("superbg: tipo de capa desconocido \"" + t + "\" — usa plano | gradiente | blob | aura | malla | patron | vignette | ruido | halftone | rayos | olas | topo | memphis | papel | cafe | mancha-cafe | imagen | frame | vidrio")
   }
 }
 

@@ -20,6 +20,10 @@
 //    #bg-rayos(color: orange, n: 24)           // sunburst
 //    #bg-memphis(semilla: 3, densidad: 26)     // confetti Memphis
 //    #bg-vignette(intensidad: 35%)
+//    #bg-papel(escaneo: true)                  // papel viejo / escaneado
+//    #bg-cafe(tazas: 2)                        // manchas de café generadas (aros + gotas)
+//    #bg-mancha-cafe(cual: "A", x: .7, y: .2)  // manchas de café reales (coffeestains, A–D)
+//    #text(fill: tinta-gastada(black))[…]      // relleno de texto: tinta gastada
 //    #bg-imagen(read("foto.jpg", encoding: none), opacidad: 45%)
 //    #bg-frame(blue, orange) · #bg-vidrio(x:.., y:.., w:.., h:..)
 //    #texto-sobre(rgb("#1c1917"))              // color inteligente: white/black
@@ -53,6 +57,7 @@
 #import "topo.typ": bg-topo
 #import "tramas.typ": bg-halftone, bg-rayos
 #import "memphis.typ": bg-memphis
+#import "papel.typ": bg-papel, bg-cafe, bg-mancha-cafe, mancha-cafe, manchas-cafe, tinta-gastada
 #import "color.typ": contraste, es-aa, texto-sobre
 #import "core.typ": _motor, _capa
 #import "presets.typ": preset-capas, lista-presets, superbg-preset

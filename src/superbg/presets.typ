@@ -7,7 +7,7 @@
 #import "_util.typ": sizes, _tcolor
 #import "core.typ": _motor
 
-#let _nombres = ("plano-claro", "amanecer", "noche", "papel-crema", "neon-aura", "editorial-suave", "rejilla-sutil", "puntos", "foto-oscura", "marco-lateral", "vidrio-aura", "atardecer-malla", "ola-nocturna", "ola-clara", "topo-papel", "halftone-pop", "memphis-fiesta", "rayos-alba", "aurora")
+#let _nombres = ("plano-claro", "amanecer", "noche", "papel-crema", "neon-aura", "editorial-suave", "rejilla-sutil", "puntos", "foto-oscura", "marco-lateral", "vidrio-aura", "atardecer-malla", "ola-nocturna", "ola-clara", "topo-papel", "halftone-pop", "memphis-fiesta", "rayos-alba", "aurora", "papel-viejo", "papel-escaneado", "papel-cafe")
 
 #let lista-presets() = _nombres
 
@@ -62,6 +62,14 @@
     ((tipo: "rayos", color: c1, fondo: centro, opacidad: 14%),)
   } else if nombre == "aurora" {
     ((tipo: "malla", colores: (c1, c2, if p != none { p.accent } else { rgb("#f59e0b") }), fondo: dark), (tipo: "patron", patron: "dots", color: white, opacidad: 8%), (tipo: "vignette", color: black, intensidad: 30%))
+  } else if nombre == "papel-viejo" {
+    ((tipo: "papel"),)
+  } else if nombre == "papel-escaneado" {
+    ((tipo: "papel", escaneo: true),)
+  } else if nombre == "papel-cafe" {
+    // manchas reales (coffeestains): un aro arriba a la derecha y
+    // salpicaduras abajo
+    ((tipo: "papel"), (tipo: "mancha-cafe", cual: "A", x: 0.8, y: 0.17, ancho: 0.5, giro: 20deg), (tipo: "mancha-cafe", cual: "C", x: 0.2, y: 0.9, ancho: 0.4, giro: -15deg))
   } else {
     panic("superbg: preset desconocido \"" + nombre + "\" — disponibles: " + _nombres.join(", "))
   }
