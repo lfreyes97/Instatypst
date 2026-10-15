@@ -1,5 +1,40 @@
 # Changelog
 
+## [sin publicar] — presets de cartel, ornamentos, curvas, papel y `trabajos/`
+
+Resumen del trabajo del 2026-10-11 al 2026-10-15, posterior a la sección
+de contraste de más abajo.
+
+### Agregado
+
+- **`carteles`: presets de color sólido + tipografía**, cosechados de
+  las láminas de la campaña: `suizo` (01), `demostracion` (17) con
+  `rayar` (09), `escalera` (04), `gozne` (07), `linea-tiempo` (16),
+  `esquela` (10), `folio` (11) y, nuevos, `liso` y `plano`. Los que
+  salen de una lámina la reproducen píxel a píxel con los valores por
+  omisión. Demos en `examples/presets/`.
+- **`fleurones`**: motor de ornamentos de Magnalia en el paquete, con
+  el catálogo de IM FELL FLOWERS y presets por uso: `orla` (20
+  marcos), `guarda` (14 bandas), `vineta`, `roseta`, cabecera,
+  separador, asterismo, remate y `credito` (nota de licencia). Los
+  presets con orla (`cita-orlada`, …) lo usan.
+- **`curvas`**: fondos de curvas continuos entre diapositivas
+  (`campo`, `ventana`, `panorama`; familias topo, ondas, flujo,
+  paralelas, cinta, órbitas). `carteles.escalera` y `carrusel` aceptan
+  un campo para formar un deck continuo.
+- **`superbg`: papel y café.** Capas `papel`, `cafe` y `mancha-cafe`
+  (manchas reales A–D de `coffeestains`, dominio público, convertidas
+  con `scripts/convertir-cafe.py`), `tinta-gastada` como relleno de
+  texto y presets `papel-viejo`, `papel-escaneado` y `papel-cafe`.
+
+### Cambiado
+
+- **Nueva carpeta `trabajos/`** para las piezas hechas con el paquete,
+  una carpeta por serie: `campana/` y `laminas/` se mueven ahí desde la
+  raíz, y se suman `ellul-tecnica/`, `ellul-estado-tecnico/` y
+  `vantil-recompensas/`. `examples/` queda para demos de la API. Los
+  PNG de `trabajos/` no se versionan.
+
 ## [sin publicar] — contraste WCAG vendorizado + rename semántico de tokens
 
 Hecho en sesión de Claude Code sobre `rapiquote`. Contexto completo
