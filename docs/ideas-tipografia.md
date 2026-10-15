@@ -78,6 +78,31 @@ más grande que el elemento enmascarado (rsvg no) — la región tiene que
 coincidir exacto con el bloque. Muestra completa en
 `examples/capitulares-ornamentadas.typ`.
 
+## `variations:` en presets — solo `social.typ` lo expone (2026-10-14)
+
+`badge`, `headline` y `subhead` (`src/social.typ:163,178,191`) aceptan
+`variations:` (dict de ejes OpenType pasado directo a `text()`). Ningún
+preset de `carteles` / `linea-tiempo` lo expone:
+
+- `linea-tiempo()` (`src/linea-tiempo.typ:32`) recibe `fuente:` /
+  `fuente-rotulos:` pero no `variations:` — el texto se compone con los
+  ejes por defecto del archivo variable.
+- `carteles.liso()` (`src/carteles.typ:266`) igual: `fuente:` / `peso:`
+  (mapean a wght por la vía normal), sin acceso a `SOFT` / `WONK` /
+  `opsz` de Fraunces ni a `wdth` / `opsz` de Bricolage.
+
+Caso que lo evidenció: `trabajos/vantil-recompensas/vantil-recompensas.typ` pide la versión
+papel con `fuente: "Fraunces"` (archivo variable real
+`Fonts/Fraunces/Fraunces-VariableFont_SOFT,WONK,opsz,wght.ttf`). Compila
+y usa la variable, pero no hay forma de pedir `WONK: 1` en el remate o
+`opsz: 144` en estaciones sin tocar el preset.
+
+Decidir API antes de implementar: ¿`variations:` único para todo el
+cartel, o par `variations:` / `variations-remate:` (como ya existen
+`cuerpo:` / `cuerpo-remate:`)? Mismo patrón serviría para `liso`
+(`variations:` + `variations-autor:`). Ver `examples/variable-fonts.typ`
+para los rangos verificados de cada eje.
+
 ## Falta una fuente con cobertura de emoji
 
 Ninguna de las ~50 fuentes en `Fonts/` cubre emoji — verificado con

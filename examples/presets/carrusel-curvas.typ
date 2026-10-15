@@ -37,4 +37,4 @@
   referencia: [Salmo 36:9])
 
 // El campo entero: las cinco ventanas, una al lado de la otra.
-#page(width: 5400pt, height: 1080pt, margin: 0pt, fill: rgb("#f3efe6"), curvas.panorama(ondas))
+//#page(width: 5400pt, height: 1080pt, margin: 0pt, fill: rgb("#f3efe6"), curvas.panorama(ondas))
