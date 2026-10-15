@@ -13,6 +13,8 @@ de contraste de más abajo.
   `esquela` (10), `folio` (11) y, nuevos, `liso` y `plano`. Los que
   salen de una lámina la reproducen píxel a píxel con los valores por
   omisión. Demos en `examples/presets/`.
+  `demostracion` acepta `encabezado:`, una entrada de lectura sin
+  numerar sobre el primer grupo.
 - **`fleurones`**: motor de ornamentos de Magnalia en el paquete, con
   el catálogo de IM FELL FLOWERS y presets por uso: `orla` (20
   marcos), `guarda` (14 bandas), `vineta`, `roseta`, cabecera,

@@ -331,6 +331,8 @@
 //            `cuerpo-max`, para que una palabra corta no se dispare).
 //   autor, obra    pie en mono, abajo a la izquierda
 //   marca          contenido abajo a la derecha (p. ej. el logo)
+//   encabezado     contenido de lectura sin numerar sobre el primer grupo
+//                  (la entrada de la demostración), alineado al texto
 //   inicio         y del primer grupo; auto = el bloque reparte el aire
 //                  libre 1:2 (arriba:abajo) entre el margen y el pie
 //
@@ -354,6 +356,7 @@
   margen: 84pt,
   aire-raya: (arriba: 76pt, abajo: 44pt),
   cuadricula: true,
+  encabezado: none,
   inicio: auto,
 ) = {
   let (ancho, alto) = (formato.at(0) * 1pt, formato.at(1) * 1pt)
@@ -419,9 +422,13 @@
       // numeración corrida entre grupos
       let desde = (1,)
       for g in grupos { desde.push(desde.last() + g.len()) }
+      let entrada(e) = if encabezado != none {
+        block(width: caja - col-n, text(size: cuerpo-lectura * e, encabezado))
+      }
       let medir(e) = {
         let bloques = grupos.enumerate().map(((i, g)) => filas(g, desde.at(i), e))
         let alto-total = bloques.map(b => measure(b).height).sum() + (grupos.len() - 1) * (aire-raya.arriba + aire-raya.abajo) * e
+        if encabezado != none { alto-total += measure(entrada(e)).height + (aire-raya.arriba + aire-raya.abajo) * e }
         (bloques, alto-total)
       }
       // espacio disponible: entre el margen y el pie
@@ -434,8 +441,13 @@
         (bloques, total) = medir(e)
       }
       let y = if inicio == auto { techo + (piso - techo - total) / 3 } else { inicio }
+      if encabezado != none {
+        let en = entrada(e)
+        place(dx: margen + col-n, dy: y, en)
+        y += measure(en).height
+      }
       for (i, b) in bloques.enumerate() {
-        if i > 0 {
+        if i > 0 or encabezado != none {
           y += aire-raya.arriba * e
           // raya de deducción, desde la columna del texto
           place(dx: margen + col-n, dy: y, line(length: caja - col-n, stroke: (paint: apagado, thickness: 2pt, dash: (6pt, 8pt))))
