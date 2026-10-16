@@ -140,7 +140,7 @@
 // 8 · La circularidad trascendental
 #lamina(8, fondo: azul)[
   = Segunda razón: la circularidad trascendental
-  == Aquí viene el punto decisivo: la circularidad presuposicionalista es circularidad #text(fill: ambar)[trascendental].
+  == La circularidad presuposicionalista es circularidad #text(fill: ambar)[trascendental].
 
   ¡Ni siquiera estamos hablando del tipo de circularidad que se puede formalizar en un argumento! La pretensión presuposicionalista no consiste simplemente en inferir la existencia de Dios a partir de premisas que ya la presuponen. Consiste en sostener que Dios es la #text(fill: ambar)[condición de posibilidad] de la inteligibilidad, la racionalidad y el conocimiento. La cuestión es trascendental: ¿cuáles son las condiciones de posibilidad de la argumentación misma?
 ]
