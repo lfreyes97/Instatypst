@@ -21,6 +21,17 @@ ln -sfn "$(pwd)/src" ~/.local/share/typst/packages/local/instatypst/0.1.0/src
 ln -sfn "$(pwd)/typst.toml" ~/.local/share/typst/packages/local/instatypst/0.1.0/typst.toml
 ```
 
+On **Windows (PowerShell)** the local-packages path is
+`%APPDATA%\typst\packages\local\instatypst\0.1.0`. A *junction* needs no
+admin rights (a symlink does, or Developer Mode):
+
+```powershell
+$d = "$env:APPDATA\typst\packages\local\instatypst\0.1.0"
+New-Item -ItemType Directory -Force $d | Out-Null
+New-Item -ItemType Junction -Path "$d\src" -Target "$(Get-Location)\src"
+Copy-Item typst.toml $d -Force   # a file: copied; repeat if it changes
+```
+
 Import from any document on this machine:
 
 ```typst
@@ -39,11 +50,17 @@ relative import instead, which requires compiling with `--root .`:
 **Fonts:** the package ships no fonts (`typst.toml` excludes `Fonts/`;
 only `src/` + `typst.toml` travel). Either install the families
 system-wide (this machine has them under
-`~/.local/share/fonts/instatypst/`) or pass the repo bundle explicitly:
+`~/.local/share/fonts/instatypst/`) or pass the repo bundle explicitly (works the same on Linux, macOS and
+Windows, and is the portable option):
 
 ```sh
 typst compile --root . --font-path Fonts <file.typ> <out.pdf>
 ```
+
+On Windows, per-user fonts live in `%LOCALAPPDATA%\Microsoft\Windows\Fonts`.
+The Nerd Fonts (Iosevka, ZedMono) are not in the repo: they come from
+`nix develop`, which does not run on Windows — install them by hand from
+nerdfonts.com.
 
 ## 2 · Compile recipes
 
@@ -63,6 +80,10 @@ bash trabajos/campana/compile-all.sh
 
 Notes:
 
+- The `typst` commands above are identical on Windows. Only the
+  environment differs: `compile-all.sh` needs bash (Git Bash or WSL), the
+  generator runs as `py` or `python` instead of `python3`, and PowerShell
+  continues lines with `` ` `` instead of `\`.
 - `--root .` is mandatory for in-repo files: they import upward
   (`../src/lib.typ`) and Typst restricts to the project root otherwise.
 - Heavy plates (1080×1350pt with layered SVG) can take minutes — launch

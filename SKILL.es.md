@@ -21,6 +21,17 @@ ln -sfn "$(pwd)/src" ~/.local/share/typst/packages/local/instatypst/0.1.0/src
 ln -sfn "$(pwd)/typst.toml" ~/.local/share/typst/packages/local/instatypst/0.1.0/typst.toml
 ```
 
+En **Windows (PowerShell)** la ruta de paquetes locales es
+`%APPDATA%\typst\packages\local\instatypst\0.1.0`. Una *junction* no pide
+administrador (un symlink sí, o modo desarrollador):
+
+```powershell
+$d = "$env:APPDATA\typst\packages\local\instatypst\0.1.0"
+New-Item -ItemType Directory -Force $d | Out-Null
+New-Item -ItemType Junction -Path "$d\src" -Target "$(Get-Location)\src"
+Copy-Item typst.toml $d -Force   # archivo: se copia; repetir si cambia
+```
+
 Importar desde cualquier documento de esta máquina:
 
 ```typst
@@ -39,11 +50,17 @@ import relativo, lo que exige compilar con `--root .`:
 **Fuentes:** el paquete no trae fuentes (`typst.toml` excluye `Fonts/`;
 solo viajan `src/` + `typst.toml`). O se instalan las familias en el
 sistema (esta máquina las tiene en `~/.local/share/fonts/instatypst/`) o
-se pasa el bundle del repo explícitamente:
+se pasa el bundle del repo explícitamente (vale igual en Linux, macOS y
+Windows, y es la opción portable):
 
 ```sh
 typst compile --root . --font-path Fonts <archivo.typ> <salida.pdf>
 ```
+
+En Windows las fuentes de usuario van en
+`%LOCALAPPDATA%\Microsoft\Windows\Fonts`. Las Nerd Font (Iosevka, ZedMono)
+no están en el repo: vienen de `nix develop`, que no corre en Windows —
+instalarlas a mano desde nerdfonts.com.
 
 ## 2 · Recetas de compilación
 
@@ -63,6 +80,10 @@ bash trabajos/campana/compile-all.sh
 
 Notas:
 
+- Los comandos `typst` de arriba son idénticos en Windows. Lo que cambia
+  es el entorno: `compile-all.sh` pide bash (Git Bash o WSL), el generador
+  se invoca con `py` o `python` en vez de `python3`, y PowerShell continúa
+  línea con `` ` `` en vez de `\`.
 - `--root .` es obligatorio para archivos del repo: importan hacia arriba
   (`../src/lib.typ`) y Typst los restringe a la raíz del proyecto.
 - Las láminas pesadas (1080×1350pt con SVG por capas) pueden tardar

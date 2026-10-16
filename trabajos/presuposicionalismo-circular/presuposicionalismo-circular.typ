@@ -1,7 +1,7 @@
 // Carrusel de Instagram: ¿Es circular el presuposicionalismo? (12 diapositivas, 1080×1080).
 // Portada, diez láminas de texto completo (una por sección) y cierre. Piezas de
 // carteles: suizo en la portada (y su marco en el cierre, con el logo de la
-// campaña y los enlaces), demostracion en la retorsión y liso en el resto. La
+// campaña y los enlaces), demostracion en el argumento trascendental y liso en el resto. La
 // firma va solo en portada y cierre; las interiores llevan el contador.
 //
 // Dentro de una lámina (`lamina`) el texto se escribe con encabezados:
@@ -48,8 +48,23 @@
   formato: f, fondo: fondo, cuerpo-max: 96pt, margen: 88pt,
   marca: cuenta(n, if fondo == crema { oscuro.lighten(40%) } else { white.darken(25%) }))
 
-// Enlaces del cierre: uno por renglón.
-#let enlaces = ([enlace-1.org], [enlace-2.org], [enlace-3.org])
+// Cierre: sitio, tres artículos (título tal como aparece en el sitio), recuadro
+// reservado para el artículo propio y referencias de las láminas 8, 9 y 11.
+#let sitio = [presuposicionalismo.com/blog]
+#let enlaces = (
+  [Las contradicciones inherentes al agnosticismo],
+  [Qué es el método transcendental],
+  [Qué es la apologética presuposicional],
+)
+// Cambiar por el título y el enlace cuando el artículo esté publicado.
+#let articulo = [Artículo completo: próximamente.]
+#let referencias = (
+  [J. N. Anderson, «No Dilemma for the Proponent of the Transcendental Argument», _Philosophia Christi_ 13:1 (2011).],
+  [I. Cabrera, _Argumentos trascendentales_.],
+  [W. L. Craig, respuesta a J. Frame, en _5 puntos de vista sobre la apologética_.],
+  [G. Bahnsen, _La apologética de Van Til_.],
+  [Aristóteles, _Metafísica_ IV 4.],
+)
 
 // Paleta suiza de la lámina 01 de la campaña, con el vino del carrusel de acento.
 #let suizo = (papel: crema, tinta: oscuro, acento: vino, linea: rgb("#d9d3c7"), gris: rgb("#5c5850"))
@@ -128,65 +143,67 @@
   cuerpo)
 #lamina(7, fondo: crema)[
   = ¿Pero y el presuposicionalismo?
-  == Dos razones para negar que pida el principio.
+  == Dos razones para negar la petición de principio.
 
-  #razon(1)[*La circularidad formal no es un vicio.* Entonces la objeción no puede limitarse a decir que el argumento presuposicionalista es circular: tiene que mostrar que lo es en el único sentido vicioso, que alguna de sus premisas solo resulta aceptable para quien ya acepta la conclusión.]
+  #razon(1)[*La circularidad formal no es un vicio.* Entonces la objeción no puede limitarse a decir que el argumento presuposicionalista es circular: tiene que mostrar que lo es un sentido vicioso, que alguna de sus premisas solo resulta aceptable para quien ya acepta la conclusión.]
 
-  #razon(2)[*La circularidad en juego ni siquiera es la de un argumento.* Es la que aparece cuando se pregunta qué tiene que ser verdad para que la experiencia humana sea inteligible: para que podamos conocer, para que la historia tenga sentido, para que razonar no sea arbitrario. Cualquier respuesta a esa pregunta, también la del objetor, tiene que servirse de aquello que intenta explicar: esa circularidad no es exclusiva del presuposicionalismo ni es, por sí misma, una petición de principio. #text(fill: vino)[→]]
+  #razon(2)[*La circularidad en juego es la del método trascendental, no la de una petición de principio.* Aparece cuando se pregunta qué tiene que ser verdad para que la experiencia humana sea inteligible, y no es, por sí misma, un vicio. #text(fill: vino)[→]]
 
   == No basta con señalar que un argumento es circular. #text(fill: vino)[Hay que demostrar que su circularidad es viciosa.]
 ]
 
 // 8 · La circularidad trascendental
 #lamina(8, fondo: azul)[
-  = Segunda razón: la circularidad trascendental
+  = la circularidad trascendental
   == La circularidad presuposicionalista es circularidad #text(fill: ambar)[trascendental].
 
-  ¡Ni siquiera estamos hablando del tipo de circularidad que se puede formalizar en un argumento! La pretensión presuposicionalista no consiste simplemente en inferir la existencia de Dios a partir de premisas que ya la presuponen. Consiste en sostener que Dios es la #text(fill: ambar)[condición de posibilidad] de la inteligibilidad, la racionalidad y el conocimiento. La cuestión es trascendental: ¿cuáles son las condiciones de posibilidad de la argumentación misma?
+  No hay una única formulación del argumento trascendental, pero todas comparten un rasgo: preguntan qué tiene que ser verdad para que podamos conocer, para que la historia tenga sentido y para que razonar no sea arbitrario. Cualquier respuesta, también la del objetor, tiene que servirse de aquello que intenta explicar. El presuposicionalista sostiene que Dios es la #text(fill: ambar)[condición trascendental] de esa inteligibilidad. Hasta Craig, crítico del presuposicionalismo, lo admite: «no se trata de una circularidad viciosa, sino más bien de la naturaleza inherente a un argumento trascendental».
 ]
 
-// 9 · La retorsión: cada premisa con su fórmula al lado; la conclusión, enorme.
+// 9 · El argumento trascendental: cada premisa con su fórmula al lado; la conclusión, enorme.
 #let paso(t, formula, nota: none) = block(inset: (y: 0.35em), grid(columns: (1fr, auto), column-gutter: 28pt, align: (left + horizon, right + horizon),
-  [#t#if nota != none [ #text(font: "DM Mono", size: 0.55em, fill: gris)[#nota]]],
+  [#t#if nota != none [ #box(text(font: "DM Mono", size: 0.55em, fill: gris)[#nota])]],
   text(fill: rgb("#f4f1ea"), formula)))
 #carteles.demostracion((
   (
     paso([Argumentar es posible.], $diamond.stroked A$),
-    paso([Argumentar es necesariamente posible.], $square.stroked diamond.stroked A$, nota: [De 1 y S5.]),
-    paso([Necesariamente, si Dios existe, es posible argumentar.], $square.stroked (G -> diamond.stroked A)$),
+    paso([Argumentar es necesariamente posible.], $square.stroked diamond.stroked A$, nota: [1, S5.]),
+    paso([Necesariamente, si es posible argumentar, Dios existe.], $square.stroked (diamond.stroked A -> G)$),
+    paso([Si es necesariamente posible argumentar, Dios existe necesariamente.], $square.stroked diamond.stroked A -> square.stroked G$, nota: [3, K.]),
   ),
   (
-    (afirma: [$square.stroked G -> square.stroked diamond.stroked A$
-      #block(above: 0.25em, text(size: 0.24em, weight: 400, fill: rgb("#c3c9d1"), tracking: 0em)[Necesariamente, si Dios existe necesariamente, es necesariamente posible argumentar.])], cuerpo: 140pt),
+    (afirma: [$square.stroked G$
+      #block(above: 0.25em, text(size: 0.24em, weight: 400, fill: rgb("#c3c9d1"), tracking: 0em)[Dios existe necesariamente. (2, 4)])], cuerpo: 140pt),
   ),
 ), formato: f, marca: cuenta(9, gris),
   encabezado: {
-    block(below: 36pt, mono(upper[La retorsión], ambar))
-    text(size: 0.85em)[Supongamos que mi afirmación de que todos los argumentos válidos son circulares no es convincente. Dije que sería pedantería. Veamos, entonces, el argumento:]
-    block(above: 0.7em, text(size: 0.68em, fill: gris)[En notación modal, sean $G$: «Dios existe», y $A$: «Es posible argumentar».])
+    block(below: 36pt, mono(upper[El argumento trascendental], ambar))
+    text(size: 0.85em)[Esa tesis puede reconstruirse como un argumento. Veamos si en él hay alguna petición de principio:]
+    block(above: 0.7em, text(size: 0.68em, fill: gris)[En notación modal, sean $G$: «Dios existe», y $A$: «Hay argumentación». Reconstrucción basada en J. N. Anderson e I. Cabrera.])
   })
 
 // 10 · ¿Dónde está la petición de principio?
-#lamina(10, fondo: crema)[ale, dije que era pedantería...
+#lamina(10, fondo: crema)[
   = ¿Dónde está la petición de principio?
-  == ¿En dónde está la petición de principio?
+  == Si la hay, tiene que estar en la premisa 3.
 
-  Si la acusación es que el argumento presupone su conclusión, hay que identificar la premisa que lo hace y explicar por qué esa presuposición es ilegítima.
+  Pero no basta con decir «no acepto la explicación teísta». Quien rechaza (3) tiene que proponer otra explicación de las condiciones de la argumentación, la que sea.
 
-  La mera presencia de una conclusión teísta no demuestra que el argumento sea falaz. Tampoco basta con señalar que el argumento es modal o que parte de condiciones necesarias de la argumentación.
+  Y esa explicación se defenderá del mismo modo: sirviéndose, para justificarse, de lo mismo que pretende explicar. Si eso es una petición de principio, también lo es la del objetor.
 
-  == #text(fill: vino)[La objeción necesita algo más que la palabra «circular».]
+  == Por tanto, #text(fill: vino)[la circularidad no es un motivo para rechazar (3).]
 ]
 
 // 11 · La cuestión decisiva
 #lamina(11)[
   = La cuestión decisiva
+  == Todos razonan en círculo. Lo que cuenta es qué círculo se sostiene.
 
-  La retorsión no consiste en demostrar cualquier conclusión a partir de la posibilidad de argumentar. Consiste en mostrar que una posición no puede sostenerse coherentemente sin presuponer aquello que pretende negar.
+  Aristóteles lo vio al defender el principio de no contradicción: no puede demostrarse sin petición de principio, pero sí refutarse indirectamente a quien lo niega, con tal de que diga algo.
 
-  Por eso, la cuestión decisiva no es simplemente si el presuposicionalismo es circular, sino si sus presupuestos son las condiciones de posibilidad de la inteligibilidad y si las alternativas pueden dar cuenta de esas mismas condiciones.
+  Por eso el método es indirecto: no deduce a Dios desde una premisa neutral. Parte de la posición del adversario y muestra que, llevada a sus consecuencias, hace imposible lo mismo que él está haciendo: argumentar. Para Bahnsen, esos círculos son «destructivos para el pensamiento humano».
 
-  == La circularidad no es todavía una refutación. #text(fill: ambar)[La pregunta es qué clase de circularidad está en juego.]
+  == Queda por examinar #text(fill: ambar)[si las alternativas pueden dar cuenta de la argumentación sin Dios.]
 ]
 
 // 12 · Cierre: el marco del cartel suizo (retícula, filetes de cabecera y
@@ -206,12 +223,22 @@
     place(top + left, dx: r.x.at(3), dy: 64pt + 18pt, rotulo(fill: suizo.gris)[#total / #total])
     place(bottom + left, dx: 64pt, dy: -112pt, line(length: r.util, stroke: 2.5pt + suizo.tinta))
 
-    place(center + horizon, dy: -24pt, block(width: r.util, align(center, {
-      marca.logo(width: 620pt, color: suizo.tinta)
-      v(72pt)
+    place(top + center, dy: 150pt, block(width: r.util, align(center, {
+      marca.logo(width: 440pt, color: suizo.tinta)
+      v(44pt)
       rotulo(weight: 700, tracking: 0.12em, fill: suizo.acento)[PARA MÁS RECURSOS VISITA:]
-      v(28pt)
-      stack(spacing: 20pt, ..enlaces.map(e => text(size: 44pt, weight: 500, tracking: -0.01em, e)))
+      v(14pt)
+      text(size: 34pt, weight: 600, sitio)
+      v(14pt)
+      stack(spacing: 10pt, ..enlaces.map(e => text(size: 26pt, weight: 400, e)))
+      v(30pt)
+      block(width: 85%, inset: 16pt, stroke: (dash: "dashed", paint: suizo.gris, thickness: 1.2pt),
+        text(size: 24pt, fill: suizo.gris, articulo))
     })))
+    place(bottom + left, dx: 64pt, dy: -136pt, block(width: r.util, {
+      set text(size: 18pt, fill: suizo.gris)
+      set par(leading: 0.4em, spacing: 0.5em)
+      referencias.join(parbreak())
+    }))
   })
 }
