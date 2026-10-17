@@ -108,7 +108,7 @@
     premisa(3)[#text(weight: 700, fill: vino)[Por tanto, Sócrates es mortal.]],
   )))
 
-  La mortalidad de Sócrates es una instancia particular de la proposición universal «todos los hombres son mortales». La conclusión se sigue de las premisas: no introduce una verdad independiente de ellas, sino que explicita una consecuencia lógica de las mismas.
+  La mortalidad de Sócrates es una instancia particular de la proposición universal «todos los hombres son mortales». La conclusión se sigue de las premisas: no introduce una verdad independiente de ellas, sino que hace explícito lo que ya contienen.
 ]
 
 // 4 · ¿Y la petitio principii?
@@ -145,7 +145,7 @@
   = ¿Pero y el presuposicionalismo?
   == Dos razones para negar la petición de principio.
 
-  #razon(1)[*La circularidad formal no es un vicio.* Entonces la objeción no puede limitarse a decir que el argumento presuposicionalista es circular: tiene que mostrar que lo es un sentido vicioso, que alguna de sus premisas solo resulta aceptable para quien ya acepta la conclusión.]
+  #razon(1)[*La circularidad formal no es un vicio.* Entonces la objeción no puede limitarse a decir que el argumento presuposicionalista es circular: tiene que mostrar que lo es en un sentido vicioso, que alguna de sus premisas solo resulta aceptable para quien ya acepta la conclusión.]
 
   #razon(2)[*La circularidad en juego es la del método trascendental, no la de una petición de principio.* Aparece cuando se pregunta qué tiene que ser verdad para que la experiencia humana sea inteligible, y no es, por sí misma, un vicio. #text(fill: vino)[→]]
 
