@@ -13,6 +13,7 @@
 
 #import "superbg/lib.typ" as superbg
 #import "fleurones.typ" as fl
+#import "carteles/_base.typ": medida, escala
 
 // Viñeta: auto = el glifo de FLOWERS 2 de la lámina, como texto (`g`
 // de cuerpo, con `bordes` ajustados o no); un nombre de
@@ -67,8 +68,8 @@
   cuerpo-nombre: 132pt,
   textura: true,
 ) = {
-  let (ancho, alto) = (formato.at(0) * 1pt, formato.at(1) * 1pt)
-  let k = calc.min(formato.at(0) / 1080, formato.at(1) / 1350)
+  let (ancho, alto) = medida(formato)
+  let k = escala(formato, base: (1080, 1350))
 
   page(width: ancho, height: alto, margin: 0pt, fill: papel, {
     set text(font: fuente, fill: luto, lang: "es", hyphenate: false)

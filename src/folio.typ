@@ -14,6 +14,7 @@
 #import "superbg/lib.typ" as superbg
 #import "fleurones.typ" as fl
 #import "dropcaps.typ": capitular-ornamentada
+#import "carteles/_base.typ": medida, ajustar-alto
 
 // ── carteles.folio ──────────────────────────────────────────
 //   texto       el pasaje (contenido); su primera letra va en capitular
@@ -49,7 +50,7 @@
   capitular: (alto: 3, hueco: 0.28em, estilo: "rubricada", desgaste: 0.35),
   textura: true,
 ) = {
-  let (ancho, alto) = (formato.at(0) * 1pt, formato.at(1) * 1pt)
+  let (ancho, alto) = medida(formato)
   let (fx, fy) = (formato.at(0) / 1080, formato.at(1) / 1080)
   let pauta = rubrica.transparentize(72%)
 
@@ -109,9 +110,7 @@
       componer(cuerpo)
     } else {
       context {
-        let s = 66pt
-        while s > 24pt and measure(componer(s)).height > y1 - y0 { s -= 2pt }
-        componer(s)
+        componer(ajustar-alto(componer, 66pt, y1 - y0))
       }
     })))
 

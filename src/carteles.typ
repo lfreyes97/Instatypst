@@ -40,6 +40,7 @@
 #import "linea-tiempo.typ": linea-tiempo
 #import "esquela.typ": esquela
 #import "folio.typ": folio
+#import "carteles/_base.typ": medida, escala, cuerpo-al-ancho, ajustar-alto
 
 // Retícula de columnas sobre `ancho` (largo). `x.at(i)`: borde
 // izquierdo de la columna i (desde 0); `span.at(n)`: ancho de n columnas
@@ -59,10 +60,9 @@
   )
 }
 
-// Tamaño de letra con el que `hacer(tamaño)` ocupa exactamente `ancho`.
-// El ancho del texto es lineal en el tamaño: se mide una vez a 100pt y
-// se escala. Usar dentro de `context`.
-#let cuerpo-al-ancho(hacer, ancho) = 100pt * (ancho / measure(hacer(100pt)).width)
+// `cuerpo-al-ancho`, `ajustar-alto`, `medida` y `escala` viven en
+// carteles/_base.typ (por debajo de los presets, para que `esquela` y
+// `folio` puedan usarlos sin ciclo de import) y se re-exportan aquí.
 
 // Tachado en línea, para negar una palabra o un prefijo dentro de la
 // frase (se usa como cualquier texto: #rayar[ir]racional).
@@ -136,7 +136,7 @@
   frase-y: auto,
   flecha-hasta: auto,
 ) = {
-  let (ancho, alto) = (formato.at(0) * 1pt, formato.at(1) * 1pt)
+  let (ancho, alto) = medida(formato)
   let r = reticula(ancho, columnas: columnas, margen: margen, medianil: medianil)
   // ancho de la frase y del planteo: las primeras 2/3 de las columnas
   let ancho-frase = r.span.at(calc.ceil(columnas * 2 / 3))
@@ -193,8 +193,7 @@
       // aire), se achica de a 2pt; el aire se encoge antes que la letra.
       let bloque(c) = block(width: ancho-frase, text(size: c, weight: 500, tracking: -0.015em, frase))
       let hueco = remate-y - techo
-      let c = cuerpo-frase
-      while c > 24pt and measure(bloque(c)).height > hueco - 48pt { c -= 2pt }
+      let c = ajustar-alto(bloque, cuerpo-frase, hueco - 48pt)
       let b = bloque(c)
       let fh = measure(b).height
       let aire = calc.min(aire, hueco - fh)
