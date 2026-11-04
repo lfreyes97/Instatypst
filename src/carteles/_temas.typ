@@ -36,6 +36,16 @@
     acento: rgb("#c8102e"),
     linea: rgb("#d9d3c7"),
   ),
+  // Bauhaus: papel crudo, negro, y los tres primarios. `acento` es el rojo;
+  // `amarillo` y `azul` son roles propios de este tema.
+  bauhaus: (
+    fondo: rgb("#ece3cf"),
+    tinta: rgb("#141414"),
+    suave: rgb("#5b564c"),
+    acento: rgb("#d3261b"),
+    amarillo: rgb("#f2b705"),
+    azul: rgb("#1d4e9c"),
+  ),
   esquela: (
     fondo: rgb("#f3eee3"),
     tinta: rgb("#141210"),

@@ -8,6 +8,13 @@ byte antes y después.
 
 ### Añadido
 
+- **`carteles.bauhaus`** (`src/carteles/bauhaus.typ`, el primer preset en la
+  carpeta `carteles/`): cartel de formas primarias — círculo amarillo, cuadrado
+  rojo, triángulo azul y una barra diagonal — sobre papel crudo, con el remate
+  en minúsculas de Jost (sans geométrica) a todo el ancho. Mismo contrato que
+  `carteles.suizo` (frase, remate, autor, fechas, etiqueta, planteo, marca): se
+  cambia de estilo cambiando solo el nombre. Tema `bauhaus` en el registro, con
+  los roles propios `amarillo` y `azul`. Demo: `examples/presets/bauhaus.typ`.
 - `src/carteles/_base.typ`: `medida`, `escala`, `cuerpo-al-ancho` y
   `ajustar-alto`, que los presets repetían cada uno por su cuenta
   (`carteles.cuerpo-al-ancho` sigue exportado).

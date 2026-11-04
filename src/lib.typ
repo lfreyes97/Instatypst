@@ -32,7 +32,7 @@
 //    superbg -> namespace de fondos componibles (superbg.superbg,
 //      superbg.bg-aura, superbg.bg-malla, …)
 //    carteles -> namespace de presets de color sólido + tipografía
-//      (carteles.suizo, .demostracion, .escalera, .gozne,
+//      (carteles.suizo, .bauhaus, .demostracion, .escalera, .gozne,
 //      .linea-tiempo, …) y sus piezas
 //      (carteles.reticula, carteles.cuerpo-al-ancho, carteles.rayar),
 //      ver ese archivo; los de orla de fleurones (carteles.cita-orlada,

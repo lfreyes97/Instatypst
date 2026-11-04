@@ -25,6 +25,9 @@
 //    linea-tiempo  (16) estaciones sobre una línea vertical — linea-tiempo.typ
 //    esquela       (10) aviso fúnebre de imprenta: orla de luto, cruz, el
 //                  «difunto» en versalitas — esquela.typ
+//    bauhaus       formas primarias y barra diagonal sobre papel crudo,
+//                  remate en minúsculas de sans geométrica — carteles/bauhaus.typ
+//                  (mismo contrato que suizo: se cambia de estilo cambiando el nombre)
 //    folio         (11) folio de salterio: pergamino pautado, capitular
 //                  iluminada, glosa al margen — folio.typ
 //
@@ -42,6 +45,7 @@
 #import "folio.typ": folio
 #import "carteles/_base.typ": medida, escala, cuerpo-al-ancho, ajustar-alto
 #import "carteles/_temas.typ": temas-lamina, resolver-tema, tema-desde-theme
+#import "carteles/bauhaus.typ": bauhaus
 
 // Retícula de columnas sobre `ancho` (largo). `x.at(i)`: borde
 // izquierdo de la columna i (desde 0); `span.at(n)`: ancho de n columnas
