@@ -25,14 +25,19 @@
 //  párrafo no cabe ni a `minimo`, cede el título y luego la pila; si aun así
 //  no cabe, error: nunca pisa el arte ni baja del mínimo legible.
 //
+//  `area` acota la composición entera (lámina y texto) a una parte de la
+//  página, `ancla` la apoya, y `arte` achica la lámina dentro del área para
+//  dejar sitio al texto (con `arte: auto`, lo justo para que quepa). Por
+//  defecto, la página entera y la lámina llenándola, como siempre.
+//
 //  Se usa desde el namespace `carteles` (carteles.mosaico). No importa
 //  carteles.typ ni lib.typ: carteles.typ lo importa a él.
 // ─────────────────────────────────────────────────────────────
 
-#import "_base.typ": medida, escala
+#import "_base.typ": medida, area-trabajo, encajar
 #import "_temas.typ": resolver-tema
 #import "_arcos.typ": arcos, contorno-arcos
-#import "_texto.typ": bloque-texto
+#import "_texto.typ": resolver-bloque
 #import "_huecos.typ": ob-poligono, ob-circulo, ob-rombo, ob-caja
 
 // Lámina de referencia: la zona coloreada, sin el marco blanco (px).
@@ -103,13 +108,15 @@
 #let _arriba = _ref.at(1) - 1064 // primera línea: tan lejos del borde de arriba como el pie del de abajo
 
 #let _texto(
-  v, X, Y, L, pagina,
+  v, X, Y, L, pagina, trabajo,
   color: black, fuente: "Jost", grosor: 7.5,
   autor: none, obra: none, marca: none,
   etiqueta: none, frase: none, remate: none,
   cuerpo: auto, minimo: auto, fuente-texto: "Outfit", guias: false, quien: "carteles.mosaico",
-) = context {
+  pila-min: 0.45, probar: false,
+) = {
   let (ox, oy, ancho, alto) = pagina
+  let (ax, ay, aw, ah) = trabajo
   let u = L(1)
   let a = v.arcos
   // ── el arte, como obstáculos (de los mismos números con que se dibuja) ──
@@ -134,8 +141,9 @@
     let m = measure(marca)
     obs.push(ob-caja((45, _ref.at(1) - 40 - m.height / u, 45 + m.width / u, _ref.at(1) - 40), aire: _aire))
   }
-  // la página entera en unidades de la lámina, menos el margen
-  let lim = (-ox / u + _margen, -oy / u + _margen, (ancho - ox) / u - _margen, (alto - oy) / u - _margen)
+  // el área de trabajo (por defecto, la página entera) en unidades de la
+  // lámina, menos el margen
+  let lim = ((ax - ox) / u + _margen, (ay - oy) / u + _margen, (ax + aw - ox) / u - _margen, (ay + ah - oy) / u - _margen)
 
   // ── los planes, por orden de preferencia ──
   // el texto arranca donde arranca el motivo de líneas, y la pila se alinea
@@ -173,13 +181,16 @@
   }
 
   let k = _ref.at(0) / 300
-  bloque-texto(L, X, Y, color, color, planes, obs, lim, k: k,
+  resolver-bloque(L, X, Y, color, color, planes, obs, lim, k: k, pila-min: pila-min, probar: probar,
     etiqueta: etiqueta, frase: frase, remate: remate,
     cuerpo: if cuerpo == auto { 7.4 * k } else { cuerpo },
     // a 1080 px de ancho, 22 px; en otro ancho, en proporción
     minimo: if minimo == auto { 22pt * (ancho / 1080pt) / u } else { minimo * 1pt / u },
     junta: _junta, fuente: fuente-texto, guias: guias, quien: quien)
 }
+
+// escalas que prueba `arte: auto`, de mayor a menor
+#let _escalas-arte = (1, 0.95, 0.9, 0.85, 0.8, 0.75, 0.7, 0.65, 0.6)
 
 // ── carteles.mosaico ────────────────────────────────────────
 //   autor    rótulo vertical al margen (str o contenido), en mayúsculas
@@ -201,11 +212,29 @@
 //            `teselas`, a escala); se achica hasta `minimo` si hace falta
 //   minimo   tamaño mínimo del párrafo, en px de la IMAGEN final (auto = 22
 //            px por cada 1080 de ancho: menos no se lee en un móvil)
-//   guias    true: dibuja los obstáculos y las cajas del texto (depurar)
+//   guias    true: dibuja los obstáculos y las cajas del texto, y en verde
+//            el área de trabajo (depurar)
 //   fuente-texto   tipografía de ese texto (por defecto Outfit, como `teselas`;
 //            `fuente` sigue siendo la de los rótulos espaciados)
 //   grosor   grosor de las líneas, en px de la lámina de referencia (auto =
 //            el de la variante)
+//   area     el rectángulo de trabajo: arte y texto van dentro y el resto de
+//            la página queda libre (solo el fondo). 1 = la página entera (por
+//            defecto); un número o ratio (0,7 · 70 %) para los dos lados; un
+//            par (ancho, alto), p. ej. (100 %, 70 %). El texto busca su sitio
+//            dentro del área; `minimo` sigue siendo en px de la imagen, así
+//            que un área chica deja sitio a menos texto. (Excepción: el brazo
+//            largo de la «U» sigue saliendo por el borde de la página, como
+//            en la lámina.)
+//   ancla    dónde va el área en la página y la lámina dentro del área (si
+//            sobra sitio): center + horizon (por defecto), top, bottom + left…
+//   arte     tamaño de la lámina dentro del área: 1 = la llena por su lado
+//            menor (por defecto); 0,8 = al 80 %, apoyada según `ancla`, y el
+//            sitio que deja lo puede usar el texto (p. ej. `arte: 0.85, ancla:
+//            bottom` en la «U» sube el texto a la banda de arriba, en
+//            bandera a la derecha). auto = la mayor escala, de 1 a 0,6, con la
+//            que el texto cabe sin que la pila baje del 80 %; si no hay
+//            ninguna, la que deja caber el texto aunque la pila ceda.
 #let mosaico(
   autor: none,
   obra: none,
@@ -227,13 +256,21 @@
   fuente-texto: "Outfit",
   minimo: auto,
   guias: false,
+  area: 1,
+  ancla: center + horizon,
+  arte: 1,
 ) = {
   if not variante in _variantes {
     panic("mosaico: variante desconocida " + repr(variante) + " — disponibles: " + _variantes.keys().join(", "))
   }
   let v = _variantes.at(variante)
   let (ancho, alto) = medida(formato)
-  let s = escala(formato, base: _ref)
+  let arte = if type(arte) == ratio { arte / 100% } else { arte }
+  if arte != auto and (type(arte) not in (int, float) or arte <= 0 or arte > 1) {
+    panic("carteles.mosaico: `arte` es auto o una fracción entre 0 y 1, no " + repr(arte))
+  }
+  // el rectángulo de trabajo (por defecto, la página entera)
+  let trabajo = area-trabajo(formato, area: area, ancla: ancla, quien: "carteles.mosaico")
   let tm = resolver-tema(tema, defecto: "mosaico")
   let rol = (
     fondo: if fondo == auto { tm.fondo } else { fondo },
@@ -242,15 +279,23 @@
     acento: if acento == auto { tm.acento } else { acento },
     hondo: if hondo == auto { tm.hondo } else { hondo },
   )
+  let hay-texto = etiqueta != none or frase != none or remate != none
+  let gr = if grosor == auto { v.grosor } else { grosor }
 
-  // La lámina de referencia, centrada en la página.
-  let ox = (ancho - _ref.at(0) * s * 1pt) / 2
-  let oy = (alto - _ref.at(1) * s * 1pt) / 2
-  let X(u) = ox + u * s * 1pt
-  let Y(u) = oy + u * s * 1pt
-  let L(u) = u * s * 1pt
+  // La lámina de referencia encajada en el área (centrada, o según `ancla`),
+  // a una fracción `q` del tamaño con que la llena: su esquina y sus medidas.
+  let lamina(q) = {
+    let (ox, oy, s) = encajar(trabajo, _ref, ancla: ancla, escala: q)
+    (ox: ox, oy: oy, X: u => ox + u * s * 1pt, Y: u => oy + u * s * 1pt, L: u => u * s * 1pt)
+  }
+  let texto(g, probar, pila-min: 0.45) = _texto(v, g.X, g.Y, g.L, (g.ox, g.oy, ancho, alto), trabajo,
+    color: rol.at(v.texto), fuente: fuente, grosor: gr,
+    autor: autor, obra: obra, marca: marca, etiqueta: etiqueta, frase: frase, remate: remate,
+    cuerpo: cuerpo, minimo: minimo, fuente-texto: fuente-texto, guias: guias,
+    quien: "carteles.mosaico(variante: " + repr(variante) + ")", pila-min: pila-min, probar: probar)
 
-  page(width: ancho, height: alto, margin: 0pt, fill: rol.at(v.papel), {
+  let dibujar(g, pila-min: 0.45) = {
+    let (X, Y, L) = (g.X, g.Y, g.L)
     // ── las líneas ──
     let a = v.arcos
     arcos(
@@ -258,7 +303,7 @@
       L(a.radio),
       lineas: 10,
       paso: L(a.paso),
-      grosor: L(if grosor == auto { v.grosor } else { grosor }),
+      grosor: L(gr),
       desde: a.at("desde", default: 0deg),
       hasta: a.at("hasta", default: 360deg),
       eje: a.at("eje", default: none),
@@ -290,15 +335,34 @@
         upper(obra))
     }
     // ── título, párrafo y pila (como en teselas), si se pidieron ──
-    if etiqueta != none or frase != none or remate != none {
-      _texto(v, X, Y, L, (ox, oy, ancho, alto),
-        color: rol.at(v.texto), fuente: fuente, grosor: if grosor == auto { v.grosor } else { grosor },
-        autor: autor, obra: obra, marca: marca, etiqueta: etiqueta, frase: frase, remate: remate,
-        cuerpo: cuerpo, minimo: minimo, fuente-texto: fuente-texto, guias: guias,
-        quien: "carteles.mosaico(variante: " + repr(variante) + ")")
-    }
+    if hay-texto { context texto(g, false, pila-min: pila-min) }
     if marca != none {
-      place(bottom + left, dx: X(45), dy: -(oy + L(40)), marca)
+      place(bottom + left, dx: X(45), dy: -(alto - Y(_ref.at(1)) + L(40)), marca)
     }
-  })
+    if guias {
+      // el área de trabajo, en verde (los obstáculos y las cajas del texto
+      // los dibuja la capa de texto)
+      let (ax, ay, aw, ah) = trabajo
+      place(top + left, dx: ax, dy: ay, rect(width: aw, height: ah, stroke: (paint: green, thickness: 1pt, dash: "dashed")))
+    }
+  }
+
+  page(width: ancho, height: alto, margin: 0pt, fill: rol.at(v.papel),
+    if arte == auto and hay-texto {
+      // el arte cede: la mayor escala (de 1 a 0,6 del área) con la que el
+      // texto cabe, primero sin que la pila baje del 80 % (el arte se achica
+      // antes que ella) y, si así no cabe, dejándola ceder como siempre; si
+      // ni así, se dibuja a 0,6 y la capa de texto da el error
+      context {
+        let hecho = none
+        for pm in (0.8, 0.45) {
+          let q = _escalas-arte.find(q => texto(lamina(q), true, pila-min: pm))
+          if q != none { hecho = (q: q, pm: pm); break }
+        }
+        if hecho == none { hecho = (q: _escalas-arte.last(), pm: 0.45) }
+        dibujar(lamina(hecho.q), pila-min: hecho.pm)
+      }
+    } else {
+      dibujar(lamina(if arte == auto { 1 } else { arte }))
+    })
 }

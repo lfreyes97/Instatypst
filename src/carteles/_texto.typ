@@ -128,7 +128,11 @@
 //   junta       aire entre la pila y la columna
 //   guias       true: dibuja los obstáculos y las cajas (para depurar)
 //   quien       nombre del preset, para el mensaje de error
-#let bloque-texto(
+//   pila-min    lo más que puede achicarse la pila (fracción de su tamaño)
+//   probar      true: no dibuja ni da error; devuelve si el texto cabe (para
+//               que el preset pruebe varias escalas del arte). Así, sin el
+//               `context` de `bloque-texto`: se llama dentro de uno.
+#let resolver-bloque(
   L, X, Y,
   tinta, suave,
   planes, obstaculos, limites,
@@ -142,7 +146,9 @@
   fuente: auto,
   guias: false,
   quien: "bloque-texto",
-) = context {
+  pila-min: 0.45,
+  probar: false,
+) = {
   // (`measure` no ve los `set` de este mismo bloque: cada texto lleva su
   // tipografía y su espaciado explícitos, para medir lo mismo que se dibuja)
   let fu = if fuente != auto { (font: fuente) } else { (:) }
@@ -183,7 +189,7 @@
       let y0 = if p.at("ancla", default: "arriba") == "centro" { p.y - h / 2 } else { p.y }
       (p.x - w, y0, p.x, y0 + h)
     }
-    let fmin = 0.45
+    let fmin = pila-min
     if libre(caja(fmax), obs, limites) { return (f: fmax, caja: caja(fmax)) }
     if not libre(caja(fmin), obs, limites) { return none }
     let (a, b) = (fmin, fmax)
@@ -265,7 +271,7 @@
   // en cada plan, la pila primero (toma su sitio) y luego la columna; si la
   // columna no cabe, la pila cede (se achica) y se vuelve a probar
   let resolver(plan) = {
-    for fmax in (1, 0.8, 0.65, 0.5) {
+    for fmax in (1, 0.8, 0.65, 0.5).filter(f => f >= pila-min) {
       let obs = obstaculos
       let pila = none
       if remate != none {
@@ -289,6 +295,7 @@
     hecho = resolver(plan)
     if hecho != none { break }
   }
+  if probar { return hecho != none }
   if hecho == none {
     panic(quien + ": el texto no cabe sin pisar el arte con el párrafo a " + str(calc.round(minimo * u / 1pt, digits: 1))
       + " px o más. Acorta la frase o el título, quita `remate`, usa otro formato o variante, o baja `minimo`.")
@@ -319,3 +326,6 @@
     dibujar-obstaculos(cajas.filter(x => x != none).map(x => ob-caja(x)), X, Y, L, color: blue)
   }
 }
+
+// La capa, dibujada (con su propio `context`): ver `resolver-bloque`.
+#let bloque-texto(..args) = context resolver-bloque(..args)
