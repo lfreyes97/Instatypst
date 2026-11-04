@@ -1,6 +1,8 @@
-// Demo de carteles.bauhaus() — formas primarias y barra diagonal; el mismo
+// Demo de carteles.bauhaus() — formas primarias sobre una línea de tierra y
+// barra diagonal por la esquina del cuadrado (centro del círculo); el mismo
 // contrato que carteles.suizo (frase, remate, autor, fechas, etiqueta,
-// planteo, marca), en cuatro formatos y con una paleta alternativa.
+// planteo, marca), en cuatro formatos, con una paleta alternativa y un caso
+// límite.
 // Compilar: typst compile --root . --font-path Fonts examples/presets/bauhaus.typ
 #import "../../src/lib.typ": *
 
@@ -28,3 +30,10 @@
 // apaisado
 #caso(sizes.twitter, [El calvinismo es simplemente la religión en su], [PUREZA.],
   etiqueta: [DEL ENSAYO], planteo: [¿Qué es el calvinismo?])
+
+// caso límite: cabecera larga, frase larga y sin planteo. Las formas se
+// achican y se corren para no acercarse a la cabecera ni al texto.
+#carteles.bauhaus(
+  [Si alguna vez ha habido un hombre que entendiera que toda su vida dependía de la gracia soberana de Dios, ese hombre aprendió a decir con el salmista que la salvación es],
+  [DEL SEÑOR.], formato: (1080, 1350),
+  autor: [CHARLES HADDON SPURGEON], fechas: [1834 – 1892], etiqueta: [SALMO 3:8], marca: marca)
