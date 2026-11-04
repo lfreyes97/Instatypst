@@ -41,6 +41,7 @@
 #import "esquela.typ": esquela
 #import "folio.typ": folio
 #import "carteles/_base.typ": medida, escala, cuerpo-al-ancho, ajustar-alto
+#import "carteles/_temas.typ": temas-lamina, resolver-tema, tema-desde-theme
 
 // Retícula de columnas sobre `ancho` (largo). `x.at(i)`: borde
 // izquierdo de la columna i (desde 0); `span.at(n)`: ancho de n columnas
@@ -103,6 +104,10 @@
 //   autor, fechas            cabecera (izquierda / columna 3)
 //   etiqueta, planteo        bloque superior: rótulo en acento + pregunta
 //   marca    contenido para el pie (p. ej. el logo), abajo a la izquierda
+//   tema     nombre de `temas-lamina`, diccionario (fondo, tinta, suave,
+//            acento, linea) o `tema-desde-theme(theme.base)`; por defecto
+//            "suizo". `papel`, `tinta`, `gris`, `acento` y `linea`, si se
+//            pasan, pisan al tema (auto = el del tema).
 //   frase-y, flecha-hasta    auto = la frase se apoya `aire` por encima
 //                            del remate y la flecha llega a mitad de ese
 //                            aire; un largo los fija a mano
@@ -119,11 +124,12 @@
   etiqueta: none,
   planteo: none,
   marca: none,
-  papel: rgb("#f3f0e9"),
-  tinta: rgb("#141414"),
-  acento: rgb("#c8102e"),
-  linea: rgb("#d9d3c7"),
-  gris: rgb("#5c5850"),
+  tema: "suizo",
+  papel: auto,
+  tinta: auto,
+  acento: auto,
+  linea: auto,
+  gris: auto,
   fuente: "Hanken Grotesk",
   fuente-rotulos: "Inter",
   fuente-remate: "Bebas Neue",
@@ -137,6 +143,12 @@
   flecha-hasta: auto,
 ) = {
   let (ancho, alto) = medida(formato)
+  let tm = resolver-tema(tema, defecto: "suizo")
+  let papel = if papel == auto { tm.fondo } else { papel }
+  let tinta = if tinta == auto { tm.tinta } else { tinta }
+  let acento = if acento == auto { tm.acento } else { acento }
+  let linea = if linea == auto { tm.linea } else { linea }
+  let gris = if gris == auto { tm.suave } else { gris }
   let r = reticula(ancho, columnas: columnas, margen: margen, medianil: medianil)
   // ancho de la frase y del planteo: las primeras 2/3 de las columnas
   let ancho-frase = r.span.at(calc.ceil(columnas * 2 / 3))
