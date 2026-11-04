@@ -36,6 +36,42 @@
     acento: rgb("#c8102e"),
     linea: rgb("#d9d3c7"),
   ),
+  esquela: (
+    fondo: rgb("#f3eee3"),
+    tinta: rgb("#141210"),
+    suave: rgb("#4a443c"),
+  ),
+  folio: (
+    fondo: rgb("#eee0bf"),
+    tinta: rgb("#1f1610"),
+    acento: rgb("#9e2219"),
+  ),
+  gozne: (
+    fondo: rgb("#ece8df"),
+    tinta: rgb("#1f262d"),
+    suave: rgb("#525a61"), // ≈ 6:1 sobre el fondo
+    acento: rgb("#a8361f"), // ≈ 5.6:1 sobre el fondo
+    claro: rgb("#f7f1e6"),
+  ),
+  escalera: (
+    fondo: rgb("#10302a"),
+    tinta: rgb("#efe8da"),
+    suave: rgb("#b9cfc3"),
+    acento: rgb("#f3c28e"),
+  ),
+  linea-tiempo: (
+    fondo: rgb("#f1e9dc"),
+    tinta: rgb("#2a2420"),
+    acento: rgb("#9a3a1c"),
+    suave: rgb("#6b5e52"),
+  ),
+  demostracion: (
+    fondo: rgb("#0d1014"),
+    claro: rgb("#f4f1ea"),
+    tinta: rgb("#c3c9d1"),
+    suave: rgb("#8b95a1"),
+    acento: rgb("#f2b33d"),
+  ),
 )
 
 // Resuelve `tema` a un diccionario de roles. `defecto` es el nombre (en

@@ -23,6 +23,7 @@
 //   color     "tinta" | "suave" | "acento" | un color
 //   tracking  0pt por defecto
 //   y         auto = reparto automático · un largo = fijo, desde arriba
+#import "carteles/_temas.typ": resolver-tema
 #import "curvas.typ" as _cv
 
 // ── curvas de nivel ─────────────────────────────────────────
@@ -97,6 +98,9 @@
 // y el aire entre peldaños se estira (hasta 2,2×) para llenar el alto;
 // lo que sobra se reparte 1:2 arriba/abajo. Cada sangría automática se
 // recorta para que la línea nunca pase del margen derecho.
+// tema: nombre de `temas-lamina` (por defecto "escalera"), diccionario de roles
+// (fondo, tinta, suave, acento…) o `carteles.tema-desde-theme(theme.base)`.
+// Los parámetros de color (`fondo`, `tinta`, `suave`, `acento`) pisan al tema; auto = el del tema.
 #let escalera(
   peldanos,
   climax,
@@ -105,10 +109,11 @@
   autor: none,
   obra: none,
   marca: none,
-  fondo: rgb("#10302a"),
-  tinta: rgb("#efe8da"),
-  suave: rgb("#b9cfc3"),
-  acento: rgb("#f3c28e"),
+  tema: "escalera",
+  fondo: auto,
+  tinta: auto,
+  suave: auto,
+  acento: auto,
   fuente: "Literata",
   cuerpo: 60pt,
   cuerpo-climax: 150pt,
@@ -124,6 +129,11 @@
   indice: 0,
   decorado: none,
 ) = {
+  let tm = resolver-tema(tema, defecto: "escalera")
+  let fondo = if fondo == auto { tm.fondo } else { fondo }
+  let tinta = if tinta == auto { tm.tinta } else { tinta }
+  let suave = if suave == auto { tm.suave } else { suave }
+  let acento = if acento == auto { tm.acento } else { acento }
   let (ancho, alto) = (formato.at(0) * 1pt, formato.at(1) * 1pt)
   let kw = ancho / 1080pt // escala de la letra: el ancho manda
   let kh = calc.min(ancho, alto) / 1080pt // escala de cabecera y márgenes

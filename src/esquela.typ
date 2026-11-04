@@ -11,6 +11,7 @@
 //  carteles.typ ni lib.typ: carteles.typ lo importa a él.
 // ─────────────────────────────────────────────────────────────
 
+#import "carteles/_temas.typ": resolver-tema
 #import "superbg/lib.typ" as superbg
 #import "fleurones.typ" as fl
 #import "carteles/_base.typ": medida, escala
@@ -45,6 +46,9 @@
 //
 // Pensado para el retrato 1080×1350; en otros formatos las medidas se
 // escalan con el lado menor relativo (cuadrado ≈ 0,8).
+// tema: nombre de `temas-lamina` (por defecto "esquela"), diccionario de roles
+// (fondo, tinta, suave, acento…) o `carteles.tema-desde-theme(theme.base)`.
+// Los parámetros de color (`papel` (fondo), `luto` (tinta), `sepia` (suave)) pisan al tema; auto = el del tema.
 #let esquela(
   nombre,
   anuncio: none,
@@ -53,9 +57,10 @@
   autor: none,
   obra: none,
   marca: none,
-  papel: rgb("#f3eee3"),
-  luto: rgb("#141210"),
-  sepia: rgb("#4a443c"),
+  tema: "esquela",
+  papel: auto,
+  luto: auto,
+  sepia: auto,
   orla: "luto",
   interior: "filete",
   simbolo: "cruz",
@@ -68,6 +73,10 @@
   cuerpo-nombre: 132pt,
   textura: true,
 ) = {
+  let tm = resolver-tema(tema, defecto: "esquela")
+  let papel = if papel == auto { tm.fondo } else { papel }
+  let luto = if luto == auto { tm.tinta } else { luto }
+  let sepia = if sepia == auto { tm.suave } else { sepia }
   let (ancho, alto) = medida(formato)
   let k = escala(formato, base: (1080, 1350))
 

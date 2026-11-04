@@ -20,6 +20,7 @@
 //  `marca:` como contenido ya hecho.
 // ─────────────────────────────────────────────────────────────
 
+#import "carteles/_temas.typ": resolver-tema
 #import "superbg/lib.typ" as superbg
 
 // Texto plano de un contenido (para medir palabra por palabra).
@@ -87,6 +88,9 @@
 //
 //  Hasta 5 hojas se sostiene; con 4 o más, las hojas y las puntas de las
 //  flechas se afinan para no tocarse.
+// tema: nombre de `temas-lamina` (por defecto "gozne"), diccionario de roles
+// (fondo, tinta, suave, acento…) o `carteles.tema-desde-theme(theme.base)`.
+// Los parámetros de color (`papel` (fondo), `tinta`, `gris` (suave), `acento`, `claro`) pisan al tema; auto = el del tema.
 #let gozne(
   cita,
   centro,
@@ -95,17 +99,24 @@
   autor: none,
   obra: none,
   marca: none,
-  papel: rgb("#ece8df"),
-  tinta: rgb("#1f262d"),
-  gris: rgb("#525a61"), // ≈ 6:1 sobre el papel
-  acento: rgb("#a8361f"), // ≈ 5.6:1 sobre el papel
-  claro: rgb("#f7f1e6"),
+  tema: "gozne",
+  papel: auto,
+  tinta: auto,
+  gris: auto,
+  acento: auto,
+  claro: auto,
   fuente: "Instrument Sans",
   fuente-cita: "Libre Baskerville",
   angulos: auto,
   diagrama: auto,
   rotulos: auto,
 ) = {
+  let tm = resolver-tema(tema, defecto: "gozne")
+  let papel = if papel == auto { tm.fondo } else { papel }
+  let tinta = if tinta == auto { tm.tinta } else { tinta }
+  let gris = if gris == auto { tm.suave } else { gris }
+  let acento = if acento == auto { tm.acento } else { acento }
+  let claro = if claro == auto { tm.claro } else { claro }
   let (W, H) = (formato.at(0) * 1pt, formato.at(1) * 1pt)
   // unidad tipográfica: 1 en 1600×900, crece con el área
   let u = calc.sqrt(formato.at(0) * formato.at(1)) / calc.sqrt(1600 * 900)

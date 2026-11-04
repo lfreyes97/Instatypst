@@ -250,17 +250,21 @@
 //
 // Si el bloque no cabe en el alto (apaisado, demasiados renglones),
 // todo se achica en la misma proporción.
+// tema: nombre de `temas-lamina` (por defecto "demostracion"), diccionario de roles
+// (fondo, tinta, suave, acento…) o `carteles.tema-desde-theme(theme.base)`.
+// Los parámetros de color (`fondo`, `claro`, `texto` (tinta), `apagado` (suave), `acento`) pisan al tema; auto = el del tema.
 #let demostracion(
   grupos,
   formato: (1080, 1080),
   autor: none,
   obra: none,
   marca: none,
-  fondo: rgb("#0d1014"),
-  claro: rgb("#f4f1ea"),
-  texto: rgb("#c3c9d1"),
-  apagado: rgb("#8b95a1"),
-  acento: rgb("#f2b33d"),
+  tema: "demostracion",
+  fondo: auto,
+  claro: auto,
+  texto: auto,
+  apagado: auto,
+  acento: auto,
   fuente: "Instrument Sans",
   fuente-mono: "DM Mono",
   cuerpo-lectura: 58pt,
@@ -270,6 +274,12 @@
   cuadricula: true,
   inicio: auto,
 ) = {
+  let tm = resolver-tema(tema, defecto: "demostracion")
+  let fondo = if fondo == auto { tm.fondo } else { fondo }
+  let claro = if claro == auto { tm.claro } else { claro }
+  let texto = if texto == auto { tm.tinta } else { texto }
+  let apagado = if apagado == auto { tm.suave } else { apagado }
+  let acento = if acento == auto { tm.acento } else { acento }
   let (ancho, alto) = (formato.at(0) * 1pt, formato.at(1) * 1pt)
   let caja = ancho - 2 * margen
   let (col-n, col-signo) = (64pt, 48pt)
