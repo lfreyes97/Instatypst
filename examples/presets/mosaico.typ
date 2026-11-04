@@ -34,3 +34,15 @@
 #caso("u-inversa", formato: sizes.twitter, frase: frase, etiqueta: [Apocalipsis 13:18], remate: [Sabiduría])
 // título largo (se parte en dos líneas) y palabra larga (la pila cede)
 #caso("u", frase: [Bienaventurados los de limpio corazón.], etiqueta: [La justicia imputada de Cristo], remate: [Entendimiento])
+
+// el área de trabajo: `area` acota arte y texto a una parte de la página (el
+// resto queda en el color de fondo), `ancla` la apoya y `arte` achica la
+// lámina dentro del área para dejar sitio al texto
+#caso("c", area: 70%, frase: [Bienaventurados los de limpio corazón.], etiqueta: [Gracia], remate: [Fe])
+// la «U» con la lámina al 85 % y apoyada abajo: el texto sube a la banda de
+// arriba, en bandera a la derecha (por defecto va abajo, alineado a la derecha)
+#caso("u", arte: 0.85, ancla: bottom, frase: frase, etiqueta: [Apocalipsis 13:18], remate: [Sabiduría])
+// en apaisado, la lámina a la derecha deja al texto una banda ancha
+#caso("u", formato: sizes.twitter, ancla: right, frase: frase, etiqueta: [Apocalipsis 13:18], remate: [Sabiduría])
+// `arte: auto`: la lámina cede lo justo para que la pila larga no se encoja
+#caso("c", formato: sizes.instagram, arte: auto, frase: [Bienaventurados los de limpio corazón.], etiqueta: [La justicia imputada de Cristo], remate: [Entendimiento])

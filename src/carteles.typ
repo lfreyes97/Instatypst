@@ -25,6 +25,11 @@
 //                                  mide exactamente `ancho` (en context)
 //    rayar(cuerpo, …)         -> tachado en línea: recto o a lápiz,
 //                                con letras vaciadas opcionales
+//    area-trabajo(formato, area:, ancla:) -> (x, y, ancho, alto): la parte
+//                                de la página que usa un preset (el resto
+//                                queda libre); encajar(rect, base, ancla:,
+//                                escala:) -> (ox, oy, s): una lámina de
+//                                referencia escalada y apoyada en ella
 //
 //  Presets en archivo propio (cada uno con su lámina de origen):
 //    escalera      (04) la frase baja en peldaños hasta un clímax, sobre
@@ -38,10 +43,16 @@
 //                  (mismo contrato que suizo: se cambia de estilo cambiando el nombre)
 //    mosaico       diez arcos paralelos («C» o «U» a 45°) con círculos y
 //                  un rombo; tres variantes con los colores rotando —
-//                  carteles/mosaico.typ (portada gráfica: autor y obra, sin frase)
+//                  carteles/mosaico.typ (portada gráfica: autor y obra; con
+//                  frase, título y pila que buscan su sitio; `area`, `ancla`
+//                  y `arte` acotan y achican la composición)
 //    teselas       bloque cuadrado de teselas (discos y «dianas») en tres colores
 //                  que rotan, con título, párrafo y una palabra apilada —
 //                  carteles/teselas.typ
+//    hojas         la «hoja» (cuadrado con tres esquinas redondeadas y un anillo)
+//                  en flor, en par diagonal o en cinta a 45°, en amarillo y azul,
+//                  con título pesado, párrafo y rótulo vertical — carteles/hojas.typ
+//                  (la pieza suelta: carteles.hoja, de carteles/_hojas-piezas.typ)
 //    folio         (11) folio de salterio: pergamino pautado, capitular
 //                  iluminada, glosa al margen — folio.typ
 //
@@ -59,11 +70,13 @@
 #import "esquela.typ": esquela
 #import "folio.typ": folio
 #import "plano.typ": plano
-#import "carteles/_base.typ": medida, escala, cuerpo-al-ancho, ajustar-alto
+#import "carteles/_base.typ": medida, escala, area-trabajo, encajar, cuerpo-al-ancho, ajustar-alto
 #import "carteles/_temas.typ": temas-lamina, resolver-tema, tema-desde-theme
 #import "carteles/bauhaus.typ": bauhaus
 #import "carteles/mosaico.typ": mosaico
 #import "carteles/teselas.typ": teselas
+#import "carteles/hojas.typ": hojas
+#import "carteles/_hojas-piezas.typ": hoja
 
 // Retícula de columnas sobre `ancho` (largo). `x.at(i)`: borde
 // izquierdo de la columna i (desde 0); `span.at(n)`: ancho de n columnas

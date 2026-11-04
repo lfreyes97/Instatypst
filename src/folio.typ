@@ -11,11 +11,25 @@
 //  carteles.typ ni lib.typ: carteles.typ lo importa a él.
 // ─────────────────────────────────────────────────────────────
 
-#import "carteles/_temas.typ": resolver-tema
+#import "carteles/_temas.typ": resolver-tema, temas-lamina
 #import "superbg/lib.typ" as superbg
 #import "fleurones.typ" as fl
 #import "dropcaps.typ": capitular-ornamentada
 #import "carteles/_base.typ": medida, ajustar-alto
+
+// Ambientación del pergamino (degradado radial y malla de manchas), a partir
+// del `fondo` del tema. Con el fondo del tema "folio", los tonos de la lámina
+// tal cual; con otro, el centro aclarado y los bordes oscurecidos de ese fondo,
+// para que un tema oscuro dé un folio oscuro y no tinta clara sobre pergamino.
+// El parámetro `pergamino:` retoca solo el color de fondo (no la ambientación),
+// como antes.
+#let _ambiente(fondo) = if fondo == temas-lamina.folio.fondo {(
+  centro: rgb("#f6ecd4"), medio: rgb("#ecdcb6"), borde: rgb("#d6bd8a"),
+  malla: (rgb("#c9a86a"), rgb("#e9d6ac"), rgb("#c4a167")),
+)} else {(
+  centro: fondo.lighten(30%), medio: fondo, borde: fondo.darken(14%),
+  malla: (fondo.darken(20%), fondo.lighten(10%), fondo.darken(22%)),
+)}
 
 // ── carteles.folio ──────────────────────────────────────────
 //   texto       el pasaje (contenido); su primera letra va en capitular
@@ -72,6 +86,7 @@
   let (ancho, alto) = medida(formato)
   let (fx, fy) = (formato.at(0) / 1080, formato.at(1) / 1080)
   let pauta = rubrica.transparentize(72%)
+  let amb = _ambiente(tm.fondo)
 
   // Caja de texto del folio y pautado (márgenes de la lámina)
   let x0 = 118pt
@@ -85,12 +100,12 @@
 
     // ── Pergamino: centro más claro, bordes tostados, grano ──
     place(rect(width: 100%, height: 100%, fill: gradient.radial(
-      (rgb("#f6ecd4"), 0%), (rgb("#ecdcb6"), 58%), (rgb("#d6bd8a"), 100%),
+      (amb.centro, 0%), (amb.medio, 58%), (amb.borde, 100%),
       center: (46%, 44%), radius: 82%,
     )))
     if textura {
       superbg.bg-malla(
-        (rgb("#c9a86a"), rgb("#e9d6ac"), rgb("#c4a167")),
+        amb.malla,
         puntos: ((60 * fx, 1010 * fy), (900 * fx, 120 * fy), (1040 * fx, 900 * fy)),
         radios: (180, 260, 150),
         semilla: 3,

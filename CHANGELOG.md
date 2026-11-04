@@ -1,5 +1,56 @@
 # Changelog
 
+## [sin publicar] — catálogo de presets; temas que derivan sus roles extra
+
+Los 16 demos de `examples/presets/` (110 láminas) renderizan idénticos byte a
+byte antes y después (PNG a 40 ppi, `cmp`), salvo la lámina 3 de
+`suizo-temas.typ`, el cambio deliberado de abajo.
+
+### Añadido
+
+- **Catálogo de presets.** `scripts/catalogo.py` renderiza cada demo de
+  `examples/presets/*.typ` a miniaturas PNG (20 ppi, en paralelo) y compila
+  `docs/catalogo.typ`: un índice (preset, función, láminas, formatos) y una
+  página por preset con su descripción (la cabecera de comentarios de la demo),
+  una llamada que lo genera y todas sus láminas en cuadrícula, numeradas y con su
+  formato; la altura de las miniaturas se elige para que cada preset quepa en su
+  página. Se regenera con `python3 scripts/catalogo.py` (`--png` exporta también
+  las páginas del catálogo; con nombres de preset rehace solo esas miniaturas).
+  Se versionan solo el script y el `.typ`: las miniaturas, el índice JSON y el
+  PDF van a `docs/catalogo/`, ignorada por git (unos 9 MB que cambiarían con
+  cada retoque de un preset y salen del código con un comando). Las llamadas
+  están en el diccionario `llamadas` de `docs/catalogo.typ`; el script avisa si
+  un preset nuevo no tiene la suya.
+
+### Cambiado
+
+- **Roles extra de los temas parciales.** Un tema que no trae un rol extra de
+  un preset lo seguía heredando del tema por defecto, aunque cambiara los colores
+  base (el filete cálido `#d9d3c7` de `suizo` sobre la paleta fría de
+  `tema-desde-theme(theme.base)`; el ornamento vino de las orlas sobre un fondo
+  verde). Ahora `resolver-tema` deriva el extra de los roles ya resueltos
+  **solo si el tema cambia alguno de los roles de los que depende**
+  (`derivados-lamina` en `src/carteles/_temas.typ`): `suizo.linea` (12 % de
+  tinta en el fondo); en las orlas, `malla`/`franja` (fondo teñido de tinta) y
+  `orn`/`fil`/`hondo` (el acento rebajado en el fondo u oscurecido); `gozne.claro`
+  (el más legible sobre el acento, entre fondo y tinta); `demostracion.claro` (la
+  tinta: antes un tema claro dejaba la afirmación crema sobre blanco). Con el tema
+  por defecto, con uno completo (`"vino"`, `"papel"`) o con uno que solo retoca
+  roles de los que el extra no depende, sale idéntico. Los extras de identidad
+  (primarios de `bauhaus`, `hondo` de `mosaico` y `teselas`) siguen heredándose.
+  Cambio visible en las demos: `suizo-temas.typ`, lámina 3 (filetes grises).
+  Cambia también, a propósito, quien pase a una orla un tema con otro acento o
+  fondo (los ornamentos siguen al acento).
+- **`folio` y `esquela` obedecen al `fondo` del tema.** El degradado y la malla
+  del pergamino de `folio` y el viñeteado de `esquela` eran literales; ahora se
+  derivan del `fondo` del tema (centro aclarado, bordes oscurecidos; viñeteado =
+  el fondo muy oscurecido). Con el fondo del tema por defecto se conservan los
+  tonos de la lámina (idéntico). Los parámetros `pergamino:` y `papel:` retocan
+  solo el color de fondo, como antes (la demo de esquela con `papel:` sale
+  igual). `carteles.folio(..., tema: "escalera")` ya da un folio oscuro legible.
+  Queda fija la capitular rubricada de `folio` (su caja beige con la letra roja
+  viene de `capitular-ornamentada`).
+
 ## [sin publicar] — arquitectura de carteles (rama `refactor/arquitectura-capas`)
 
 Sin cambios visuales con los valores por defecto: los ejemplos de
@@ -8,6 +59,24 @@ byte antes y después.
 
 ### Añadido
 
+- **`carteles.hojas`** (`src/carteles/hojas.typ` + la pieza en
+  `src/carteles/_hojas-piezas.typ`): portada geométrica en amarillo y azul sobre
+  blanco hecha con una sola pieza, la «hoja» (cuadrado con tres esquinas
+  redondeadas y una aguda, con anillo del otro color y hueco del papel), en tres
+  composiciones: `"flor"` (cuatro hojas en 2 × 2, título arriba, párrafo, `pie`,
+  `etiqueta` con `nota` sobre una barra negra y `rotulo` vertical), `"diagonal"`
+  (dos hojas que se tocan por la punta, punto negro, título apilado, rótulo sobre
+  un filete) y `"patron"` (cinta de pares a 45° que el borde recorta; se corre sola
+  hasta dejar libres el texto y el rótulo). Títulos en la «display» del paquete
+  (Poppins) y párrafo en la «body» (Inter). Funciona en vertical, cuadrado y
+  apaisado: en apaisado la flor y el par pasan a una columna central. Tema `hojas`
+  (roles `fondo`, `tinta`, `suave`, `acento` = amarillo, `hondo` = azul). La pieza
+  suelta se exporta como `carteles.hoja` (`aguda: "no" | "ne" | "se" | "so"`).
+  Medido contra la captura de la referencia a la misma escala: hojas, anillos,
+  huecos, punto y filete dentro de ±3 px; los títulos salen ~12 % más estrechos
+  (Poppins frente a la Montserrat Black de la referencia). Errores con mensaje
+  para composición desconocida, `pie`/`etiqueta`/`nota` fuera de `"flor"`, título
+  que no cabe ni a la mitad y arte que no cabe. Demo: `examples/presets/hojas.typ`.
 - **`carteles.teselas`** (`src/carteles/teselas.typ`): cartel con un bloque
   cuadrado de teselas — cuadrícula de 4×4 celdas con bloques de 2×2 — en tres
   colores que rotan de fondo y de figura (discos y «dianas»: un aro con un
@@ -48,6 +117,28 @@ byte antes y después.
   todos los formatos, con ~300 no en cuadrado. Sin los parámetros de texto sale
   como siempre (idéntico byte a byte). Demo:
   `examples/presets/mosaico.typ`.
+- **Área de trabajo en `carteles.mosaico`**: tres parámetros nuevos. `area:` acota
+  la composición entera (lámina, rótulos, `marca` y la búsqueda de sitio del texto)
+  a una fracción de la página — `70%`, o un par `(100%, 70%)` — y deja el resto en
+  el color de fondo; `ancla:` la apoya (`top`, `bottom + left`…; por defecto
+  centrada); `arte:` achica la lámina dentro del área para dejarle sitio al texto
+  (`0.85`, o `auto`: la mayor escala, de 1 a 0,6, con la que el texto cabe sin que
+  la pila baje del 80 %). Combinados resuelven casos que antes salían flojos: en la
+  «U», `arte: 0.85, ancla: bottom` sube el texto a la banda de arriba en bandera a
+  la derecha (por defecto va abajo, alineado a la derecha); en apaisado, `ancla:
+  right` deja al texto una banda ancha a la izquierda; `arte: auto` evita que una
+  pila larga se encoja en cuadrado y hace caber textos de ~250 caracteres a página
+  completa en cuadrado. `minimo` sigue siendo en px de la imagen, así que un área
+  chica admite menos texto: con `area: 70%` cabe una frase corta en todo; con ~150
+  caracteres hace falta `arte: auto` y aun así no cabe en cuadrado ni en la «U»
+  vertical (error con mensaje, como antes). Con `guias: true` el área se dibuja en
+  verde. El brazo largo de la «U» sigue saliendo por el borde de la página. Las
+  piezas viven en `carteles/_base.typ` (`area-trabajo`, `encajar`, re-exportadas en
+  `carteles`) para que otros presets de lámina puedan usarlas; de momento solo
+  `mosaico` las usa. La capa de texto gana `resolver-bloque` (la misma búsqueda,
+  sin `context` y con un modo `probar` que no dibuja) y `pila-min`. Con los valores
+  por defecto todo sale idéntico byte a byte (los 125 PNG de `examples/presets/` y
+  `examples/blockquotes.typ`).
 - **`carteles.bauhaus`** (`src/carteles/bauhaus.typ`): cartel de formas
   primarias sobre papel crudo — cuadrado rojo, círculo amarillo, cuña azul y
   una barra negra diagonal — con el remate en minúsculas de Jost (sans
