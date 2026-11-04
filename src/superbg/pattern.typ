@@ -6,6 +6,11 @@
 
 #import "_util.typ": sizes, _tcolor, _check-size
 
+// Lado (pt) de la tesela del ruido. Medido: 216 pt da un PDF de ~1,5 MB sin
+// costura visible ni estadística (diferencia entre columnas en el borde = la
+// del resto) y con la misma intensidad de grano que una imagen a página completa.
+#let _lado-ruido = 216
+
 #let _svg-patron(w, h, patron, hex, paso, grosor, radio, opacidad-pct, hex-fondo) = {
   let op = str(opacidad-pct / 100)
   let base = "<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 " + str(w) + " " + str(h) + "'>"
@@ -85,8 +90,28 @@
   let size = _check-size(size)
   let color = if color == none { _tcolor(theme, "dark", rgb("#111111")) } else { color }
   let hex-fondo = if fondo == none { none } else { fondo.to-hex() }
-  let svg = _svg-patron(size.at(0), size.at(1), patron, color.to-hex(), paso, grosor, radio, opacidad / 1%, hex-fondo)
-  place(image(bytes(svg.replace("−", "-")), format: "svg", width: 100%, height: 100%))
+  if patron == "ruido" {
+    // El ruido es un filtro SVG (feTurbulence) y Typst, al exportar a PDF, lo
+    // RASTERIZA: una sola imagen de ~4000×5000 px (más su máscara) por
+    // página, unos 26 MB, y su tamaño no depende del viewBox sino de lo que
+    // mide la imagen en la página. En vez de una imagen del tamaño de la
+    // página, una tesela de `_lado-ruido` pt repetida con `tiling`: el SVG ya
+    // trae `stitchTiles='stitch'`, así que no hay costura, y el grano es el
+    // mismo (mismas unidades, misma frecuencia). El PDF pesa ~1,5 MB.
+    let lado = _lado-ruido
+    let svg = _svg-patron(lado, lado, patron, color.to-hex(), paso, grosor, radio, opacidad / 1%, none)
+    if hex-fondo != none { place(rect(width: 100%, height: 100%, fill: fondo, stroke: none)) }
+    place(rect(
+      width: 100%, height: 100%, stroke: none,
+      fill: tiling(
+        size: (lado * 1pt, lado * 1pt),
+        image(bytes(svg.replace("−", "-")), format: "svg", width: lado * 1pt, height: lado * 1pt),
+      ),
+    ))
+  } else {
+    let svg = _svg-patron(size.at(0), size.at(1), patron, color.to-hex(), paso, grosor, radio, opacidad / 1%, hex-fondo)
+    place(image(bytes(svg.replace("−", "-")), format: "svg", width: 100%, height: 100%))
+  }
 }
 
 // Atajo legible para viñeta (no pide paso/radio).

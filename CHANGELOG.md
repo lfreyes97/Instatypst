@@ -17,10 +17,15 @@ byte antes y después.
   el propio `hondo`). Las medidas salen de una lámina de referencia y se
   verificaron contra su render: líneas, círculos, rombo y rótulos coinciden
   dentro de ±1-2 px. No lleva frase. Demo: `examples/presets/mosaico.typ`.
-- **`carteles.bauhaus`** (`src/carteles/bauhaus.typ`, el primer preset en la
-  carpeta `carteles/`): cartel de formas primarias — círculo amarillo, cuadrado
-  rojo, triángulo azul y una barra diagonal — sobre papel crudo, con el remate
-  en minúsculas de Jost (sans geométrica) a todo el ancho. Mismo contrato que
+- **`carteles.bauhaus`** (`src/carteles/bauhaus.typ`): cartel de formas
+  primarias sobre papel crudo — cuadrado rojo, círculo amarillo, cuña azul y
+  una barra negra diagonal — con el remate en minúsculas de Jost (sans
+  geométrica) a todo el ancho. Las formas no son porcentajes sueltos: se
+  construyen unas de otras sobre una «línea de tierra» justo encima del texto
+  (el cuadrado apoya en ella, el círculo está centrado en su esquina, la barra
+  pasa por esa esquina y la cuña llena el hueco bajo la barra), así que nada
+  puede pisar la etiqueta, el planteo ni la frase. Opción `textura` (grano de
+  papel, activada). Mismo contrato que
   `carteles.suizo` (frase, remate, autor, fechas, etiqueta, planteo, marca): se
   cambia de estilo cambiando solo el nombre. Tema `bauhaus` en el registro, con
   los roles propios `amarillo` y `azul`. Demo: `examples/presets/bauhaus.typ`.
@@ -56,6 +61,21 @@ byte antes y después.
   `linea-tiempo`; antes el mismo nombre significaba dos cosas.
 - `orlas`: el rol `texto` de sus temas pasa a `tinta`; un diccionario viejo con
   `texto` se sigue entendiendo, y `carteles.temas-orla` conserva `texto`.
+
+### Arreglado
+
+- **`superbg`: el `ruido` ya no hace pesar un PDF decenas de MB.** El ruido es
+  un filtro SVG (`feTurbulence`) y Typst, al exportar a PDF, lo rasteriza en una
+  sola imagen de ~4000×5000 px más su máscara, sin importar el `viewBox`: un
+  cartel con textura pesaba 26 MB. Ahora `bg-patron(patron: "ruido")` dibuja una
+  tesela de 216 pt repetida con `tiling` (el SVG ya traía `stitchTiles`, así que
+  no hay costura). Medido: sin diferencia en el borde de la tesela (×1,00 la
+  diferencia entre columnas contiguas) ni en la intensidad del grano
+  (desviación 0,637 contra 0,640). PDF de `esquela` 50,8 → 1,0 MB (45 → 3 s), de
+  `folio` 62,9 → 3,0 MB (50 → 16 s), de `bauhaus` 26,8 → 1,5 MB. Los PNG de
+  `esquela` y `folio` cambian solo en el detalle del grano (error medio 0,2-0,4 %,
+  ningún píxel difiere más del 8 %); `suizo`, sin ruido, sigue idéntico byte a
+  byte.
 
 ### Quitado
 
