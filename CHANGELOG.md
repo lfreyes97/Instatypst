@@ -1,5 +1,50 @@
 # Changelog
 
+## [sin publicar] — arquitectura de carteles (rama `refactor/arquitectura-capas`)
+
+Sin cambios visuales con los valores por defecto: los ejemplos de
+`examples/presets/` y `examples/blockquotes.typ` renderizan idénticos byte a
+byte antes y después.
+
+### Añadido
+
+- `src/carteles/_base.typ`: `medida`, `escala`, `cuerpo-al-ancho` y
+  `ajustar-alto`, que los presets repetían cada uno por su cuenta
+  (`carteles.cuerpo-al-ancho` sigue exportado).
+- **Temas de lámina** (`src/carteles/_temas.typ`): una paleta por roles común
+  a los presets — `fondo`, `tinta`, `suave`, `acento` (más roles propios de
+  cada uno, como `linea` o los de la orla). Registro `carteles.temas-lamina`,
+  `carteles.resolver-tema` y `carteles.tema-desde-theme(theme.base)`.
+  `suizo`, `esquela`, `folio`, `gozne`, `escalera`, `linea-tiempo`,
+  `demostracion` y las orlas aceptan `tema:`; sus parámetros de color
+  (`papel:`, `luto:`, `rubrica:`…) siguen existiendo y pisan al tema.
+- **Vocabulario de atribución**: `autor`, `obra` (la obra citada),
+  `referencia` (el pasaje: "Salmo 51"), `fechas`, `version`. `obra:` se
+  acepta ahora en `blockquote-editorial/-bar/-card/-hero/-avatar/-lateral/
+  -pull`, `bq-attribution`, `cita-orlada` y `pregunta-orlada`;
+  `carteles.folio` acepta `referencia: "Salmo 51"` como atajo de `glosa`.
+
+### Cambiado
+
+- `fuente:` como "obra citada" (blockquotes y orlas) pasa a ser alias de
+  `obra:` (manda `obra` si se dan las dos). `fuente` queda reservado para la
+  tipografía, que es lo que significa en `escalera`, `gozne`, `folio` y
+  `linea-tiempo`; antes el mismo nombre significaba dos cosas.
+- `orlas`: el rol `texto` de sus temas pasa a `tinta`; un diccionario viejo con
+  `texto` se sigue entendiendo, y `carteles.temas-orla` conserva `texto`.
+
+### Quitado
+
+- Código muerto sin uso: el diccionario autorreferencial de
+  `font-tokens.typ`, el import `by-category` de `font-pairings.typ` y
+  `set-body-font` de `scripture.typ`.
+
+### Pendiente
+
+Ver `docs/oportunidades-mejora.md`, sección «Pendientes de la refactorización
+de carteles» (roles extra de temas parciales; colores de ambientación fijos en
+`folio` y `esquela`).
+
 ## [sin publicar] — contraste WCAG vendorizado + rename semántico de tokens
 
 Hecho en sesión de Claude Code sobre `rapiquote`. Contexto completo

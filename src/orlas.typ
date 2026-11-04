@@ -152,7 +152,8 @@
   texto,
   encabezado: none,
   autor: none,
-  fuente: none,
+  fuente: none, // alias de `obra` (obra manda si se dan las dos)
+  obra: none,
   formato: (1080, 1080),
   tema: "vino",
   firma: none,
@@ -160,6 +161,7 @@
   orla: "completa",
   cadena: "ojivas",
 ) = lienzo-orlado(formato, tema, orla: orla, cadena: cadena, (c, w, alto-campo, tipo) => {
+  let fuente = if obra != none { obra } else { fuente }
   let s = if tamano == auto { _tam-cita(texto, tipo) } else { tamano }
   let segura = if tipo == "historia" { 200pt } else { 46pt }
   box(width: w, height: alto-campo, inset: (x: 64pt, top: segura, bottom: segura), {
@@ -246,7 +248,8 @@
 #let pregunta-orlada(
   texto,
   encabezado: [Para la reflexión],
-  fuente: none,
+  fuente: none, // alias de `obra` (obra manda si se dan las dos)
+  obra: none,
   pista: none,
   formato: (1080, 1080),
   tema: "papel",
@@ -254,6 +257,7 @@
   orla: "completa",
   cadena: "cartuchos",
 ) = lienzo-orlado(formato, tema, orla: orla, cadena: cadena, (c, w, alto-campo, tipo) => {
+  let fuente = if obra != none { obra } else { fuente }
   let segura = if tipo == "historia" { 200pt } else { 46pt }
   let s = { let n = _largo(texto); if n > 160 { 46pt } else if n > 100 { 54pt } else { 62pt } }
   let s = if tipo == "historia" { s * 1.12 } else { s }
