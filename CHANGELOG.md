@@ -8,6 +8,21 @@ byte antes y después.
 
 ### Añadido
 
+- **`carteles.teselas`** (`src/carteles/teselas.typ`): cartel con un bloque
+  cuadrado de teselas — cuadrícula de 4×4 celdas con bloques de 2×2 — en tres
+  colores que rotan de fondo y de figura (discos y «dianas»: un aro con un
+  punto). Encima, título en negrita, párrafo (`frase`) y una palabra pesada
+  (`remate`) apilada a la derecha, dos letras por línea. Las medidas salen de una
+  lámina de referencia y se verificaron contra su render: el bloque coincide, el
+  título y el párrafo dentro del 2-4 %. El título se achica si no cabe en el ancho
+  del párrafo y la pila se escala si no cabe sobre el bloque (antes, un título
+  largo chocaba con la palabra y una palabra larga pisaba el bloque). Tema
+  `teselas` (roles `fondo`, `tinta`, `suave`, `acento`, `hondo`, `claro`).
+  Diferencias con la referencia: la palabra se parte en pares (la referencia
+  parte «DE / SI / G / N» según el ancho de sus letras), y los colores salen del
+  SVG de la referencia; la lámina original está en CMYK y otra conversión a RGB
+  los da algo más apagados (p. ej. el carmesí, `#D8225A` frente a `#D7375E`). Demo:
+  `examples/presets/teselas.typ`.
 - **`carteles.mosaico`** (`src/carteles/mosaico.typ` + el ayudante privado
   `src/carteles/_arcos.typ`): portada gráfica de diez líneas concéntricas — una
   «C» abierta o una «U» inclinada a 45° — con círculos macizos y un rombo, y

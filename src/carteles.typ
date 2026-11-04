@@ -31,6 +31,9 @@
 //    mosaico       diez arcos paralelos («C» o «U» a 45°) con círculos y
 //                  un rombo; tres variantes con los colores rotando —
 //                  carteles/mosaico.typ (portada gráfica: autor y obra, sin frase)
+//    teselas       bloque cuadrado de teselas (discos y «dianas») en tres colores
+//                  que rotan, con título, párrafo y una palabra apilada —
+//                  carteles/teselas.typ
 //    folio         (11) folio de salterio: pergamino pautado, capitular
 //                  iluminada, glosa al margen — folio.typ
 //
@@ -50,6 +53,7 @@
 #import "carteles/_temas.typ": temas-lamina, resolver-tema, tema-desde-theme
 #import "carteles/bauhaus.typ": bauhaus
 #import "carteles/mosaico.typ": mosaico
+#import "carteles/teselas.typ": teselas
 
 // Retícula de columnas sobre `ancho` (largo). `x.at(i)`: borde
 // izquierdo de la columna i (desde 0); `span.at(n)`: ancho de n columnas

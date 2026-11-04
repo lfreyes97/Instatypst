@@ -56,6 +56,16 @@
     acento: rgb("#ff832a"),
     hondo: rgb("#002b38"),
   ),
+  // Teselas: papel blanco, tinta casi negra, y carmesí, azul marino y crema
+  // que rotan de fondo y de figura en el bloque.
+  teselas: (
+    fondo: rgb("#ffffff"),
+    tinta: rgb("#100f0d"),
+    suave: rgb("#656263"),
+    acento: rgb("#d8225a"),
+    hondo: rgb("#19253c"),
+    claro: rgb("#f8f1cd"),
+  ),
   esquela: (
     fondo: rgb("#f3eee3"),
     tinta: rgb("#141210"),
