@@ -14,14 +14,26 @@
 //  `obra` como rótulos; con ellos suma un título, un párrafo y una palabra
 //  apilada, como `carteles.teselas`.
 //
+//  Ese texto no va en cajas fijas: el arte (arcos, colas, círculos, rombo y
+//  rótulos) se describe como obstáculos con los mismos números con que se
+//  dibuja, y el texto toma la mayor caja libre a `_aire` de ellos, según un
+//  plan por variante: en la «C» y la «U» inversa, un bloque como el de
+//  teselas (título, párrafo y la pila a su derecha) en la banda de arriba;
+//  en la «U», la pila arriba a la derecha y título y párrafo abajo a la
+//  derecha, los dos al borde del pie; en formatos más altos que la lámina,
+//  la banda sube; en apaisados, el bloque va en la banda lateral. Si el
+//  párrafo no cabe ni a `minimo`, cede el título y luego la pila; si aun así
+//  no cabe, error: nunca pisa el arte ni baja del mínimo legible.
+//
 //  Se usa desde el namespace `carteles` (carteles.mosaico). No importa
 //  carteles.typ ni lib.typ: carteles.typ lo importa a él.
 // ─────────────────────────────────────────────────────────────
 
 #import "_base.typ": medida, escala
 #import "_temas.typ": resolver-tema
-#import "_arcos.typ": arcos
-#import "_texto.typ": capa-texto
+#import "_arcos.typ": arcos, contorno-arcos
+#import "_texto.typ": bloque-texto
+#import "_huecos.typ": ob-poligono, ob-circulo, ob-rombo, ob-caja
 
 // Lámina de referencia: la zona coloreada, sin el marco blanco (px).
 #let _ref = (802.5, 1117.5)
@@ -46,13 +58,8 @@
     texto: "hondo",
     titulo: (x: 49.5, y: 169),
     pie-x: 717,
-    // la banda libre sobre los arcos (que empiezan en y ≈ 211)
-    zona: (
-      titulo: (x: 100, y: 60, ancho: 470),
-      parrafo: (x: 100, y: 118, ancho: 470, alto: 78, alto-autor: 78),
-      pila: (derecha: 717, y: 60, alto: 140),
-      autor: (x: 100, y: 190),
-    ),
+    // el texto: la banda libre sobre los arcos, como en teselas
+    planes: "banda",
   ),
   // «U» hacia abajo y a la derecha: el brazo largo sale por el borde.
   u: (
@@ -67,14 +74,8 @@
     texto: "hondo",
     titulo: (x: 61.5, y: 676),
     pie-x: 702,
-    // la columna libre arriba a la derecha (sobre el brazo largo) y la
-    // esquina de arriba a la izquierda para la pila
-    zona: (
-      titulo: (x: 590, y: 60, ancho: 185),
-      parrafo: (x: 590, y: 130, ancho: 185, alto: 330, alto-autor: 330),
-      pila: (derecha: 250, y: 50, alto: 185),
-      autor: (x: 590, y: 480),
-    ),
+    // el texto: pila arriba a la derecha, título y párrafo abajo a la derecha (bajo el brazo largo)
+    planes: "diagonal",
   ),
   // «U» hacia abajo y a la izquierda, sobre fondo hondo, líneas en gris.
   u-inversa: (
@@ -89,16 +90,96 @@
     texto: "suave",
     titulo: (x: 743.5, y: 121),
     pie-x: 688,
-    // la banda libre arriba (el círculo naranja empieza en y ≈ 188) y la pila
-    // arriba a la derecha, a la izquierda del rótulo vertical
-    zona: (
-      titulo: (x: 60, y: 60, ancho: 500),
-      parrafo: (x: 60, y: 118, ancho: 500, alto: 62, alto-autor: 62),
-      pila: (derecha: 700, y: 50, alto: 200),
-      autor: (x: 60, y: 185),
-    ),
+    // el texto: la banda libre de arriba, sobre el círculo naranja
+    planes: "banda",
   ),
 )
+
+// ── el texto: dónde cabe, a partir del arte ─────────────────
+// Distancias en unidades de la lámina.
+#let _aire = 28 // del texto al arte y a los rótulos (≈ el paso de los arcos de la «C»)
+#let _margen = 40 // del texto al borde de la página (el rótulo vertical queda a 40 del suyo)
+#let _junta = 28 // entre la pila y la columna de título y párrafo
+#let _arriba = _ref.at(1) - 1064 // primera línea: tan lejos del borde de arriba como el pie del de abajo
+
+#let _texto(
+  v, X, Y, L, pagina,
+  color: black, fuente: "Jost", grosor: 7.5,
+  autor: none, obra: none, marca: none,
+  etiqueta: none, frase: none, remate: none,
+  cuerpo: auto, minimo: auto, fuente-texto: "Outfit", guias: false, quien: "carteles.mosaico",
+) = context {
+  let (ox, oy, ancho, alto) = pagina
+  let u = L(1)
+  let a = v.arcos
+  // ── el arte, como obstáculos (de los mismos números con que se dibuja) ──
+  let lineas = contorno-arcos(a.centro, a.radio, lineas: 10, paso: a.paso, grosor: grosor,
+    desde: a.at("desde", default: 0deg), hasta: a.at("hasta", default: 360deg),
+    eje: a.at("eje", default: none), cola: a.cola)
+  let obs = lineas.map(p => ob-poligono(p, aire: _aire))
+  obs += v.circulos.map(c => ob-circulo(c.centro, c.d / 2, aire: _aire))
+  obs += v.rombos.map(r => ob-rombo(r.centro, r.diag, aire: _aire))
+  // los rótulos, medidos con su tipografía
+  let rotulo(t) = measure(text(font: fuente, size: L(19), tracking: 0.65em, weight: 400, upper(t)))
+  if autor != none {
+    let m = rotulo(autor)
+    obs.push(ob-caja((v.titulo.x - 9.5, v.titulo.y, v.titulo.x + 9.5, v.titulo.y + m.width / u), aire: _aire))
+  }
+  let pie-arriba = 1064 - 19
+  if obra != none {
+    let m = rotulo(obra)
+    obs.push(ob-caja((v.pie-x - m.width / u, pie-arriba, v.pie-x, pie-arriba + m.height / u + 5), aire: _aire))
+  }
+  if marca != none {
+    let m = measure(marca)
+    obs.push(ob-caja((45, _ref.at(1) - 40 - m.height / u, 45 + m.width / u, _ref.at(1) - 40), aire: _aire))
+  }
+  // la página entera en unidades de la lámina, menos el margen
+  let lim = (-ox / u + _margen, -oy / u + _margen, (ancho - ox) / u - _margen, (alto - oy) / u - _margen)
+
+  // ── los planes, por orden de preferencia ──
+  // el texto arranca donde arranca el motivo de líneas, y la pila se alinea
+  // con el borde derecho del pie
+  let izq = calc.min(..lineas.map(p => calc.min(..p.map(q => q.at(0)))))
+  let pie = v.pie-x
+  let planes = ()
+  // apaisado: si al lado de la lámina queda una banda ancha, el texto va
+  // ahí: primero del lado contrario al rótulo vertical, luego del otro
+  let rot-x0 = if autor != none { v.titulo.x - 9.5 } else { _ref.at(0) }
+  let rot-x1 = if autor != none { v.titulo.x + 9.5 } else { 0 }
+  let borde-izq = calc.min(izq, rot-x0) - 2 * _aire // donde acaba, por la izquierda, el arte
+  let borde-der = calc.max(pie, rot-x1) + 2 * _aire // y por la derecha
+  // a la derecha: la columna arranca pasado el arte; la pila, al borde de la página
+  let derecha = (pila: (x: lim.at(2), y: _arriba), columna: (x: borde-der, y: _arriba, hasta: lim.at(2)))
+  // a la izquierda: la columna al borde de la página; la pila, junto al arte
+  let izquierda = (pila: (x: borde-izq, y: _arriba), columna: (x: lim.at(0), y: _arriba, hasta: borde-izq))
+  let lados = if v.titulo.x < _ref.at(0) / 2 { (derecha, izquierda) } else { (izquierda, derecha) }
+  for l in lados {
+    if calc.abs(l.columna.hasta - l.columna.x) >= 300 { planes.push(l) }
+  }
+  // la banda de arriba, a la altura de la lámina; si no cabe, más arriba
+  // (en formatos más altos que la lámina hay sitio sobre ella)
+  let ys = (_arriba,)
+  let y = _arriba - 10
+  while y > lim.at(1) { ys.push(y); y -= 10 }
+  if lim.at(1) < _arriba { ys.push(lim.at(1)) }
+  for y in ys { planes.push((pila: (x: pie, y: y), columna: (x: izq, y: y, hasta: pie))) }
+  if v.planes == "diagonal" {
+    // pila arriba a la derecha y el bloque abajo a la derecha, sobre el pie:
+    // los dos al borde del pie, a uno y otro lado del brazo largo
+    let fondo = if obra != none { pie-arriba - _aire - 1 } else { 1064 }
+    planes.push((pila: (x: pie, y: _arriba),
+      columna: (x: pie, y: fondo, alinear: "derecha", ancla: "abajo", hasta: lim.at(0))))
+  }
+
+  let k = _ref.at(0) / 300
+  bloque-texto(L, X, Y, color, color, planes, obs, lim, k: k,
+    etiqueta: etiqueta, frase: frase, remate: remate,
+    cuerpo: if cuerpo == auto { 7.4 * k } else { cuerpo },
+    // a 1080 px de ancho, 22 px; en otro ancho, en proporción
+    minimo: if minimo == auto { 22pt * (ancho / 1080pt) / u } else { minimo * 1pt / u },
+    junta: _junta, fuente: fuente-texto, guias: guias, quien: quien)
+}
 
 // ── carteles.mosaico ────────────────────────────────────────
 //   autor    rótulo vertical al margen (str o contenido), en mayúsculas
@@ -114,9 +195,13 @@
 //   etiqueta, frase, remate   el texto como en `carteles.teselas`: título en
 //            negrita, párrafo en gris y una palabra pesada apilada (dos
 //            letras por línea). Cada variante los pone donde el arte deja
-//            sitio; si no se dan, la lámina sale como siempre.
+//            sitio (ver arriba); si no se dan, la lámina sale como siempre.
+//            Un título que no cabe en una línea se parte en dos.
 //   cuerpo   tamaño máximo del párrafo, en px de la lámina (auto = el de
-//            `teselas`, a escala)
+//            `teselas`, a escala); se achica hasta `minimo` si hace falta
+//   minimo   tamaño mínimo del párrafo, en px de la IMAGEN final (auto = 22
+//            px por cada 1080 de ancho: menos no se lee en un móvil)
+//   guias    true: dibuja los obstáculos y las cajas del texto (depurar)
 //   fuente-texto   tipografía de ese texto (por defecto Outfit, como `teselas`;
 //            `fuente` sigue siendo la de los rótulos espaciados)
 //   grosor   grosor de las líneas, en px de la lámina de referencia (auto =
@@ -140,6 +225,8 @@
   remate: none,
   cuerpo: auto,
   fuente-texto: "Outfit",
+  minimo: auto,
+  guias: false,
 ) = {
   if not variante in _variantes {
     panic("mosaico: variante desconocida " + repr(variante) + " — disponibles: " + _variantes.keys().join(", "))
@@ -203,12 +290,13 @@
         upper(obra))
     }
     // ── título, párrafo y pila (como en teselas), si se pidieron ──
-    // (el párrafo en el color de texto de la variante: `suave` es el gris de las líneas
-    // y sobre menta o naranja no se lee)
-    capa-texto(L, X, Y, rol.at(v.texto), rol.at(v.texto), v.zona, k: _ref.at(0) / 300,
-      etiqueta: etiqueta, frase: frase, remate: remate,
-      cuerpo: if cuerpo == auto { 7.4 * _ref.at(0) / 300 } else { cuerpo },
-      fuente: fuente-texto)
+    if etiqueta != none or frase != none or remate != none {
+      _texto(v, X, Y, L, (ox, oy, ancho, alto),
+        color: rol.at(v.texto), fuente: fuente, grosor: if grosor == auto { v.grosor } else { grosor },
+        autor: autor, obra: obra, marca: marca, etiqueta: etiqueta, frase: frase, remate: remate,
+        cuerpo: cuerpo, minimo: minimo, fuente-texto: fuente-texto, guias: guias,
+        quien: "carteles.mosaico(variante: " + repr(variante) + ")")
+    }
     if marca != none {
       place(bottom + left, dx: X(45), dy: -(oy + L(40)), marca)
     }

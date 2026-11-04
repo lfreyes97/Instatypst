@@ -26,3 +26,11 @@
 #caso("u", formato: sizes.story,
   tema: (fondo: rgb("#f4f1de"), tinta: rgb("#1b1b1b"), suave: rgb("#8d99ae"),
          acento: rgb("#e9c46a"), hondo: rgb("#264653")))
+
+// el texto busca el hueco que deja el arte en cada formato: en story sube a
+// la banda de arriba, en cuadrado se aprieta, en apaisado va al lado
+#caso("u", formato: sizes.story, frase: frase, etiqueta: [Apocalipsis 13:18], remate: [Sabiduría])
+#caso("c", formato: sizes.instagram, frase: frase, etiqueta: [Gracia], remate: [Fe])
+#caso("u-inversa", formato: sizes.twitter, frase: frase, etiqueta: [Apocalipsis 13:18], remate: [Sabiduría])
+// título largo (se parte en dos líneas) y palabra larga (la pila cede)
+#caso("u", frase: [Bienaventurados los de limpio corazón.], etiqueta: [La justicia imputada de Cristo], remate: [Entendimiento])

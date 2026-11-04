@@ -88,3 +88,41 @@
     place(top + left, curve(stroke: trazo, ..tramos))
   }
 }
+
+// ── contorno-arcos ──────────────────────────────────────────
+// La zona que ocupan unos `arcos` (con los mismos parámetros, pero en
+// números, no en pt), como una lista de cuadriláteros convexos que la
+// cubren entera: el anillo de las líneas en tramos de a lo sumo `tramo`
+// grados (con el lado de fuera tangente al arco exterior, así que no queda
+// nada fuera) y un rectángulo por cada cola. Sirve para saber dónde NO
+// puede ir el texto; no dibuja nada.
+#let contorno-arcos(
+  centro, radio,
+  lineas: 10, paso: 20, grosor: 7,
+  desde: 0deg, hasta: 360deg, eje: none, cola: (0, 0),
+  tramo: 10deg,
+) = {
+  let (a0, a1) = if eje == none { (desde, hasta) } else { (eje + 90deg, eje + 270deg) }
+  let (c0, c1) = if type(cola) == array { cola } else { (cola, cola) }
+  let r0 = radio - grosor / 2
+  let r1 = radio + (lineas - 1) * paso + grosor / 2
+  let n = calc.max(1, calc.ceil(calc.abs((a1 - a0) / tramo)))
+  let d = (a1 - a0) / n
+  let fuera = r1 / calc.cos(d / 2)
+  let piezas = ()
+  for i in range(n) {
+    let t0 = a0 + i * d
+    let t1 = t0 + d
+    piezas.push((_punto(centro, r0, t0), _punto(centro, fuera, t0), _punto(centro, fuera, t1), _punto(centro, r0, t1)))
+  }
+  // las colas: del diámetro donde acaba el arco, a lo largo del brazo
+  let brazo(a, largo, signo) = {
+    let t = (signo * calc.sin(a), -signo * calc.cos(a))
+    let (p, q) = (_punto(centro, r0, a), _punto(centro, r1, a))
+    let mas(v) = (v.at(0) + largo * t.at(0), v.at(1) + largo * t.at(1))
+    (p, q, mas(q), mas(p))
+  }
+  if c0 > 0 { piezas.push(brazo(a0, c0, 1)) }
+  if c1 > 0 { piezas.push(brazo(a1, c1, -1)) }
+  piezas
+}

@@ -32,8 +32,21 @@ byte antes y después.
   el propio `hondo`). Las medidas salen de una lámina de referencia y se
   verificaron contra su render: líneas, círculos, rombo y rótulos coinciden
   dentro de ±1-2 px. Con `frase`, `etiqueta` y `remate` suma un título, un párrafo
-  y una palabra apilada como `teselas`, en la zona que el arte deja libre de cada
-  variante; sin ellos sale como siempre (idéntico byte a byte). Demo:
+  y una palabra apilada como `teselas`. El texto no va en cajas puestas a ojo: cada
+  pieza busca su sitio a partir de la geometría del arte (los arcos y sus colas,
+  los círculos, el rombo y los rótulos `autor`/`obra`/`marca` son obstáculos con un
+  margen mínimo; `carteles/_huecos.typ`), prueba planes en orden de preferencia
+  y cede primero el título y luego la pila antes de dejar el párrafo ilegible.
+  Un título que no cabe en una línea se parte en dos. Cada variante forma un solo
+  bloque con las alineaciones del propio arte (en «u», la pila arriba a la derecha
+  y título con párrafo abajo a la derecha, sobre `obra`). Parámetros nuevos:
+  `minimo:` (tamaño mínimo del párrafo, en px de la imagen final; por defecto 22 por
+  cada 1080 de ancho) y `guias:` (dibuja los obstáculos y las cajas, para depurar).
+  **Contrato:** si el texto no cabe ni al mínimo, `mosaico` da un error con mensaje
+  (acorta la frase, quita `remate`, cambia de formato o variante, o baja `minimo`) en
+  vez de dibujar un párrafo ilegible o pisar el arte; con ~150 caracteres cabe en
+  todos los formatos, con ~300 no en cuadrado. Sin los parámetros de texto sale
+  como siempre (idéntico byte a byte). Demo:
   `examples/presets/mosaico.typ`.
 - **`carteles.bauhaus`** (`src/carteles/bauhaus.typ`): cartel de formas
   primarias sobre papel crudo — cuadrado rojo, círculo amarillo, cuña azul y
@@ -69,7 +82,10 @@ byte antes y después.
   apilada que se escala) pasa a un módulo privado, `carteles/_texto.typ`, que usan
   `teselas` y `mosaico`. `teselas` sale idéntico byte a byte (5 de 5 páginas). La
   capa fija su propio espaciado y tipografía: el primer intento en `mosaico`
-  heredaba el `tracking: 0.65em` de sus rótulos y salía ilegible.
+  heredaba el `tracking: 0.65em` de sus rótulos y salía ilegible. (Dentro de
+  `context`, `measure` no ve los `set text` del mismo bloque: la capa medía el
+  párrafo con una tipografía y lo dibujaba con otra, y por eso encogía de más; ahora
+  cada texto lleva su tipografía y espaciado explícitos y mide lo que dibuja.)
 - `scripture.typ` tenía dos APIs que no se hablaban: `scripture`, `vs` y `ch`
   con fuentes fijas, y `pasaje` con tema. Ahora las tres piezas aceptan
   `theme:` (por defecto `auto`) y `pasaje` también (`theme:` en vez de
