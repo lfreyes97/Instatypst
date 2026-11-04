@@ -13,7 +13,10 @@
 //              "cuadrado", "vertical" o "historia" (alto ≥ 1,6 × ancho)
 //              y la composición se ajusta a eso.
 //    tema      "vino" (cubierta de Magnalia) · "papel" (su interior) ·
-//              o un diccionario con las mismas claves que `temas.vino`
+//              o un diccionario de roles (fondo, tinta, suave, acento y los
+//              de la orla: malla, franja, orn, fil, hondo); lo que falte
+//              sale de "vino". Un diccionario viejo con `texto` en vez de
+//              `tinta` se sigue entendiendo. Ver carteles/_temas.typ.
 //    orla      "completa" · "arriba" · "abajo" · "arriba-abajo" ·
 //              "izquierda" · "derecha" · "lateral" · "columna" · "ninguna"
 //    cadena    cualquier marco de `fleurones.cadenas`: las cinco de
@@ -26,21 +29,17 @@
 // ─────────────────────────────────────────────────────────────
 
 #import "fleurones.typ" as fl
+#import "carteles/_temas.typ": temas-lamina, resolver-tema
 
 #let fell = "IM FELL English"
 #let fellsc = "IM FELL English SC"
 
+// Los dos temas de la orla viven en el registro común (`temas-lamina`);
+// aquí, la vista de siempre (`carteles.temas-orla`), con `texto` como
+// alias de `tinta` por compatibilidad.
 #let temas = (
-  vino: (
-    fondo: rgb("#5a1220"), malla: rgb("#661a28"), franja: rgb("#732232"), orn: rgb("#86303d"),
-    fil: rgb("#a24c57"), hondo: rgb("#3e0a15"),
-    texto: rgb("#f0d8d2"), suave: rgb("#d4a9a2"), acento: rgb("#e2bdb5"),
-  ),
-  papel: (
-    fondo: rgb("#f6efe4"), malla: rgb("#eee2d1"), franja: rgb("#e6d3bd"), orn: rgb("#8e3b3b"),
-    fil: rgb("#8e3b3b"), hondo: rgb("#6b1d1d"),
-    texto: rgb("#2b1916"), suave: rgb("#6b4a44"), acento: rgb("#6b1d1d"),
-  ),
+  vino: temas-lamina.vino + (texto: temas-lamina.vino.tinta),
+  papel: temas-lamina.papel + (texto: temas-lamina.papel.tinta),
 )
 
 #let _tipo(formato) = {
@@ -62,14 +61,16 @@
 #let lienzo-orlado(formato, tema, cuerpo, orla: "completa", cadena: "ojivas") = {
   let (W, H) = (formato.at(0) * 1pt, formato.at(1) * 1pt)
   let tipo = _tipo(formato)
-  let c = if type(tema) == str { temas.at(tema) } else { tema }
+  // Un diccionario viejo con `texto` (sin `tinta`) se lee como `tinta`.
+  let tema = if type(tema) == dictionary and "texto" in tema and not "tinta" in tema { tema + (tinta: tema.texto) } else { tema }
+  let c = resolver-tema(tema, defecto: "vino")
   let M = 34pt
   let T = fl.cadenas.at(cadena).grosor
   let G = fl.grosor-tira(cadena)
   let libre = 70pt // margen de los lados sin orla
   let tira(largo) = fl.tira(largo, cadena, c.orn, c.hondo, c.fil)
   page(width: W, height: H, margin: 0pt, fill: c.fondo, {
-    set text(font: fell, fill: c.texto, lang: "es", hyphenate: false)
+    set text(font: fell, fill: c.tinta, lang: "es", hyphenate: false)
     set par(justify: false, first-line-indent: 0pt, spacing: 0pt)
     if orla == "completa" {
       place(top + left, dx: M, dy: M, fl.orla(cadena, W - 2 * M, H - 2 * M, c.orn))
@@ -214,9 +215,9 @@
           #v(46pt * k)
           #text(font: fellsc, size: 32pt * k, tracking: 0.32em, fill: c.suave)[#rotulo]
           #v(34pt * k)
-          #text(font: fell, size: 150pt * k, fill: c.texto)[#numbering("I", numero)]
+          #text(font: fell, size: 150pt * k, fill: c.tinta)[#numbering("I", numero)]
           #v(44pt * k)
-          #text(font: fell, size: calc.min(if _largo(titulo) > 28 { 66pt } else { 82pt } * k, (w - 60pt) / (0.36 * calc.max(8, _largo(titulo)))), fill: c.texto)[
+          #text(font: fell, size: calc.min(if _largo(titulo) > 28 { 66pt } else { 82pt } * k, (w - 60pt) / (0.36 * calc.max(8, _largo(titulo)))), fill: c.tinta)[
             #set par(leading: 0.35em)
             #titulo]
           #if subtitulo != none {

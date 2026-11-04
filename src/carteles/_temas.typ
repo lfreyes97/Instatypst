@@ -65,6 +65,18 @@
     acento: rgb("#9a3a1c"),
     suave: rgb("#6b5e52"),
   ),
+  // Magnalia Dei: cubierta (vino) e interior (papel). Además de los cuatro
+  // roles base traen los de la orla: malla, franja, orn, fil y hondo.
+  vino: (
+    fondo: rgb("#5a1220"), malla: rgb("#661a28"), franja: rgb("#732232"), orn: rgb("#86303d"),
+    fil: rgb("#a24c57"), hondo: rgb("#3e0a15"),
+    tinta: rgb("#f0d8d2"), suave: rgb("#d4a9a2"), acento: rgb("#e2bdb5"),
+  ),
+  papel: (
+    fondo: rgb("#f6efe4"), malla: rgb("#eee2d1"), franja: rgb("#e6d3bd"), orn: rgb("#8e3b3b"),
+    fil: rgb("#8e3b3b"), hondo: rgb("#6b1d1d"),
+    tinta: rgb("#2b1916"), suave: rgb("#6b4a44"), acento: rgb("#6b1d1d"),
+  ),
   demostracion: (
     fondo: rgb("#0d1014"),
     claro: rgb("#f4f1ea"),

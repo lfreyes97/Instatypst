@@ -357,6 +357,9 @@ aplicarlo de una — necesita decisión explícita antes de tocar ~10 archivos.
   `src/carteles/_temas.typ`), no un bug. **Decidir más adelante** si los roles extra de un preset
   (como `linea`) deben derivarse de los cuatro roles base (p. ej. `linea` = `suave` aclarado hacia
   `fondo`) en vez de heredarse del tema por defecto.
+  Mismo caso en las orlas: un tema parcial (o el de otro preset) hereda de `"vino"` los roles
+  propios de la orla (`malla`, `franja`, `orn`, `fil`, `hondo`), y el resultado puede desentonar
+  (ornamento rojo vino sobre un fondo verde).
 - **`folio` y `esquela` no obedecen del todo al rol `fondo`.** Tienen colores de ambientación
   fijos fuera de los parámetros: `folio` pinta el pergamino con un degradado radial y una malla de
   literales (`#f6ecd4`, `#ecdcb6`, `#d6bd8a`, `#c9a86a`…) y `esquela` un viñeteado `#5a4a32`.
