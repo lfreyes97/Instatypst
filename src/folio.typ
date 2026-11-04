@@ -11,14 +11,19 @@
 //  carteles.typ ni lib.typ: carteles.typ lo importa a él.
 // ─────────────────────────────────────────────────────────────
 
+#import "carteles/_temas.typ": resolver-tema
 #import "superbg/lib.typ" as superbg
 #import "fleurones.typ" as fl
 #import "dropcaps.typ": capitular-ornamentada
+#import "carteles/_base.typ": medida, ajustar-alto
 
 // ── carteles.folio ──────────────────────────────────────────
 //   texto       el pasaje (contenido); su primera letra va en capitular
 //   glosa       (arriba, abajo): las dos líneas de la glosa al margen,
 //               la segunda más grande (p. ej. ([Salmo], [51])) · none
+//   referencia  atajo de `glosa` para un pasaje: un string como "Salmo 51"
+//               se parte por el último espacio ("Salmo" / "51"; "1 Juan 3:2"
+//               da "1 Juan" / "3:2"). Si se dan las dos, manda `glosa`.
 //   autor       pie, en versalitas
 //   marca       contenido al pie, a la derecha (p. ej. el logo)
 //   cabecera    auto (la banda de molinetes de la lámina, recortada a
@@ -31,15 +36,20 @@
 //
 // Pensado para el cuadrado 1080×1080; en otros formatos la caja de
 // texto crece con el lienzo y los márgenes quedan fijos.
+// tema: nombre de `temas-lamina` (por defecto "folio"), diccionario de roles
+// (fondo, tinta, suave, acento…) o `carteles.tema-desde-theme(theme.base)`.
+// Los parámetros de color (`pergamino` (fondo), `tinta`, `rubrica` (acento)) pisan al tema; auto = el del tema.
 #let folio(
   texto,
   glosa: none,
+  referencia: none,
   formato: (1080, 1080),
   autor: none,
   marca: none,
-  tinta: rgb("#1f1610"),
-  rubrica: rgb("#9e2219"),
-  pergamino: rgb("#eee0bf"),
+  tinta: auto,
+  rubrica: auto,
+  tema: "folio",
+  pergamino: auto,
   fuente: "IM FELL English",
   fuente-sc: "IM FELL English SC",
   cabecera: auto,
@@ -49,7 +59,17 @@
   capitular: (alto: 3, hueco: 0.28em, estilo: "rubricada", desgaste: 0.35),
   textura: true,
 ) = {
-  let (ancho, alto) = (formato.at(0) * 1pt, formato.at(1) * 1pt)
+  let tm = resolver-tema(tema, defecto: "folio")
+  let pergamino = if pergamino == auto { tm.fondo } else { pergamino }
+  let tinta = if tinta == auto { tm.tinta } else { tinta }
+  let rubrica = if rubrica == auto { tm.acento } else { rubrica }
+  let glosa = if glosa == none and referencia != none {
+    assert(type(referencia) == str, message: "folio: `referencia` es un string, p. ej. \"Salmo 51\" (para dos líneas a medida, usa `glosa`)")
+    let partes = referencia.split(" ")
+    assert(partes.len() >= 2, message: "folio: `referencia` necesita al menos dos palabras (p. ej. \"Salmo 51\"): " + repr(referencia))
+    (partes.slice(0, -1).join(" "), partes.last())
+  } else { glosa }
+  let (ancho, alto) = medida(formato)
   let (fx, fy) = (formato.at(0) / 1080, formato.at(1) / 1080)
   let pauta = rubrica.transparentize(72%)
 
@@ -109,9 +129,7 @@
       componer(cuerpo)
     } else {
       context {
-        let s = 66pt
-        while s > 24pt and measure(componer(s)).height > y1 - y0 { s -= 2pt }
-        componer(s)
+        componer(ajustar-alto(componer, 66pt, y1 - y0))
       }
     })))
 

@@ -107,12 +107,3 @@
 // donde de verdad se comprobó compilando; ausencia de la clave NO implica
 // que la fuente carezca del guion, solo que no se verificó aquí.
 #let by-script(script) = tokens.keys().filter(k => script in tokens.at(k).at("scripts", default: ("latin",)))
-
-// Namespace
-#let font-tokens = (
-  tokens: tokens,
-  token: token,
-  family: family,
-  "by-category": by-category,
-  "by-script": by-script,
-)

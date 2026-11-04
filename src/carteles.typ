@@ -33,6 +33,15 @@
 //    linea-tiempo  (16) estaciones sobre una línea vertical — linea-tiempo.typ
 //    esquela       (10) aviso fúnebre de imprenta: orla de luto, cruz, el
 //                  «difunto» en versalitas — esquela.typ
+//    bauhaus       formas primarias y barra diagonal sobre papel crudo,
+//                  remate en minúsculas de sans geométrica — carteles/bauhaus.typ
+//                  (mismo contrato que suizo: se cambia de estilo cambiando el nombre)
+//    mosaico       diez arcos paralelos («C» o «U» a 45°) con círculos y
+//                  un rombo; tres variantes con los colores rotando —
+//                  carteles/mosaico.typ (portada gráfica: autor y obra, sin frase)
+//    teselas       bloque cuadrado de teselas (discos y «dianas») en tres colores
+//                  que rotan, con título, párrafo y una palabra apilada —
+//                  carteles/teselas.typ
 //    folio         (11) folio de salterio: pergamino pautado, capitular
 //                  iluminada, glosa al margen — folio.typ
 //
@@ -50,6 +59,11 @@
 #import "esquela.typ": esquela
 #import "folio.typ": folio
 #import "plano.typ": plano
+#import "carteles/_base.typ": medida, escala, cuerpo-al-ancho, ajustar-alto
+#import "carteles/_temas.typ": temas-lamina, resolver-tema, tema-desde-theme
+#import "carteles/bauhaus.typ": bauhaus
+#import "carteles/mosaico.typ": mosaico
+#import "carteles/teselas.typ": teselas
 
 // Retícula de columnas sobre `ancho` (largo). `x.at(i)`: borde
 // izquierdo de la columna i (desde 0); `span.at(n)`: ancho de n columnas
@@ -69,10 +83,9 @@
   )
 }
 
-// Tamaño de letra con el que `hacer(tamaño)` ocupa exactamente `ancho`.
-// El ancho del texto es lineal en el tamaño: se mide una vez a 100pt y
-// se escala. Usar dentro de `context`.
-#let cuerpo-al-ancho(hacer, ancho) = 100pt * (ancho / measure(hacer(100pt)).width)
+// `cuerpo-al-ancho`, `ajustar-alto`, `medida` y `escala` viven en
+// carteles/_base.typ (por debajo de los presets, para que `esquela` y
+// `folio` puedan usarlos sin ciclo de import) y se re-exportan aquí.
 
 // Tachado en línea, para negar una palabra o un prefijo dentro de la
 // frase (se usa como cualquier texto: #rayar[ir]racional).
@@ -113,6 +126,10 @@
 //   autor, fechas            cabecera (izquierda / columna 3)
 //   etiqueta, planteo        bloque superior: rótulo en acento + pregunta
 //   marca    contenido para el pie (p. ej. el logo), abajo a la izquierda
+//   tema     nombre de `temas-lamina`, diccionario (fondo, tinta, suave,
+//            acento, linea) o `tema-desde-theme(theme.base)`; por defecto
+//            "suizo". `papel`, `tinta`, `gris`, `acento` y `linea`, si se
+//            pasan, pisan al tema (auto = el del tema).
 //   frase-y, flecha-hasta    auto = la frase se apoya `aire` por encima
 //                            del remate y la flecha llega a mitad de ese
 //                            aire; un largo los fija a mano
@@ -129,11 +146,12 @@
   etiqueta: none,
   planteo: none,
   marca: none,
-  papel: rgb("#f3f0e9"),
-  tinta: rgb("#141414"),
-  acento: rgb("#c8102e"),
-  linea: rgb("#d9d3c7"),
-  gris: rgb("#5c5850"),
+  tema: "suizo",
+  papel: auto,
+  tinta: auto,
+  acento: auto,
+  linea: auto,
+  gris: auto,
   fuente: "Hanken Grotesk",
   fuente-rotulos: "Inter",
   fuente-remate: "Bebas Neue",
@@ -146,7 +164,13 @@
   frase-y: auto,
   flecha-hasta: auto,
 ) = {
-  let (ancho, alto) = (formato.at(0) * 1pt, formato.at(1) * 1pt)
+  let (ancho, alto) = medida(formato)
+  let tm = resolver-tema(tema, defecto: "suizo")
+  let papel = if papel == auto { tm.fondo } else { papel }
+  let tinta = if tinta == auto { tm.tinta } else { tinta }
+  let acento = if acento == auto { tm.acento } else { acento }
+  let linea = if linea == auto { tm.linea } else { linea }
+  let gris = if gris == auto { tm.suave } else { gris }
   let r = reticula(ancho, columnas: columnas, margen: margen, medianil: medianil)
   // ancho de la frase y del planteo: las primeras 2/3 de las columnas
   let ancho-frase = r.span.at(calc.ceil(columnas * 2 / 3))
@@ -203,8 +227,7 @@
       // aire), se achica de a 2pt; el aire se encoge antes que la letra.
       let bloque(c) = block(width: ancho-frase, text(size: c, weight: 500, tracking: -0.015em, frase))
       let hueco = remate-y - techo
-      let c = cuerpo-frase
-      while c > 24pt and measure(bloque(c)).height > hueco - 48pt { c -= 2pt }
+      let c = ajustar-alto(bloque, cuerpo-frase, hueco - 48pt)
       let b = bloque(c)
       let fh = measure(b).height
       let aire = calc.min(aire, hueco - fh)
@@ -338,17 +361,21 @@
 //
 // Si el bloque no cabe en el alto (apaisado, demasiados renglones),
 // todo se achica en la misma proporción.
+// tema: nombre de `temas-lamina` (por defecto "demostracion"), diccionario de roles
+// (fondo, tinta, suave, acento…) o `carteles.tema-desde-theme(theme.base)`.
+// Los parámetros de color (`fondo`, `claro`, `texto` (tinta), `apagado` (suave), `acento`) pisan al tema; auto = el del tema.
 #let demostracion(
   grupos,
   formato: (1080, 1080),
   autor: none,
   obra: none,
   marca: none,
-  fondo: rgb("#0d1014"),
-  claro: rgb("#f4f1ea"),
-  texto: rgb("#c3c9d1"),
-  apagado: rgb("#8b95a1"),
-  acento: rgb("#f2b33d"),
+  tema: "demostracion",
+  fondo: auto,
+  claro: auto,
+  texto: auto,
+  apagado: auto,
+  acento: auto,
   fuente: "Instrument Sans",
   fuente-mono: "DM Mono",
   cuerpo-lectura: 58pt,
@@ -359,6 +386,12 @@
   encabezado: none,
   inicio: auto,
 ) = {
+  let tm = resolver-tema(tema, defecto: "demostracion")
+  let fondo = if fondo == auto { tm.fondo } else { fondo }
+  let claro = if claro == auto { tm.claro } else { claro }
+  let texto = if texto == auto { tm.tinta } else { texto }
+  let apagado = if apagado == auto { tm.suave } else { apagado }
+  let acento = if acento == auto { tm.acento } else { acento }
   let (ancho, alto) = (formato.at(0) * 1pt, formato.at(1) * 1pt)
   let caja = ancho - 2 * margen
   let (col-n, col-signo) = (64pt, 48pt)

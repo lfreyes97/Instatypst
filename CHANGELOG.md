@@ -1,5 +1,133 @@
 # Changelog
 
+## [sin publicar] — arquitectura de carteles (rama `refactor/arquitectura-capas`)
+
+Sin cambios visuales con los valores por defecto: los ejemplos de
+`examples/presets/` y `examples/blockquotes.typ` renderizan idénticos byte a
+byte antes y después.
+
+### Añadido
+
+- **`carteles.teselas`** (`src/carteles/teselas.typ`): cartel con un bloque
+  cuadrado de teselas — cuadrícula de 4×4 celdas con bloques de 2×2 — en tres
+  colores que rotan de fondo y de figura (discos y «dianas»: un aro con un
+  punto). Encima, título en negrita, párrafo (`frase`) y una palabra pesada
+  (`remate`) apilada a la derecha, dos letras por línea. Las medidas salen de una
+  lámina de referencia y se verificaron contra su render: el bloque coincide, el
+  título y el párrafo dentro del 2-4 %. El título se achica si no cabe en el ancho
+  del párrafo y la pila se escala si no cabe sobre el bloque (antes, un título
+  largo chocaba con la palabra y una palabra larga pisaba el bloque). Tema
+  `teselas` (roles `fondo`, `tinta`, `suave`, `acento`, `hondo`, `claro`).
+  Diferencias con la referencia: la palabra se parte en pares (la referencia
+  parte «DE / SI / G / N» según el ancho de sus letras), y los colores salen del
+  SVG de la referencia; la lámina original está en CMYK y otra conversión a RGB
+  los da algo más apagados (p. ej. el carmesí, `#D8225A` frente a `#D7375E`). Demo:
+  `examples/presets/teselas.typ`.
+- **`carteles.mosaico`** (`src/carteles/mosaico.typ` + el ayudante privado
+  `src/carteles/_arcos.typ`): portada gráfica de diez líneas concéntricas — una
+  «C» abierta o una «U» inclinada a 45° — con círculos macizos y un rombo, y
+  dos rótulos muy espaciados (`autor`, vertical; `obra`, al pie). Tres
+  variantes (`"c"`, `"u"`, `"u-inversa"`) en las que los tres colores del tema
+  rotan de papel. Tema `mosaico` (roles `fondo`, `tinta`, `suave`, `acento` y
+  el propio `hondo`). Las medidas salen de una lámina de referencia y se
+  verificaron contra su render: líneas, círculos, rombo y rótulos coinciden
+  dentro de ±1-2 px. Con `frase`, `etiqueta` y `remate` suma un título, un párrafo
+  y una palabra apilada como `teselas`. El texto no va en cajas puestas a ojo: cada
+  pieza busca su sitio a partir de la geometría del arte (los arcos y sus colas,
+  los círculos, el rombo y los rótulos `autor`/`obra`/`marca` son obstáculos con un
+  margen mínimo; `carteles/_huecos.typ`), prueba planes en orden de preferencia
+  y cede primero el título y luego la pila antes de dejar el párrafo ilegible.
+  Un título que no cabe en una línea se parte en dos. Cada variante forma un solo
+  bloque con las alineaciones del propio arte (en «u», la pila arriba a la derecha
+  y título con párrafo abajo a la derecha, sobre `obra`). Parámetros nuevos:
+  `minimo:` (tamaño mínimo del párrafo, en px de la imagen final; por defecto 22 por
+  cada 1080 de ancho) y `guias:` (dibuja los obstáculos y las cajas, para depurar).
+  **Contrato:** si el texto no cabe ni al mínimo, `mosaico` da un error con mensaje
+  (acorta la frase, quita `remate`, cambia de formato o variante, o baja `minimo`) en
+  vez de dibujar un párrafo ilegible o pisar el arte; con ~150 caracteres cabe en
+  todos los formatos, con ~300 no en cuadrado. Sin los parámetros de texto sale
+  como siempre (idéntico byte a byte). Demo:
+  `examples/presets/mosaico.typ`.
+- **`carteles.bauhaus`** (`src/carteles/bauhaus.typ`): cartel de formas
+  primarias sobre papel crudo — cuadrado rojo, círculo amarillo, cuña azul y
+  una barra negra diagonal — con el remate en minúsculas de Jost (sans
+  geométrica) a todo el ancho. Las formas no son porcentajes sueltos: se
+  construyen unas de otras sobre una «línea de tierra» justo encima del texto
+  (el cuadrado apoya en ella, el círculo está centrado en su esquina, la barra
+  pasa por esa esquina y la cuña llena el hueco bajo la barra), así que nada
+  puede pisar la etiqueta, el planteo ni la frase. Opción `textura` (grano de
+  papel, activada). Mismo contrato que
+  `carteles.suizo` (frase, remate, autor, fechas, etiqueta, planteo, marca): se
+  cambia de estilo cambiando solo el nombre. Tema `bauhaus` en el registro, con
+  los roles propios `amarillo` y `azul`. Demo: `examples/presets/bauhaus.typ`.
+- `src/carteles/_base.typ`: `medida`, `escala`, `cuerpo-al-ancho` y
+  `ajustar-alto`, que los presets repetían cada uno por su cuenta
+  (`carteles.cuerpo-al-ancho` sigue exportado).
+- **Temas de lámina** (`src/carteles/_temas.typ`): una paleta por roles común
+  a los presets — `fondo`, `tinta`, `suave`, `acento` (más roles propios de
+  cada uno, como `linea` o los de la orla). Registro `carteles.temas-lamina`,
+  `carteles.resolver-tema` y `carteles.tema-desde-theme(theme.base)`.
+  `suizo`, `esquela`, `folio`, `gozne`, `escalera`, `linea-tiempo`,
+  `demostracion` y las orlas aceptan `tema:`; sus parámetros de color
+  (`papel:`, `luto:`, `rubrica:`…) siguen existiendo y pisan al tema.
+- **Vocabulario de atribución**: `autor`, `obra` (la obra citada),
+  `referencia` (el pasaje: "Salmo 51"), `fechas`, `version`. `obra:` se
+  acepta ahora en `blockquote-editorial/-bar/-card/-hero/-avatar/-lateral/
+  -pull`, `bq-attribution`, `cita-orlada` y `pregunta-orlada`;
+  `carteles.folio` acepta `referencia: "Salmo 51"` como atajo de `glosa`.
+
+### Cambiado
+
+- La capa de texto de `teselas` (título que se achica, párrafo que se achica, palabra
+  apilada que se escala) pasa a un módulo privado, `carteles/_texto.typ`, que usan
+  `teselas` y `mosaico`. `teselas` sale idéntico byte a byte (5 de 5 páginas). La
+  capa fija su propio espaciado y tipografía: el primer intento en `mosaico`
+  heredaba el `tracking: 0.65em` de sus rótulos y salía ilegible. (Dentro de
+  `context`, `measure` no ve los `set text` del mismo bloque: la capa medía el
+  párrafo con una tipografía y lo dibujaba con otra, y por eso encogía de más; ahora
+  cada texto lleva su tipografía y espaciado explícitos y mide lo que dibuja.)
+- `scripture.typ` tenía dos APIs que no se hablaban: `scripture`, `vs` y `ch`
+  con fuentes fijas, y `pasaje` con tema. Ahora las tres piezas aceptan
+  `theme:` (por defecto `auto`) y `pasaje` también (`theme:` en vez de
+  `paleta:`/`tipografia:`). El tema de un `pasaje` o `scripture` llega a los
+  `#vs[2]` y `#ch[1]` de su cuerpo (por un `state`, que el contenedor fija y
+  restituye); fuera de un contenedor con tema, el aspecto neutro de siempre.
+  Efecto visible: dentro de un `pasaje`, el número de versículo sale en la
+  tipografía del cuerpo del tema, no en EB Garamond fijo.
+- `fuente:` como "obra citada" (blockquotes y orlas) pasa a ser alias de
+  `obra:` (manda `obra` si se dan las dos). `fuente` queda reservado para la
+  tipografía, que es lo que significa en `escalera`, `gozne`, `folio` y
+  `linea-tiempo`; antes el mismo nombre significaba dos cosas.
+- `orlas`: el rol `texto` de sus temas pasa a `tinta`; un diccionario viejo con
+  `texto` se sigue entendiendo, y `carteles.temas-orla` conserva `texto`.
+
+### Arreglado
+
+- **`superbg`: el `ruido` ya no hace pesar un PDF decenas de MB.** El ruido es
+  un filtro SVG (`feTurbulence`) y Typst, al exportar a PDF, lo rasteriza en una
+  sola imagen de ~4000×5000 px más su máscara, sin importar el `viewBox`: un
+  cartel con textura pesaba 26 MB. Ahora `bg-patron(patron: "ruido")` dibuja una
+  tesela de 216 pt repetida con `tiling` (el SVG ya traía `stitchTiles`, así que
+  no hay costura). Medido: sin diferencia en el borde de la tesela (×1,00 la
+  diferencia entre columnas contiguas) ni en la intensidad del grano
+  (desviación 0,637 contra 0,640). PDF de `esquela` 50,8 → 1,0 MB (45 → 3 s), de
+  `folio` 62,9 → 3,0 MB (50 → 16 s), de `bauhaus` 26,8 → 1,5 MB. Los PNG de
+  `esquela` y `folio` cambian solo en el detalle del grano (error medio 0,2-0,4 %,
+  ningún píxel difiere más del 8 %); `suizo`, sin ruido, sigue idéntico byte a
+  byte.
+
+### Quitado
+
+- Código muerto sin uso: el diccionario autorreferencial de
+  `font-tokens.typ`, el import `by-category` de `font-pairings.typ` y
+  `set-body-font` de `scripture.typ`.
+
+### Pendiente
+
+Ver `docs/oportunidades-mejora.md`, sección «Pendientes de la refactorización
+de carteles» (roles extra de temas parciales; colores de ambientación fijos en
+`folio` y `esquela`).
+
 ## [sin publicar] — presets de cartel, ornamentos, curvas, papel y `trabajos/`
 
 Resumen del trabajo del 2026-10-11 al 2026-10-15, posterior a la sección
