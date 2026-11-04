@@ -41,6 +41,10 @@
 //    teselas       bloque cuadrado de teselas (discos y «dianas») en tres colores
 //                  que rotan, con título, párrafo y una palabra apilada —
 //                  carteles/teselas.typ
+//    hojas         la «hoja» (cuadrado con tres esquinas redondeadas y un anillo)
+//                  en flor, en par diagonal o en cinta a 45°, en amarillo y azul,
+//                  con título pesado, párrafo y rótulo vertical — carteles/hojas.typ
+//                  (la pieza suelta: carteles.hoja, de carteles/_hojas-piezas.typ)
 //    folio         (11) folio de salterio: pergamino pautado, capitular
 //                  iluminada, glosa al margen — folio.typ
 //
@@ -61,6 +65,8 @@
 #import "carteles/bauhaus.typ": bauhaus
 #import "carteles/mosaico.typ": mosaico
 #import "carteles/teselas.typ": teselas
+#import "carteles/hojas.typ": hojas
+#import "carteles/_hojas-piezas.typ": hoja
 
 // Retícula de columnas sobre `ancho` (largo). `x.at(i)`: borde
 // izquierdo de la columna i (desde 0); `span.at(n)`: ancho de n columnas

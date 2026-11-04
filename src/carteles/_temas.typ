@@ -69,6 +69,16 @@
     hondo: rgb("#19253c"),
     claro: rgb("#f8f1cd"),
   ),
+  // Hojas: papel blanco, negro, y el amarillo y el azul de las hojas (`acento`
+  // y `hondo`, como en teselas). Medidos sobre la captura: #f7c912 y #2a3ed1,
+  // a un paso de los del HTML (#f9c90f, #2a3ed3), que son los que quedan.
+  hojas: (
+    fondo: rgb("#ffffff"),
+    tinta: rgb("#000000"),
+    suave: rgb("#111111"),
+    acento: rgb("#f9c90f"),
+    hondo: rgb("#2a3ed3"),
+  ),
   esquela: (
     fondo: rgb("#f3eee3"),
     tinta: rgb("#141210"),
