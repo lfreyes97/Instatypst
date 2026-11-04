@@ -46,6 +46,16 @@
     amarillo: rgb("#f2b705"),
     azul: rgb("#1d4e9c"),
   ),
+  // Mosaico (arcos y círculos): menta, naranja y azul marino rotan de papel.
+  // `tinta` son las líneas; `suave`, las líneas sobre el fondo hondo; `hondo`
+  // el azul marino, rol propio de este tema.
+  mosaico: (
+    fondo: rgb("#b3dcd4"),
+    tinta: rgb("#000000"),
+    suave: rgb("#a1a1a1"),
+    acento: rgb("#ff832a"),
+    hondo: rgb("#002b38"),
+  ),
   esquela: (
     fondo: rgb("#f3eee3"),
     tinta: rgb("#141210"),

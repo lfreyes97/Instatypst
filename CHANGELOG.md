@@ -8,6 +8,15 @@ byte antes y después.
 
 ### Añadido
 
+- **`carteles.mosaico`** (`src/carteles/mosaico.typ` + el ayudante privado
+  `src/carteles/_arcos.typ`): portada gráfica de diez líneas concéntricas — una
+  «C» abierta o una «U» inclinada a 45° — con círculos macizos y un rombo, y
+  dos rótulos muy espaciados (`autor`, vertical; `obra`, al pie). Tres
+  variantes (`"c"`, `"u"`, `"u-inversa"`) en las que los tres colores del tema
+  rotan de papel. Tema `mosaico` (roles `fondo`, `tinta`, `suave`, `acento` y
+  el propio `hondo`). Las medidas salen de una lámina de referencia y se
+  verificaron contra su render: líneas, círculos, rombo y rótulos coinciden
+  dentro de ±1-2 px. No lleva frase. Demo: `examples/presets/mosaico.typ`.
 - **`carteles.bauhaus`** (`src/carteles/bauhaus.typ`, el primer preset en la
   carpeta `carteles/`): cartel de formas primarias — círculo amarillo, cuadrado
   rojo, triángulo azul y una barra diagonal — sobre papel crudo, con el remate

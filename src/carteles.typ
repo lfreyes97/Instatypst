@@ -28,6 +28,9 @@
 //    bauhaus       formas primarias y barra diagonal sobre papel crudo,
 //                  remate en minúsculas de sans geométrica — carteles/bauhaus.typ
 //                  (mismo contrato que suizo: se cambia de estilo cambiando el nombre)
+//    mosaico       diez arcos paralelos («C» o «U» a 45°) con círculos y
+//                  un rombo; tres variantes con los colores rotando —
+//                  carteles/mosaico.typ (portada gráfica: autor y obra, sin frase)
 //    folio         (11) folio de salterio: pergamino pautado, capitular
 //                  iluminada, glosa al margen — folio.typ
 //
@@ -46,6 +49,7 @@
 #import "carteles/_base.typ": medida, escala, cuerpo-al-ancho, ajustar-alto
 #import "carteles/_temas.typ": temas-lamina, resolver-tema, tema-desde-theme
 #import "carteles/bauhaus.typ": bauhaus
+#import "carteles/mosaico.typ": mosaico
 
 // Retícula de columnas sobre `ancho` (largo). `x.at(i)`: borde
 // izquierdo de la columna i (desde 0); `span.at(n)`: ancho de n columnas
