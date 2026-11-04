@@ -1,5 +1,56 @@
 # Changelog
 
+## [sin publicar] — catálogo de presets; temas que derivan sus roles extra
+
+Los 16 demos de `examples/presets/` (110 láminas) renderizan idénticos byte a
+byte antes y después (PNG a 40 ppi, `cmp`), salvo la lámina 3 de
+`suizo-temas.typ`, el cambio deliberado de abajo.
+
+### Añadido
+
+- **Catálogo de presets.** `scripts/catalogo.py` renderiza cada demo de
+  `examples/presets/*.typ` a miniaturas PNG (20 ppi, en paralelo) y compila
+  `docs/catalogo.typ`: un índice (preset, función, láminas, formatos) y una
+  página por preset con su descripción (la cabecera de comentarios de la demo),
+  una llamada que lo genera y todas sus láminas en cuadrícula, numeradas y con su
+  formato; la altura de las miniaturas se elige para que cada preset quepa en su
+  página. Se regenera con `python3 scripts/catalogo.py` (`--png` exporta también
+  las páginas del catálogo; con nombres de preset rehace solo esas miniaturas).
+  Se versionan solo el script y el `.typ`: las miniaturas, el índice JSON y el
+  PDF van a `docs/catalogo/`, ignorada por git (unos 9 MB que cambiarían con
+  cada retoque de un preset y salen del código con un comando). Las llamadas
+  están en el diccionario `llamadas` de `docs/catalogo.typ`; el script avisa si
+  un preset nuevo no tiene la suya.
+
+### Cambiado
+
+- **Roles extra de los temas parciales.** Un tema que no trae un rol extra de
+  un preset lo seguía heredando del tema por defecto, aunque cambiara los colores
+  base (el filete cálido `#d9d3c7` de `suizo` sobre la paleta fría de
+  `tema-desde-theme(theme.base)`; el ornamento vino de las orlas sobre un fondo
+  verde). Ahora `resolver-tema` deriva el extra de los roles ya resueltos
+  **solo si el tema cambia alguno de los roles de los que depende**
+  (`derivados-lamina` en `src/carteles/_temas.typ`): `suizo.linea` (12 % de
+  tinta en el fondo); en las orlas, `malla`/`franja` (fondo teñido de tinta) y
+  `orn`/`fil`/`hondo` (el acento rebajado en el fondo u oscurecido); `gozne.claro`
+  (el más legible sobre el acento, entre fondo y tinta); `demostracion.claro` (la
+  tinta: antes un tema claro dejaba la afirmación crema sobre blanco). Con el tema
+  por defecto, con uno completo (`"vino"`, `"papel"`) o con uno que solo retoca
+  roles de los que el extra no depende, sale idéntico. Los extras de identidad
+  (primarios de `bauhaus`, `hondo` de `mosaico` y `teselas`) siguen heredándose.
+  Cambio visible en las demos: `suizo-temas.typ`, lámina 3 (filetes grises).
+  Cambia también, a propósito, quien pase a una orla un tema con otro acento o
+  fondo (los ornamentos siguen al acento).
+- **`folio` y `esquela` obedecen al `fondo` del tema.** El degradado y la malla
+  del pergamino de `folio` y el viñeteado de `esquela` eran literales; ahora se
+  derivan del `fondo` del tema (centro aclarado, bordes oscurecidos; viñeteado =
+  el fondo muy oscurecido). Con el fondo del tema por defecto se conservan los
+  tonos de la lámina (idéntico). Los parámetros `pergamino:` y `papel:` retocan
+  solo el color de fondo, como antes (la demo de esquela con `papel:` sale
+  igual). `carteles.folio(..., tema: "escalera")` ya da un folio oscuro legible.
+  Queda fija la capitular rubricada de `folio` (su caja beige con la letra roja
+  viene de `capitular-ornamentada`).
+
 ## [sin publicar] — arquitectura de carteles (rama `refactor/arquitectura-capas`)
 
 Sin cambios visuales con los valores por defecto: los ejemplos de
