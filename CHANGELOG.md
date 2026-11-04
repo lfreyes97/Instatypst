@@ -48,6 +48,28 @@ byte antes y después.
   todos los formatos, con ~300 no en cuadrado. Sin los parámetros de texto sale
   como siempre (idéntico byte a byte). Demo:
   `examples/presets/mosaico.typ`.
+- **Área de trabajo en `carteles.mosaico`**: tres parámetros nuevos. `area:` acota
+  la composición entera (lámina, rótulos, `marca` y la búsqueda de sitio del texto)
+  a una fracción de la página — `70%`, o un par `(100%, 70%)` — y deja el resto en
+  el color de fondo; `ancla:` la apoya (`top`, `bottom + left`…; por defecto
+  centrada); `arte:` achica la lámina dentro del área para dejarle sitio al texto
+  (`0.85`, o `auto`: la mayor escala, de 1 a 0,6, con la que el texto cabe sin que
+  la pila baje del 80 %). Combinados resuelven casos que antes salían flojos: en la
+  «U», `arte: 0.85, ancla: bottom` sube el texto a la banda de arriba en bandera a
+  la derecha (por defecto va abajo, alineado a la derecha); en apaisado, `ancla:
+  right` deja al texto una banda ancha a la izquierda; `arte: auto` evita que una
+  pila larga se encoja en cuadrado y hace caber textos de ~250 caracteres a página
+  completa en cuadrado. `minimo` sigue siendo en px de la imagen, así que un área
+  chica admite menos texto: con `area: 70%` cabe una frase corta en todo; con ~150
+  caracteres hace falta `arte: auto` y aun así no cabe en cuadrado ni en la «U»
+  vertical (error con mensaje, como antes). Con `guias: true` el área se dibuja en
+  verde. El brazo largo de la «U» sigue saliendo por el borde de la página. Las
+  piezas viven en `carteles/_base.typ` (`area-trabajo`, `encajar`, re-exportadas en
+  `carteles`) para que otros presets de lámina puedan usarlas; de momento solo
+  `mosaico` las usa. La capa de texto gana `resolver-bloque` (la misma búsqueda,
+  sin `context` y con un modo `probar` que no dibuja) y `pila-min`. Con los valores
+  por defecto todo sale idéntico byte a byte (los 125 PNG de `examples/presets/` y
+  `examples/blockquotes.typ`).
 - **`carteles.bauhaus`** (`src/carteles/bauhaus.typ`): cartel de formas
   primarias sobre papel crudo — cuadrado rojo, círculo amarillo, cuña azul y
   una barra negra diagonal — con el remate en minúsculas de Jost (sans
