@@ -8,6 +8,24 @@ byte antes y después.
 
 ### Añadido
 
+- **`carteles.hojas`** (`src/carteles/hojas.typ` + la pieza en
+  `src/carteles/_hojas-piezas.typ`): portada geométrica en amarillo y azul sobre
+  blanco hecha con una sola pieza, la «hoja» (cuadrado con tres esquinas
+  redondeadas y una aguda, con anillo del otro color y hueco del papel), en tres
+  composiciones: `"flor"` (cuatro hojas en 2 × 2, título arriba, párrafo, `pie`,
+  `etiqueta` con `nota` sobre una barra negra y `rotulo` vertical), `"diagonal"`
+  (dos hojas que se tocan por la punta, punto negro, título apilado, rótulo sobre
+  un filete) y `"patron"` (cinta de pares a 45° que el borde recorta; se corre sola
+  hasta dejar libres el texto y el rótulo). Títulos en la «display» del paquete
+  (Poppins) y párrafo en la «body» (Inter). Funciona en vertical, cuadrado y
+  apaisado: en apaisado la flor y el par pasan a una columna central. Tema `hojas`
+  (roles `fondo`, `tinta`, `suave`, `acento` = amarillo, `hondo` = azul). La pieza
+  suelta se exporta como `carteles.hoja` (`aguda: "no" | "ne" | "se" | "so"`).
+  Medido contra la captura de la referencia a la misma escala: hojas, anillos,
+  huecos, punto y filete dentro de ±3 px; los títulos salen ~12 % más estrechos
+  (Poppins frente a la Montserrat Black de la referencia). Errores con mensaje
+  para composición desconocida, `pie`/`etiqueta`/`nota` fuera de `"flor"`, título
+  que no cabe ni a la mitad y arte que no cabe. Demo: `examples/presets/hojas.typ`.
 - **`carteles.teselas`** (`src/carteles/teselas.typ`): cartel con un bloque
   cuadrado de teselas — cuadrícula de 4×4 celdas con bloques de 2×2 — en tres
   colores que rotan de fondo y de figura (discos y «dianas»: un aro con un
