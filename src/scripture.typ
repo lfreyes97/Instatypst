@@ -33,11 +33,6 @@
   box(inset: (x: 3pt, y: -50%))[#body]
 }
 
-#let set-body-font(doc) = {
-  set text(font: family("inter"))
-  doc
-}
-
 // ─────────────────────────────────────────────────────────────
 //  PASAJE — junta las tres piezas del proyecto para una cita bíblica:
 //    color      -> palettes.typ        (vía make-theme, de articulo.typ)

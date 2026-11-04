@@ -797,17 +797,6 @@ Cada función pública de `src/*.typ` (sin prefijo `_`), documentada con qué ha
 }
 ```
 
-=== `set-body-font`
-
-`src/scripture.typ:36`
-
-```typ
-#let set-body-font(doc) = {
-  set text(font: family("inter"))
-  doc
-}
-```
-
 === `pasaje`
 
 `src/scripture.typ:58`
