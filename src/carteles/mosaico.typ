@@ -9,8 +9,10 @@
 //
 //  Las medidas salen de una lámina de referencia de 802,5 × 1117,5 (1 :
 //  1,393) y se escalan con el lado menor; en otro formato la composición
-//  queda centrada y el color de fondo llena el resto. No es un cartel de
-//  cita: no lleva frase, solo `autor` y `obra` como rótulos.
+//  queda centrada y el color de fondo llena el resto. Por defecto no es un
+//  cartel de cita: sin `frase`, `etiqueta` ni `remate` lleva solo `autor` y
+//  `obra` como rótulos; con ellos suma un título, un párrafo y una palabra
+//  apilada, como `carteles.teselas`.
 //
 //  Se usa desde el namespace `carteles` (carteles.mosaico). No importa
 //  carteles.typ ni lib.typ: carteles.typ lo importa a él.
@@ -19,6 +21,7 @@
 #import "_base.typ": medida, escala
 #import "_temas.typ": resolver-tema
 #import "_arcos.typ": arcos
+#import "_texto.typ": capa-texto
 
 // Lámina de referencia: la zona coloreada, sin el marco blanco (px).
 #let _ref = (802.5, 1117.5)
@@ -43,6 +46,13 @@
     texto: "hondo",
     titulo: (x: 49.5, y: 169),
     pie-x: 717,
+    // la banda libre sobre los arcos (que empiezan en y ≈ 211)
+    zona: (
+      titulo: (x: 100, y: 60, ancho: 470),
+      parrafo: (x: 100, y: 118, ancho: 470, alto: 78, alto-autor: 78),
+      pila: (derecha: 717, y: 60, alto: 140),
+      autor: (x: 100, y: 190),
+    ),
   ),
   // «U» hacia abajo y a la derecha: el brazo largo sale por el borde.
   u: (
@@ -57,6 +67,14 @@
     texto: "hondo",
     titulo: (x: 61.5, y: 676),
     pie-x: 702,
+    // la columna libre arriba a la derecha (sobre el brazo largo) y la
+    // esquina de arriba a la izquierda para la pila
+    zona: (
+      titulo: (x: 590, y: 60, ancho: 185),
+      parrafo: (x: 590, y: 130, ancho: 185, alto: 330, alto-autor: 330),
+      pila: (derecha: 250, y: 50, alto: 185),
+      autor: (x: 590, y: 480),
+    ),
   ),
   // «U» hacia abajo y a la izquierda, sobre fondo hondo, líneas en gris.
   u-inversa: (
@@ -71,6 +89,14 @@
     texto: "suave",
     titulo: (x: 743.5, y: 121),
     pie-x: 688,
+    // la banda libre arriba (el círculo naranja empieza en y ≈ 188) y la pila
+    // arriba a la derecha, a la izquierda del rótulo vertical
+    zona: (
+      titulo: (x: 60, y: 60, ancho: 500),
+      parrafo: (x: 60, y: 118, ancho: 500, alto: 62, alto-autor: 62),
+      pila: (derecha: 700, y: 50, alto: 200),
+      autor: (x: 60, y: 185),
+    ),
   ),
 )
 
@@ -85,6 +111,14 @@
 //            tinta (las líneas), suave, acento, hondo. `fondo`, `tinta`,
 //            `suave`, `acento` y `hondo`, si se pasan, pisan al tema.
 //   fuente   tipografía de los rótulos (por defecto Jost)
+//   etiqueta, frase, remate   el texto como en `carteles.teselas`: título en
+//            negrita, párrafo en gris y una palabra pesada apilada (dos
+//            letras por línea). Cada variante los pone donde el arte deja
+//            sitio; si no se dan, la lámina sale como siempre.
+//   cuerpo   tamaño máximo del párrafo, en px de la lámina (auto = el de
+//            `teselas`, a escala)
+//   fuente-texto   tipografía de ese texto (por defecto Outfit, como `teselas`;
+//            `fuente` sigue siendo la de los rótulos espaciados)
 //   grosor   grosor de las líneas, en px de la lámina de referencia (auto =
 //            el de la variante)
 #let mosaico(
@@ -101,6 +135,11 @@
   hondo: auto,
   fuente: "Jost",
   grosor: auto,
+  frase: none,
+  etiqueta: none,
+  remate: none,
+  cuerpo: auto,
+  fuente-texto: "Outfit",
 ) = {
   if not variante in _variantes {
     panic("mosaico: variante desconocida " + repr(variante) + " — disponibles: " + _variantes.keys().join(", "))
@@ -163,6 +202,13 @@
       place(top + right, dx: -(ancho - X(v.pie-x)), dy: Y(1064) - L(19),
         upper(obra))
     }
+    // ── título, párrafo y pila (como en teselas), si se pidieron ──
+    // (el párrafo en el color de texto de la variante: `suave` es el gris de las líneas
+    // y sobre menta o naranja no se lee)
+    capa-texto(L, X, Y, rol.at(v.texto), rol.at(v.texto), v.zona, k: _ref.at(0) / 300,
+      etiqueta: etiqueta, frase: frase, remate: remate,
+      cuerpo: if cuerpo == auto { 7.4 * _ref.at(0) / 300 } else { cuerpo },
+      fuente: fuente-texto)
     if marca != none {
       place(bottom + left, dx: X(45), dy: -(oy + L(40)), marca)
     }

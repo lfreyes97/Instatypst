@@ -31,7 +31,10 @@ byte antes y después.
   rotan de papel. Tema `mosaico` (roles `fondo`, `tinta`, `suave`, `acento` y
   el propio `hondo`). Las medidas salen de una lámina de referencia y se
   verificaron contra su render: líneas, círculos, rombo y rótulos coinciden
-  dentro de ±1-2 px. No lleva frase. Demo: `examples/presets/mosaico.typ`.
+  dentro de ±1-2 px. Con `frase`, `etiqueta` y `remate` suma un título, un párrafo
+  y una palabra apilada como `teselas`, en la zona que el arte deja libre de cada
+  variante; sin ellos sale como siempre (idéntico byte a byte). Demo:
+  `examples/presets/mosaico.typ`.
 - **`carteles.bauhaus`** (`src/carteles/bauhaus.typ`): cartel de formas
   primarias sobre papel crudo — cuadrado rojo, círculo amarillo, cuña azul y
   una barra negra diagonal — con el remate en minúsculas de Jost (sans
@@ -62,6 +65,11 @@ byte antes y después.
 
 ### Cambiado
 
+- La capa de texto de `teselas` (título que se achica, párrafo que se achica, palabra
+  apilada que se escala) pasa a un módulo privado, `carteles/_texto.typ`, que usan
+  `teselas` y `mosaico`. `teselas` sale idéntico byte a byte (5 de 5 páginas). La
+  capa fija su propio espaciado y tipografía: el primer intento en `mosaico`
+  heredaba el `tracking: 0.65em` de sus rótulos y salía ilegible.
 - `scripture.typ` tenía dos APIs que no se hablaban: `scripture`, `vs` y `ch`
   con fuentes fijas, y `pasaje` con tema. Ahora las tres piezas aceptan
   `theme:` (por defecto `auto`) y `pasaje` también (`theme:` en vez de

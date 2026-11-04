@@ -10,10 +10,17 @@
   autor: [B. B. Warfield], obra: [La imputación], variante: variante, ..args,
 )
 
-// las tres variantes, en el retrato 1080×1350
+// las tres variantes, en el retrato 1080×1350, sin texto de cita
 #caso("c")
 #caso("u")
 #caso("u-inversa")
+
+// con texto, como en teselas: título, párrafo y una palabra pesada apilada.
+// Cada variante lo pone donde el arte deja sitio.
+#let frase = [El que tiene entendimiento, calcule el número de la bestia. No pide cómputo, pide sabiduría: ver con claridad lo que el mundo llama prudencia.]
+#for v in ("c", "u", "u-inversa") {
+  caso(v, frase: frase, etiqueta: [Apocalipsis 13:18], remate: [Sabiduría])
+}
 
 // el mismo motivo en story, con otra paleta por tema
 #caso("u", formato: sizes.story,

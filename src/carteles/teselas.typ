@@ -15,7 +15,8 @@
 //  carteles.typ ni lib.typ: carteles.typ lo importa a él.
 // ─────────────────────────────────────────────────────────────
 
-#import "_base.typ": medida, escala, ajustar-alto
+#import "_base.typ": medida, escala
+#import "_texto.typ": capa-texto
 #import "_temas.typ": resolver-tema
 
 // Lámina de referencia (unidades) y su bloque de teselas.
@@ -120,52 +121,14 @@
     }
 
     set text(font: fuente, lang: "es", hyphenate: false)
-    context {
-      // Un texto cuya altura de mayúscula mide `cap` unidades de la lámina,
-      // sea cual sea la tipografía.
-      // `f` (por defecto 1) lo achica proporcionalmente.
-      let cap-h(cap, f: 1, ..args, cuerpo) = {
-        let ref = measure(text(size: 100pt, top-edge: "cap-height", bottom-edge: "baseline", ..args, [H])).height
-        text(size: f * L(cap) / (ref / 100pt), top-edge: "cap-height", bottom-edge: "baseline", ..args, cuerpo)
-      }
-      // título
-      // (se achica si no cabe en el ancho del párrafo: no llega a la palabra)
-      if etiqueta != none {
-        let ta = (weight: 800, tracking: 0em, fill: rol.tinta)
-        let w = measure(cap-h(13.7, ..ta, upper(etiqueta))).width
-        let f = if w > L(190) { L(190) / w } else { 1 }
-        place(top + left, dx: X(bx), dy: Y(35.5 + 13.7 * (1 - f)), cap-h(13.7, f: f, ..ta, upper(etiqueta)))
-      }
-      // palabra pesada, apilada a la derecha: dos letras por línea (la
-      // referencia parte «DE / SI / G / N» según el ancho de sus letras, que
-      // cambia con la tipografía; dos por línea no depende de ella). Con la
-      // caja de línea = altura de mayúscula, `leading` es el hueco exacto.
-      if remate != none {
-        let plano = if type(remate) == str { remate } else if remate.has("text") { remate.text } else {
-          panic("teselas: `remate` es una palabra (str o texto sin formato), no " + repr(remate))
-        }
-        let letras = upper(plano).clusters()
-        let lineas = range(0, letras.len(), step: 2).map(i => letras.slice(i, calc.min(i + 2, letras.len())).join())
-        // alto de la pila: no pasa de 112 (hasta 12 unidades sobre el bloque);
-        // si no cabe, todo se escala junto
-        let alto-pila = (lineas.len() - 1) * 23.5 + 18.4
-        let f = calc.min(1, 112 / alto-pila)
-        place(top + left, dx: X(bx + _bloque) - L(60), dy: Y(29.1),
-          block(width: L(60), align(right, par(leading: L((23.5 - 18.4) * f), justify: false,
-            cap-h(18.4, f: f, weight: 800, fill: rol.tinta, lineas.join(linebreak()))))))
-      }
-      // párrafo
-      let ancho-p = L(190.1)
-      // el párrafo se achica para caber; con `autor`, deja sitio a su línea
-      let hueco = L(if autor == none { 82 } else { 66 })
-      let parrafo(c) = block(width: ancho-p, text(size: c, weight: 400, fill: rol.suave, par(leading: 0.5em, justify: false, frase)))
-      let c = ajustar-alto(parrafo, L(cuerpo), hueco, minimo: L(5), paso: L(0.2))
-      place(top + left, dx: X(bx), dy: Y(62.0), parrafo(c))
-      if autor != none {
-        place(top + left, dx: X(bx), dy: Y(131),
-          text(size: L(7), weight: 700, tracking: 0.12em, fill: rol.tinta, upper(autor)))
-      }
-    }
+    capa-texto(L, X, Y, rol.tinta, rol.suave,
+      (
+        titulo: (x: bx, y: 35.5, ancho: 190),
+        parrafo: (x: bx, y: 62.0, ancho: 190.1, alto: 82, alto-autor: 66),
+        pila: (derecha: bx + _bloque, y: 29.1, alto: 112),
+        autor: (x: bx, y: 131),
+      ),
+      etiqueta: etiqueta, frase: frase, remate: remate, autor: autor, cuerpo: cuerpo)
     if marca != none {
       place(bottom + center, dy: -(oy + L(5)), marca)
     }
