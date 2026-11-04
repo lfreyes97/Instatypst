@@ -348,6 +348,12 @@ aplicarlo de una — necesita decisión explícita antes de tocar ~10 archivos.
 
 ## 🟣 Pendientes de la refactorización de `carteles` (rama `refactor/arquitectura-capas`)
 
+> **Resuelto (2026-11-04)** — los dos puntos de abajo: los roles extra se derivan cuando el tema
+> cambia los roles de los que dependen (`derivados-lamina` en `src/carteles/_temas.typ`), y la
+> ambientación de `folio` y el viñeteado de `esquela` salen del `fondo` del tema. Detalle en el
+> CHANGELOG. Queda fija la capitular rubricada de `folio` (colores propios de
+> `capitular-ornamentada`).
+
 - **Temas parciales completan con el tema por defecto del preset.** Un `tema:` dado como
   diccionario parcial (o `carteles.tema-desde-theme(theme.base)`, que solo trae `fondo`, `tinta`,
   `suave` y `acento`) hereda los roles que le faltan del tema por defecto del *preset*. Efecto

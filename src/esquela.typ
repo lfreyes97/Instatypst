@@ -11,7 +11,7 @@
 //  carteles.typ ni lib.typ: carteles.typ lo importa a él.
 // ─────────────────────────────────────────────────────────────
 
-#import "carteles/_temas.typ": resolver-tema
+#import "carteles/_temas.typ": resolver-tema, temas-lamina
 #import "superbg/lib.typ" as superbg
 #import "fleurones.typ" as fl
 #import "carteles/_base.typ": medida, escala
@@ -26,6 +26,13 @@
     return if bordes { text(top-edge: "bounds", bottom-edge: "bounds", t) } else { t }
   }
   if type(v) == str { fl.vineta(v, cuerpo * 0.7, color) } else { v }
+}
+
+// Color del viñeteado, a partir del `fondo` del tema: con el de "esquela", el
+// sepia de la lámina; con otro, ese fondo muy oscurecido. `papel:` retoca solo
+// el color del papel, como antes.
+#let _vineteado(fondo) = if fondo == temas-lamina.esquela.fondo { rgb("#5a4a32") } else {
+  color.mix((fondo, 35%), (black, 65%))
 }
 
 // ── carteles.esquela ────────────────────────────────────────
@@ -88,7 +95,7 @@
       superbg.superbg((capas: (
         (tipo: "plano", color: papel),
         (tipo: "ruido", color: luto, opacidad: 6%),
-        (tipo: "vignette", color: rgb("#5a4a32"), intensidad: 18%),
+        (tipo: "vignette", color: _vineteado(tm.fondo), intensidad: 18%),
       )), size: formato)
     }
 
