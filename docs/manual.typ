@@ -463,9 +463,9 @@ Versículos con capitular para v1 y superíndices para v2+ (`src/scripture.typ:1
 
 #h2[7.1 Primitivas]
 #api-table((
-  ([`scripture[..]`], [Contenedor neutro (Public Sans, fondo tenue)], [`#scripture[#ch[1] En el principio... #vs[2] Y la tierra...]`]),
-  ([`ch[1]`], [Número de capítulo grande (26pt, bold)], [`#ch[1]`]),
-  ([`vs[2]`], [Número de versículo en superíndice (EB Garamond, 8pt)], [`Bienaventurado ... #vs[2] sino que...`]),
+  ([`scripture[..]`], [Contenedor neutro (Public Sans, fondo tenue); con `theme:`, la tipografía y el fondo del tema], [`#scripture[#ch[1] En el principio... #vs[2] Y la tierra...]`]),
+  ([`ch[1]`], [Número de capítulo grande (26pt, bold); con tema, en la tipografía de títulos], [`#ch[1]`]),
+  ([`vs[2]`], [Número de versículo en superíndice (EB Garamond, 8pt); con tema, en la tipografía del cuerpo], [`Bienaventurado ... #vs[2] sino que...`]),
 ))
 
 #h2[7.2 `pasaje` — receta combinada]

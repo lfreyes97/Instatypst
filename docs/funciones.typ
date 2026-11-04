@@ -760,46 +760,55 @@ Cada función pública de `src/*.typ` (sin prefijo `_`), documentada con qué ha
 
 === `scripture`
 
-`src/scripture.typ:15`
+`src/scripture.typ:35`
 
 ```typ
-#let scripture(body) = {
-  set text(font: family("public-sans"))
+#let scripture(body, theme: auto) = context {
+  let t = _tema(theme)
+  let prev = _tema-pasaje.get()
+  let (fuente, relleno) = if t == none {
+    (family("public-sans"), luma(248))
+  } else {
+    (t.fonts.body, fondo-editorial(t))
+  }
+  set text(font: fuente)
   set par(leading: 1em, hanging-indent: 1em)
   block(
-    fill: luma(248),
+    fill: relleno,
     inset: 8pt,
     radius: 8pt,
-    pad(x: 2em, y: 2em)[#body],
+    pad(x: 2em, y: 2em)[#_con-tema(if theme == auto { none } else { t }, prev, body)],
   )
 }
 ```
 
 === `vs`
 
-`src/scripture.typ:26`
+`src/scripture.typ:54`
 
 ```typ
-#let vs(body) = {
-  set text(font: family("eb-garamond"))
+#let vs(body, theme: auto) = context {
+  let t = _tema(theme)
+  set text(font: if t == none { family("eb-garamond") } else { t.fonts.body })
   super(typographic: true, baseline: -0.4em, size: 8pt)[*#body*]
 }
 ```
 
 === `ch`
 
-`src/scripture.typ:31`
+`src/scripture.typ:61`
 
 ```typ
-#let ch(body) = {
-  set text(font: family("public-sans"), size: 26pt, weight: "bold")
+#let ch(body, theme: auto) = context {
+  let t = _tema(theme)
+  set text(font: if t == none { family("public-sans") } else { t.fonts.display }, size: 26pt, weight: "bold")
   box(inset: (x: 3pt, y: -50%))[#body]
 }
 ```
 
 === `pasaje`
 
-`src/scripture.typ:58`
+`src/scripture.typ:84`
 
 ```typ
 #let pasaje(
@@ -808,9 +817,11 @@ Cada función pública de `src/*.typ` (sin prefijo `_`), documentada con qué ha
   paleta: none,
   tipografia: none,
   capitular-alto: 2,
+  theme: none,
   doc,
-) = {
-  let t = make-theme(paleta: paleta, tipografia: tipografia)
+) = context {
+  let t = if theme != none { theme } else { make-theme(paleta: paleta, tipografia: tipografia) }
+  let prev = _tema-pasaje.get()
   block(
     fill: fondo-editorial(t),
     stroke: (left: 3pt + t.colors.primary),
@@ -823,7 +834,9 @@ Cada función pública de `src/*.typ` (sin prefijo `_`), documentada con qué ha
     #v(10pt)
     #set text(font: t.fonts.body, fill: t.colors.dark, size: 11pt)
     #set par(justify: true, leading: 0.85em, hanging-indent: 1em)
+    #_tema-pasaje.update(t)
     #(capitular)(doc, font: t.fonts.display, fill: t.colors.primary, alto: capitular-alto)
+    #_tema-pasaje.update(prev)
   ]
 }
 ```

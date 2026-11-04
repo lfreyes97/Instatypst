@@ -26,6 +26,14 @@ byte antes y después.
 
 ### Cambiado
 
+- `scripture.typ` tenía dos APIs que no se hablaban: `scripture`, `vs` y `ch`
+  con fuentes fijas, y `pasaje` con tema. Ahora las tres piezas aceptan
+  `theme:` (por defecto `auto`) y `pasaje` también (`theme:` en vez de
+  `paleta:`/`tipografia:`). El tema de un `pasaje` o `scripture` llega a los
+  `#vs[2]` y `#ch[1]` de su cuerpo (por un `state`, que el contenedor fija y
+  restituye); fuera de un contenedor con tema, el aspecto neutro de siempre.
+  Efecto visible: dentro de un `pasaje`, el número de versículo sale en la
+  tipografía del cuerpo del tema, no en EB Garamond fijo.
 - `fuente:` como "obra citada" (blockquotes y orlas) pasa a ser alias de
   `obra:` (manda `obra` si se dan las dos). `fuente` queda reservado para la
   tipografía, que es lo que significa en `escalera`, `gozne`, `folio` y
