@@ -346,6 +346,20 @@ aplicarlo de una — necesita decisión explícita antes de tocar ~10 archivos.
 
 ---
 
+## 🟣 Pendientes de la refactorización de `carteles` (rama `refactor/arquitectura-capas`)
+
+- **Temas parciales completan con el tema por defecto del preset.** Un `tema:` dado como
+  diccionario parcial (o `carteles.tema-desde-theme(theme.base)`, que solo trae `fondo`, `tinta`,
+  `suave` y `acento`) hereda los roles que le faltan del tema por defecto del *preset*. Efecto
+  visible: en `examples/presets/suizo-temas.typ`, la variante 3 (desde `theme.base`, paleta fría)
+  conserva el `linea` cálido (`#d9d3c7`) de `suizo` para los filetes de la retícula. Es
+  consecuencia de la regla de completar (`resolver-tema(tema, defecto:)` en
+  `src/carteles/_temas.typ`), no un bug. **Decidir más adelante** si los roles extra de un preset
+  (como `linea`) deben derivarse de los cuatro roles base (p. ej. `linea` = `suave` aclarado hacia
+  `fondo`) en vez de heredarse del tema por defecto.
+
+---
+
 ## Prioridad sugerida
 
 1. Arreglar los 3 bugs críticos (#1-3) — cambios pequeños, ya verificados con repros.
