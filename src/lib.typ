@@ -45,6 +45,12 @@
 //      curvas.campo(tipo, diapositivas: n, …) + curvas.ventana(c, i)
 //      (topo, ondas, flujo, paralelas, cinta, orbitas), ver ese archivo
 //
+//    mesa -> hoja suelta fotografiada sobre madera (de DeskBook):
+//      mesa.vertical / .apaisada / .cuadrada (con `#show: mesa.vertical.with(…)`),
+//      mesa.nota, mesa.portada-vertical / .portada-apaisada, mesa.camara.
+//      Cada página es el lienzo de una foto; el tamaño del papel lo dicta
+//      la cámara (focal, distancia), ver src/mesa/
+//
 //  `color-tokens`/`font-tokens`/`formas` van con nombre en vez de
 //  `import: *` a propósito. `color-tokens`/`font-tokens`: ambos módulos
 //  exportan un dict llamado `tokens` con significados distintos (colores
@@ -71,3 +77,4 @@
 #import "carteles.typ" as carteles
 #import "fleurones.typ" as fleurones
 #import "curvas.typ" as curvas
+#import "mesa/lib.typ" as mesa
