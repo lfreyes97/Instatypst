@@ -7,6 +7,8 @@
 # Uso: scripts/sincronizar-rama.sh [rama]     (por defecto presuposicionalismo-circular)
 # Lo llaman los hooks post-commit y post-merge de main (ver scripts/instalar-hooks.sh).
 # Con SINCRONIZAR_PUSH=1 sube además la rama a origin.
+# Dentro de un hook git exporta GIT_INDEX_FILE y similares, que romperían el worktree temporal.
+unset GIT_INDEX_FILE GIT_DIR GIT_WORK_TREE GIT_PREFIX
 rama="${1:-presuposicionalismo-circular}"
 raiz=$(git rev-parse --show-toplevel) || exit 0
 cd "$raiz" || exit 0
