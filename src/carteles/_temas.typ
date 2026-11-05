@@ -120,6 +120,114 @@
     fil: rgb("#8e3b3b"), hondo: rgb("#6b1d1d"),
     tinta: rgb("#2b1916"), suave: rgb("#6b4a44"), acento: rgb("#6b1d1d"),
   ),
+  // Cita social: fondo oscuro de página, tarjeta blanca (`tarjeta`), tinta
+  // azulada. `acento` pinta el avatar de iniciales y la comilla; `linea`, el
+  // filete entre la cita y la atribución.
+  "cita-social": (
+    fondo: rgb("#262b36"),
+    tarjeta: rgb("#ffffff"),
+    tinta: rgb("#1f2430"),
+    suave: rgb("#586174"),
+    acento: rgb("#4f46e5"),
+    linea: rgb("#e2e5ec"),
+  ),
+  // Los estilos de cita-social (`estilo:`), uno por tema. Mismos roles que
+  // "cita-social"; los extra se anotan en cada uno.
+  // publicación: tarjeta blanca sobre gris azulado, acento índigo (enlaces,
+  // insignia de verificado).
+  "cita-publicacion": (
+    fondo: rgb("#e9edf2"),
+    tarjeta: rgb("#ffffff"),
+    tinta: rgb("#0f1419"),
+    suave: rgb("#5b6670"),
+    acento: rgb("#3f51d6"),
+    linea: rgb("#e1e5ea"),
+  ),
+  // mensaje: la burbuja (`tarjeta`) sobre un lavanda con trama de puntos
+  // (`trama`, derivada); el acento pinta el nombre y la respuesta citada.
+  "cita-mensaje": (
+    fondo: rgb("#e6e3f1"),
+    tarjeta: rgb("#ffffff"),
+    tinta: rgb("#1b1830"),
+    suave: rgb("#6b6880"),
+    acento: rgb("#6a3fd8"),
+    linea: rgb("#e7e4ef"),
+    trama: rgb("#d6d1e8"),
+  ),
+  // editorial: papel blanco roto, tinta negra, rojo de portadilla.
+  "cita-editorial": (
+    fondo: rgb("#f7f4ee"),
+    tarjeta: rgb("#f7f4ee"),
+    tinta: rgb("#16130f"),
+    suave: rgb("#6a6257"),
+    acento: rgb("#b3261e"),
+    linea: rgb("#16130f"),
+  ),
+  // papel: hoja crema (`tarjeta`) sobre cartón kraft, tinta sepia; `grano`
+  // (derivado) es el moteado de la hoja y `cinta`, la cinta adhesiva.
+  "cita-papel": (
+    fondo: rgb("#9a7a58"),
+    tarjeta: rgb("#f4ead5"),
+    tinta: rgb("#4a3121"),
+    suave: rgb("#7a6049"),
+    acento: rgb("#9c4a2a"),
+    linea: rgb("#d8c7a6"),
+    grano: rgb("#8a6d4c"),
+    cinta: rgb("#efe6c8"),
+  ),
+  // pizarra: el encerado (`tarjeta`) con marco de madera (`marco`) sobre la
+  // pared (`fondo`); tiza blanca y tiza amarilla de acento.
+  "cita-pizarra": (
+    fondo: rgb("#1c2420"),
+    tarjeta: rgb("#2b4237"),
+    tinta: rgb("#f1efe6"),
+    suave: rgb("#c4d0c5"),
+    acento: rgb("#f0d878"),
+    linea: rgb("#8fa79a"),
+    marco: rgb("#7a5634"),
+  ),
+  // recorte: papel de periódico sobre una mesa oscura; rojo de antetítulo.
+  "cita-recorte": (
+    fondo: rgb("#2b2826"),
+    tarjeta: rgb("#ece5d4"),
+    tinta: rgb("#1b1a18"),
+    suave: rgb("#5a554c"),
+    acento: rgb("#a3191f"),
+    linea: rgb("#3a3733"),
+  ),
+  // aura: noche con halos vivos (`hondo` violeta, `acento` rosa, `bruma`
+  // cian) y tarjeta de cristal (`tarjeta` es el blanco que se transparenta);
+  // `claro` es el resaltado, ámbar.
+  "cita-aura": (
+    fondo: rgb("#120c2a"),
+    tarjeta: rgb("#ffffff"),
+    tinta: rgb("#ffffff"),
+    suave: rgb("#ddd5f3"),
+    acento: rgb("#ff4f8b"),
+    linea: rgb("#ffffff"),
+    hondo: rgb("#7c3aed"),
+    bruma: rgb("#06b6d4"),
+    claro: rgb("#ffc069"),
+  ),
+  // minimal: casi blanco, casi negro, un punto de naranja.
+  "cita-minimal": (
+    fondo: rgb("#fafaf7"),
+    tarjeta: rgb("#fafaf7"),
+    tinta: rgb("#111111"),
+    suave: rgb("#7d7d78"),
+    acento: rgb("#e4572e"),
+    linea: rgb("#d9d9d3"),
+  ),
+  // subrayado: papel cálido y rotulador amarillo (`acento`); la tinta del
+  // resaltado sigue siendo `tinta`.
+  "cita-subrayado": (
+    fondo: rgb("#f3efe6"),
+    tarjeta: rgb("#fffdf8"),
+    tinta: rgb("#121212"),
+    suave: rgb("#5d5a55"),
+    acento: rgb("#ffd43b"),
+    linea: rgb("#e6e0d3"),
+  ),
   demostracion: (
     fondo: rgb("#0d1014"),
     claro: rgb("#f4f1ea"),
@@ -158,6 +266,35 @@
   // la cifra y el perno van en `claro` sobre el acento: el que más contraste
   gozne: (
     claro: (de: ("fondo", "tinta", "acento"), f: c => readable-on(c.acento, c.fondo, c.tinta)),
+  ),
+  // el filete: la tinta, muy rebajada en la tarjeta
+  "cita-social": (
+    linea: (de: ("tarjeta", "tinta"), f: c => _mezcla(c.tarjeta, c.tinta, 12%)),
+  ),
+  // estilos de cita-social: el filete (y la trama, el grano) salen de la
+  // tinta rebajada en la tarjeta o en el fondo
+  "cita-publicacion": (
+    linea: (de: ("tarjeta", "tinta"), f: c => _mezcla(c.tarjeta, c.tinta, 11%)),
+  ),
+  "cita-mensaje": (
+    linea: (de: ("tarjeta", "tinta"), f: c => _mezcla(c.tarjeta, c.tinta, 10%)),
+    trama: (de: ("fondo", "tinta"), f: c => _mezcla(c.fondo, c.tinta, 8%)),
+  ),
+  "cita-editorial": (
+    linea: (de: ("tinta",), f: c => c.tinta),
+  ),
+  "cita-papel": (
+    linea: (de: ("tarjeta", "tinta"), f: c => _mezcla(c.tarjeta, c.tinta, 18%)),
+    grano: (de: ("tarjeta", "tinta"), f: c => _mezcla(c.tarjeta, c.tinta, 55%)),
+  ),
+  "cita-recorte": (
+    linea: (de: ("tarjeta", "tinta"), f: c => _mezcla(c.tarjeta, c.tinta, 85%)),
+  ),
+  "cita-minimal": (
+    linea: (de: ("fondo", "tinta"), f: c => _mezcla(c.fondo, c.tinta, 14%)),
+  ),
+  "cita-subrayado": (
+    linea: (de: ("tarjeta", "tinta"), f: c => _mezcla(c.tarjeta, c.tinta, 10%)),
   ),
   // la afirmación enorme: la tinta del tema, que ya contrasta con su fondo
   demostracion: (

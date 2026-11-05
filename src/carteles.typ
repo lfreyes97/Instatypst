@@ -79,6 +79,7 @@
 #import "carteles/teselas.typ": teselas
 #import "carteles/hojas.typ": hojas
 #import "carteles/epigrafe.typ": epigrafe, estilos-epigrafe
+#import "carteles/cita-social.typ": cita-social
 #import "carteles/_hojas-piezas.typ": hoja
 
 // Retícula de columnas sobre `ancho` (largo). `x.at(i)`: borde

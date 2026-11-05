@@ -726,7 +726,7 @@ Evento en formato story (1080×1920) con caja de fecha.
 ))
 
 #h2[11.8 `testimonial-post`]
-Testimonio con `avatar-row` (iniciales, no foto — para foto real ver `quote-social` §11.9).
+Testimonio con `avatar-row` (iniciales, no foto — para foto real ver `carteles.cita-social` §11.9).
 #example-canvas(```typ
 #testimonial-post([Cambió cómo publicamos.], "María J.", "Community Manager", "MJ", "@mi_marca")
 ```, opciones: (
@@ -736,24 +736,8 @@ Testimonio con `avatar-row` (iniciales, no foto — para foto real ver `quote-so
   ("theme:", "tema (default theme.base)"),
 ))
 
-#h2[11.9 `quote-social`]
-Cita con foto real o iniciales, atribución dentro de la misma tarjeta (posición declarativa), y notas laterales opcionales. Para resaltar palabras dentro de la cita usa el `#raw("#highlight[...]")` nativo de Typst, no una API propia.
-#example-canvas(```typ
-#quote-social(
-  [La constancia entrena al algoritmo... y a tu #highlight[audiencia].],
-  "Luis Felipe Reyes de los Reyes",
-  iniciales: "LR",
-  atribucion: "arriba",
-)
-```, opciones: (
-  ("cita, nombre", "posicionales"),
-  ("iniciales:", "fallback si no hay foto: — explícito, no se deriva de nombre"),
-  ("foto:", "ruta a imagen (usa `/` inicial — relativa a la raíz del proyecto, no al archivo que llama)"),
-  ("atribucion:", [`"abajo"` (default) o `"arriba"` — dónde va foto+nombre respecto a la cita]),
-  ("comilla:", "muestra la comilla decorativa sobre la cita (default false)"),
-  ("nota-izq:, nota-der:", "dict (icono:, texto:) o none — notas decorativas en las esquinas inferiores"),
-  ("size:, color:, theme:", "como el resto de la familia"),
-))
+#h2[11.9 `quote-social` → `carteles.cita-social`]
+`quote-social` pasó a ser un preset de carteles: `carteles.cita-social`. El cuerpo de la cita se ajusta solo al área, hay tres variantes (`"tarjeta"`, `"sangre"`, `"abierta"`) tres posiciones de la atribución (`"abajo"`, `"arriba"`, `"lado"`) y diez estilos (`estilo:` — clásico, publicación, mensaje, editorial, papel, pizarra, recorte, aura, minimal, subrayado) con campos opcionales (`usuario`, `fecha`, `verificado`, `metricas`, `contexto`, `respuesta`); sigue el contrato de los presets (`formato`, `tema`, `marca`, `area`/`ancla`). Ver `examples/presets/cita-social.typ`. Para resaltar palabras usa el `#raw("#highlight[...]")` nativo de Typst.
 
 #h2[11.10 `poll-story`]
 Encuesta en formato story con 2 opciones.
@@ -1068,7 +1052,7 @@ Por defecto emite `#import "@local/instatypst:0.1.0": *` (paquete instalado); co
   [`articulo, primer-parrafo, make-theme, fondo-editorial`], [`articulo.typ`],
   [`scripture, vs, ch, pasaje`], [`scripture.typ`],
   [`lat, gr, he, translit, interlineal`], [`idiomas.typ`],
-  [`canvas, bg, gradient-bg, blob, sizes, page-pad, radius, palette, fonts, badge, headline, subhead, footer, avatar, avatar-row, stat, progress, divider, quote-post, announce-post, tip-card, carousel-cover, carousel-slide, stat-card, event-post, testimonial-post, quote-social, poll-story, versus-post, vs-badge`], [`social.typ`],
+  [`canvas, bg, gradient-bg, blob, sizes, page-pad, radius, palette, fonts, badge, headline, subhead, footer, avatar, avatar-row, stat, progress, divider, quote-post, announce-post, tip-card, carousel-cover, carousel-slide, stat-card, event-post, testimonial-post, poll-story, versus-post, vs-badge`], [`social.typ`],
   [`bq-frame, bq-mark, bq-rule, bq-rule-full, bq-attribution, blockquote-*`], [`blockquotes.typ` — depende de `social.typ` (`radius`, `avatar-row`, `palette`) en una sola dirección],
 )
 
