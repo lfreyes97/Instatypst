@@ -22,3 +22,4 @@ _to_delete/
 # Catálogo de presets — miniaturas, índice y PDF se regeneran con
 # `python3 scripts/catalogo.py`
 docs/catalogo/
+examples/salidas/

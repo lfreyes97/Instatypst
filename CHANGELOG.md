@@ -8,6 +8,28 @@ byte antes y después (PNG a 40 ppi, `cmp`), salvo la lámina 3 de
 
 ### Añadido
 
+- **`mesa`** (integrado desde `~/DeskBook`): hoja suelta fotografiada sobre
+  madera. `mesa.vertical` / `.apaisada` / `.cuadrada` (`#show: mesa.vertical.with(…)`,
+  el texto fluye), `mesa.hoja-vertical` / `-apaisada` / `-cuadrada` (una página;
+  el texto gira con la hoja), `mesa.portada-vertical` / `-apaisada`, `mesa.nota`,
+  `mesa.lamina` y `mesa.camara`. El tamaño del papel lo dicta la cámara (focal,
+  distancia). Demo: `examples/mesa.typ`. Respecto de DeskBook:
+  - papel en SVG con filtros: grano, manchas, corte irregular, trapecio de
+    perspectiva y una banda de sombra (curvatura); la luz (`luz:`) manda a la
+    vez en la madera y en el papel;
+  - el margen de la página que fluye crece lo justo para que el texto no se salga
+    del papel torcido, y el texto se achica con la hoja (`escalar-texto:`);
+  - `tema:` con los roles de los temas de lámina (o `mesa.tema-desde-theme`) y
+    `fuentes:` (o las de un theme) en vez de colores y tipos escritos a mano;
+  - el desenfoque ahora se aplica: la madera suave cuando la cámara pasa de 50 cm;
+  - un solo juego de parámetros para las seis funciones (un nombre mal escrito da
+    un error con la lista de los válidos); `shadow` desaparece (no hacía nada);
+  - maderas reducidas de 6,5 a 2,9 MB, y excluidas del paquete (`typst.toml`):
+    viven en el repositorio.
+- **`scripts/foto-de-lamina.py`**: renderiza una página de cualquier demo a PNG y la
+  fotografía sobre la mesa (`mesa.lamina`): `python3 scripts/foto-de-lamina.py
+  examples/presets/bauhaus.typ 1 foto.png`. Una lámina de preset es un `page()` y
+  no se incrusta en otra página, por eso pasa por PNG.
 - **Catálogo de presets.** `scripts/catalogo.py` renderiza cada demo de
   `examples/presets/*.typ` a miniaturas PNG (20 ppi, en paralelo) y compila
   `docs/catalogo.typ`: un índice (preset, función, láminas, formatos) y una
