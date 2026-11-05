@@ -124,7 +124,7 @@
       let hacer(s) = text(font: fuente-nombre, size: s, tracking: 0.03em, nombre)
       let s = cuerpo-nombre * k
       let w = measure(hacer(s)).width
-      hacer(if w > caja { s * caja / w } else { s })
+      hacer(if w > caja { s * (caja / w) } else { s })
     }
 
     // ── Bloque central, entre la orla y el pie ──

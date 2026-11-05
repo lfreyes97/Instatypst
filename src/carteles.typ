@@ -49,6 +49,8 @@
 //    teselas       bloque cuadrado de teselas (discos y «dianas») en tres colores
 //                  que rotan, con título, párrafo y una palabra apilada —
 //                  carteles/teselas.typ
+//    epigrafe      cita breve con autor y obra, en quince estilos (clásicos, geométricos,
+//                  atmosféricos) — carteles/epigrafe.typ
 //    hojas         la «hoja» (cuadrado con tres esquinas redondeadas y un anillo)
 //                  en flor, en par diagonal o en cinta a 45°, en amarillo y azul,
 //                  con título pesado, párrafo y rótulo vertical — carteles/hojas.typ
@@ -76,6 +78,7 @@
 #import "carteles/mosaico.typ": mosaico
 #import "carteles/teselas.typ": teselas
 #import "carteles/hojas.typ": hojas
+#import "carteles/epigrafe.typ": epigrafe, estilos-epigrafe
 #import "carteles/_hojas-piezas.typ": hoja
 
 // Retícula de columnas sobre `ancho` (largo). `x.at(i)`: borde
