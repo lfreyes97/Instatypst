@@ -14,6 +14,14 @@
 // genera la primera lámina, o la más reconocible. Al añadir un preset,
 // añade aquí su entrada (el script avisa si falta).
 #let llamadas = (
+  "cita-social": ```typ
+#carteles.cita-social(
+  [La constancia entrena al algoritmo… y a tu #highlight[audiencia].],
+  [Luis Felipe Reyes de los Reyes], iniciales: "LR",
+  estilo: "publicacion", usuario: "@luisreyes", verificado: true,
+  fecha: "5 nov 2026", metricas: (comentarios: 48, "me-gusta": 12000),
+  formato: (1080, 1350))
+```,
   "bauhaus": ```typ
 #carteles.bauhaus(
   [El calvinismo es simplemente la religión en su], [PUREZA.],

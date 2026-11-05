@@ -139,7 +139,7 @@ typst compile --root . --font-path Fonts examples/articulo.typ
 - `capitular` — letra capital (de `dropcaps.typ`)
 - `articulo`, `primer-parrafo`, `make-theme`, `fondo-editorial` — plantilla editorial
 - `scripture`, `vs`, `ch`, `pasaje` — bloques de cita bíblica
-- todo lo de `social.typ`: `canvas`, `badge`, `headline`, `subhead`, `footer`, `quote-post`, `announce-post`, `tip-card`, `carousel-cover`, `carousel-slide`, `stat-card`, `event-post`, `testimonial-post`, `quote-social`, `poll-story`, `versus-post`, `avatar`, `avatar-row`, `stat`, `progress`, `divider`
+- todo lo de `social.typ`: `canvas`, `badge`, `headline`, `subhead`, `footer`, `quote-post`, `announce-post`, `tip-card`, `carousel-cover`, `carousel-slide`, `stat-card`, `event-post`, `testimonial-post`, `poll-story`, `versus-post`, `avatar`, `avatar-row`, `stat`, `progress`, `divider`
 - todo lo de `blockquotes.typ`: `bq-frame`/`bq-mark`/`bq-rule`/`bq-attribution` (legos) + 14 `blockquote-*` (incluye `blockquote-grid`/`blockquote-paralelo`/`blockquote-lateral`)
 - `lat`, `gr`, `he`, `translit`, `interlineal`, `orn` — capa de idiomas (`idiomas.typ`)
 - `superbg` — namespace para fondos: `superbg.superbg()`, `superbg.bg-aura()`, `superbg.bg-malla()`, `superbg.sizes`, etc.

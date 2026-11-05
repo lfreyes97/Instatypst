@@ -8,6 +8,27 @@ byte antes y después (PNG a 40 ppi, `cmp`), salvo la lámina 3 de
 
 ### Añadido
 
+- **`carteles.cita-social`**, el pulido de `quote-social` como preset (y esta
+  desaparece de `social.typ`): el cuerpo de la cita se ajusta solo al área (hasta
+  `cuerpo`, mínimo 22 por cada 1080 de ancho; si no cabe, error con mensaje), la
+  atribución crece con la cita, tres variantes (`tarjeta`, `sangre`, `abierta`) y
+  tres posiciones de la atribución (`abajo`, `arriba`, `lado`), `comilla`, `marca`,
+  `area`/`ancla`, y el contrato de los presets: `formato` y `tema` con los roles
+  `fondo`, `tarjeta`, `tinta`, `suave`, `acento`, `linea` (se deriva `linea`).
+  Las notas laterales pasan a ir bajo la tarjeta, sobre el fondo. Demo:
+  `examples/presets/cita-social.typ` (sustituye a `examples/quote-social.typ`).
+  Rompe a quien llamara `quote-social(…, size:, color:, theme:)`.
+  - `estilo:` (el aspecto, aparte de `variante:` y `atribucion:`): `clasico` (el
+    de siempre, por defecto, idéntico píxel a píxel) y nueve nuevos, cada uno con
+    su tema en `temas-lamina` (`cita-publicacion`, `cita-mensaje`…): `publicacion`,
+    `mensaje`, `editorial`, `papel`, `pizarra`, `recorte`, `aura`, `minimal` y
+    `subrayado` (en `carteles/_cita-social-estilos-a.typ` y `-b.typ`, con piezas
+    comunes en `_cita-social-comun.typ`). Estilo desconocido: error con la lista.
+  - Contenido opcional (sin él nada cambia): `usuario`, `fecha`, `verificado`
+    (insignia dibujada), `metricas` (comentarios, compartidos, me-gusta, vistas;
+    cifras cortas «1,2 mil», «2,5 M»; iconos de línea propios), `contexto` («En
+    respuesta a…», «De _obra_») y `respuesta` (la publicación citada). Cada estilo
+    usa los que le caben; la tabla está en la cabecera de cada archivo.
 - **`mesa`** (integrado desde `~/DeskBook`): hoja suelta fotografiada sobre
   madera. `mesa.vertical` / `.apaisada` / `.cuadrada` (`#show: mesa.vertical.with(…)`,
   el texto fluye), `mesa.hoja-vertical` / `-apaisada` / `-cuadrada` (una página;

@@ -256,7 +256,7 @@
       ]
     ]
     // El pie va en su propio place() anclado a la esquina inferior — igual
-    // que nota-izq/nota-der en quote-social — en vez de vivir dentro del
+    // que nota-izq/nota-der de la antigua quote-social — en vez de vivir dentro del
     // bloque centrado: allí, align(bottom+start) de footer() solo alineaba
     // contra la altura del propio bloque (que se ajusta a su contenido), no
     // contra el lienzo, así que terminaba pegado justo debajo de la cita en
@@ -278,7 +278,7 @@
 //
 // Centrado: ni pad()+align(horizon) (pad() encoge el contenedor a su
 // contenido — no hay alto de sobra contra el cual centrar, ver nota en
-// quote-social) ni place(center) a secas (alinea un solo eje — el bug que
+// la antigua quote-social) ni place(center) a secas (alinea un solo eje — el bug que
 // tenía quote-post). Acá el contenido vive directo en el flujo del canvas
 // (que sí tiene alto FIJO vía page(height:..)) con v(1fr) arriba y abajo:
 // eso reparte el sobrante en partes iguales de verdad. El pie va DESPUÉS
@@ -629,110 +629,6 @@
       #avatar-row(name, role, initials, bg-color: color, theme: theme)
       #v(50pt)
       #footer(handle, color: gray.darken(40%), theme: theme)
-    ]
-  ])
-}
-
-// Cita social con atribución (foto/iniciales + nombre) dentro de la misma
-// tarjeta blanca, y notas laterales decorativas opcionales — inspirado en
-// tarjetas tipo LinkedIn. Para resaltar palabras dentro de `cita` usa el
-// #highlight() nativo de Typst, no una API propia:
-//   #quote-social([...quedar sometido al #highlight[dominio] y al #highlight[capricho].], "Nombre", iniciales: "LR")
-// `iniciales` es explícito (igual que en blockquote-avatar) — no se deriva
-// de `nombre`, para evitar el bug ya conocido si `nombre` no es texto plano.
-// `atribucion: "abajo" | "arriba"` — dónde va foto+nombre dentro de la
-// tarjeta, respecto a la cita.
-// `comilla: true` muestra la comilla decorativa sobre la cita; `false` la
-// quita (junto con el espaciado que la compensaba, no deja hueco).
-// `nota-izq`/`nota-der` son dict (icono:, texto:) o `none` para omitir el
-// lado. Las ilustraciones reales (figuras, puertas, cadenas...) no se
-// recrean con primitivas de Typst — `icono:` acepta cualquier content,
-// incluido `image(...)`, para sustituir el emoji por defecto con tu arte.
-#let quote-social(
-  cita,
-  nombre,
-  iniciales: "??",
-  foto: none,
-  atribucion: "abajo",
-  comilla: false,
-  nota-izq: none,
-  nota-der: none,
-  size: sizes.instagram,
-  color: none,
-  theme: theme.base,
-) = {
-  if atribucion not in ("abajo", "arriba") {
-    panic("atribucion desconocida: " + atribucion + " — usa \"abajo\" o \"arriba\"")
-  }
-  let color = if color == none { theme.colors.dark } else { color }
-  let avatar-tam = 76pt
-
-  let bloque-cita = [
-    #if comilla [
-      #text(size: 50pt, fill: color.transparentize(60%), "\u{201C}")
-      #v(-30pt)
-    ]
-    #text(font: theme.fonts.body, size: 34pt, fill: theme.colors.dark, cita)
-  ]
-
-  let bloque-atribucion = grid(
-    columns: (avatar-tam, 1fr),
-    gutter: 20pt,
-    align: (left, left + horizon),
-    if foto != none {
-      box(clip: true, radius: 100%, width: avatar-tam, height: avatar-tam)[
-        #image(foto, width: avatar-tam, height: avatar-tam, fit: "cover")
-      ]
-    } else {
-      avatar(iniciales, size: avatar-tam, theme: theme)
-    },
-    text(font: theme.fonts.body, size: 26pt, weight: 700, fill: theme.colors.dark, nombre),
-  )
-
-  let divisor = [
-    #v(32pt)
-    #line(length: 100%, stroke: 0.75pt + gray.lighten(70%))
-    #v(24pt)
-  ]
-
-  canvas(size, theme: theme, [
-    #bg(color)
-    #pad(page-pad)[
-      // v(1fr) antes y después reparte el espacio sobrante arriba/abajo por
-      // igual — a diferencia de align(horizon), que no centra nada aquí
-      // porque pad() ya encoge el contenedor al tamaño de su contenido
-      // (sin alto de sobra contra el cual centrar).
-      #v(1fr)
-      #block(
-        fill: theme.colors.white, radius: radius, inset: 40pt, width: 100%,
-      )[
-        #if atribucion == "arriba" [
-          #bloque-atribucion
-          #divisor
-          #bloque-cita
-        ] else [
-          #bloque-cita
-          #divisor
-          #bloque-atribucion
-        ]
-      ]
-      #v(1fr)
-      #if nota-izq != none {
-        place(bottom + left, dx: -20pt, dy: 30pt)[
-          #align(center)[
-            #text(size: 40pt, nota-izq.icono) #linebreak()
-            #text(font: theme.fonts.body, size: 20pt, fill: white, weight: 600, nota-izq.texto)
-          ]
-        ]
-      }
-      #if nota-der != none {
-        place(bottom + right, dx: 20pt, dy: 30pt)[
-          #align(center)[
-            #text(size: 40pt, nota-der.icono) #linebreak()
-            #text(font: theme.fonts.body, size: 20pt, fill: white, weight: 600, nota-der.texto)
-          ]
-        ]
-      }
     ]
   ])
 }

@@ -17,7 +17,7 @@
 //    scripture, vs, ch, pasaje -> bloques de cita bíblica (scripture.typ)
 //    + todo lo de social.typ: canvas, badge, headline, subhead, footer,
 //      quote-post, announce-post, tip-card, carousel-*, stat-card,
-//      testimonial-post, event-post, poll-story, versus-post, quote-social,
+//      testimonial-post, event-post, poll-story, versus-post,
 //      avatar, avatar-row, stat, progress, divider…
 //    + todo lo de blockquotes.typ: blockquote-*, bq-frame/bq-mark/bq-rule/
 //      bq-attribution (sistema de legos para citas, ver ese archivo)
@@ -32,7 +32,7 @@
 //    superbg -> namespace de fondos componibles (superbg.superbg,
 //      superbg.bg-aura, superbg.bg-malla, …)
 //    carteles -> namespace de presets de color sólido + tipografía
-//      (carteles.suizo, .bauhaus, .mosaico, .teselas, .hojas, .demostracion, .escalera, .gozne,
+//      (carteles.suizo, .cita-social, .bauhaus, .mosaico, .teselas, .hojas, .demostracion, .escalera, .gozne,
 //      .linea-tiempo, …) y sus piezas
 //      (carteles.reticula, carteles.cuerpo-al-ancho, carteles.rayar),
 //      ver ese archivo; los de orla de fleurones (carteles.cita-orlada,
