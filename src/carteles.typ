@@ -41,6 +41,7 @@
 //    temas-orla
 // ─────────────────────────────────────────────────────────────
 
+#import "pliego.typ": pliego
 #import "superbg/lib.typ" as superbg
 #import "contrast.typ": readable-on
 #import "orlas.typ": lienzo-orlado, cita-orlada, capitulo-orlado, pregunta-orlada, temas as temas-orla
@@ -152,7 +153,7 @@
   let ancho-frase = r.span.at(calc.ceil(columnas * 2 / 3))
   let rotulo(cuerpo, ..args) = text(font: fuente-rotulos, size: 22pt, ..args, cuerpo)
 
-  page(width: ancho, height: alto, margin: 0pt, fill: papel, {
+  pliego(width: ancho, height: alto, margin: 0pt, fill: papel, {
     set text(font: fuente, fill: tinta, lang: "es")
     set par(leading: 0.42em)
 
@@ -285,7 +286,7 @@
   // espacio reservado abajo para la marca, para que el texto no la pise
   let pie = if marca != none { 96pt } else { 0pt }
 
-  page(width: ancho, height: alto, margin: 0pt, fill: if type(fondo) == color { fondo } else { base }, {
+  pliego(width: ancho, height: alto, margin: 0pt, fill: if type(fondo) == color { fondo } else { base }, {
     let tinta = if desgaste > 0 { superbg.tinta-gastada(tinta, intensidad: desgaste) } else { tinta }
     set text(font: fuente, fill: tinta, lang: "es", hyphenate: false)
     set par(leading: 0.28em, justify: false)
@@ -399,7 +400,7 @@
     ))
   }
 
-  page(width: ancho, height: alto, margin: 0pt, fill: fondo, {
+  pliego(width: ancho, height: alto, margin: 0pt, fill: fondo, {
     set text(font: fuente, fill: texto, lang: "es", hyphenate: false)
 
     // ── retícula de cuaderno de cálculo, muy tenue ──

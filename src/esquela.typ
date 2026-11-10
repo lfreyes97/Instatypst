@@ -11,6 +11,7 @@
 //  carteles.typ ni lib.typ: carteles.typ lo importa a él.
 // ─────────────────────────────────────────────────────────────
 
+#import "pliego.typ": pliego
 #import "superbg/lib.typ" as superbg
 #import "fleurones.typ" as fl
 
@@ -70,7 +71,7 @@
   let (ancho, alto) = (formato.at(0) * 1pt, formato.at(1) * 1pt)
   let k = calc.min(formato.at(0) / 1080, formato.at(1) / 1350)
 
-  page(width: ancho, height: alto, margin: 0pt, fill: papel, {
+  pliego(width: ancho, height: alto, margin: 0pt, fill: papel, {
     set text(font: fuente, fill: luto, lang: "es", hyphenate: false)
     set par(spacing: 0pt)
 

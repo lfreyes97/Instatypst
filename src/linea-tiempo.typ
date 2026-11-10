@@ -11,6 +11,7 @@
 //  importa carteles.typ ni lib.typ: carteles.typ lo importa a él.
 // ─────────────────────────────────────────────────────────────
 
+#import "pliego.typ": pliego
 #import "superbg/lib.typ" as superbg
 
 // ── carteles.linea-tiempo ───────────────────────────────────
@@ -77,7 +78,7 @@
   }
   let todas = estaciones.map(c => (c, false)) + if remate != none { ((remate, true),) } else { () }
 
-  page(width: ancho, height: alto, margin: 0pt, fill: fondo, {
+  pliego(width: ancho, height: alto, margin: 0pt, fill: fondo, {
     set text(font: fuente, fill: tinta, lang: "es", hyphenate: false)
     set par(leading: 0.42em)
 

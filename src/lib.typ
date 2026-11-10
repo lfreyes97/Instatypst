@@ -64,6 +64,7 @@
 #import "scripture.typ": scripture, vs, ch, pasaje
 #import "idiomas.typ": lat, gr, he, translit, interlineal, orn
 #import "formas.typ" as formas
+#import "pliego.typ": pliego, en-caja
 #import "social.typ": *
 #import "blockquotes.typ": *
 #import "carrusel.typ": *

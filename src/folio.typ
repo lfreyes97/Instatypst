@@ -11,6 +11,7 @@
 //  carteles.typ ni lib.typ: carteles.typ lo importa a él.
 // ─────────────────────────────────────────────────────────────
 
+#import "pliego.typ": pliego
 #import "superbg/lib.typ" as superbg
 #import "fleurones.typ" as fl
 #import "dropcaps.typ": capitular-ornamentada
@@ -60,7 +61,7 @@
   let y1 = alto - 212pt
   let gy = if glosa-y == auto { y0 + (y1 - y0) * 328 / 738 } else { glosa-y }
 
-  page(width: ancho, height: alto, margin: 0pt, fill: pergamino, {
+  pliego(width: ancho, height: alto, margin: 0pt, fill: pergamino, {
     set text(font: fuente, fill: tinta, lang: "es", hyphenate: true)
 
     // ── Pergamino: centro más claro, bordes tostados, grano ──

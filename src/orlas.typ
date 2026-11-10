@@ -25,6 +25,7 @@
 //  estas piezas no la estampan (ver Fonts/IM_Fell_Flowers/LICENCIA.txt).
 // ─────────────────────────────────────────────────────────────
 
+#import "pliego.typ": pliego
 #import "fleurones.typ" as fl
 
 #let fell = "IM FELL English"
@@ -68,7 +69,7 @@
   let G = fl.grosor-tira(cadena)
   let libre = 70pt // margen de los lados sin orla
   let tira(largo) = fl.tira(largo, cadena, c.orn, c.hondo, c.fil)
-  page(width: W, height: H, margin: 0pt, fill: c.fondo, {
+  pliego(width: W, height: H, margin: 0pt, fill: c.fondo, {
     set text(font: fell, fill: c.texto, lang: "es", hyphenate: false)
     set par(justify: false, first-line-indent: 0pt, spacing: 0pt)
     if orla == "completa" {

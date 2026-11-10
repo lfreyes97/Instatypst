@@ -14,6 +14,7 @@
 
 // Cota: línea con topes y flechas en los extremos, rótulo opcional al
 // centro sobre un hueco del color de fondo.
+#import "pliego.typ": pliego
 #let _cota(ancho, color, fondo, rotulo, fuente, k) = {
   let g = 2.5pt * k
   let punta(dir) = polygon(fill: color, ..if dir == 1 {
@@ -85,7 +86,7 @@
   let caja = ancho - 2 * margen
   let mono(t, s: 20pt, ..a) = text(font: fuente-mono, size: s * k, tracking: 0.1em, fill: tinta, ..a, t)
 
-  page(width: ancho, height: alto, margin: 0pt, fill: fondo, {
+  pliego(width: ancho, height: alto, margin: 0pt, fill: fondo, {
     set text(font: fuente, fill: tinta, lang: "es", hyphenate: false)
     set par(leading: 0.28em, spacing: 0pt)
 

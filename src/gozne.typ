@@ -20,6 +20,7 @@
 //  `marca:` como contenido ya hecho.
 // ─────────────────────────────────────────────────────────────
 
+#import "pliego.typ": pliego
 #import "superbg/lib.typ" as superbg
 
 // Texto plano de un contenido (para medir palabra por palabra).
@@ -201,7 +202,7 @@
     }
   }
 
-  page(width: W, height: H, margin: 0pt, fill: papel, {
+  pliego(width: W, height: H, margin: 0pt, fill: papel, {
     set text(font: fuente, fill: tinta, lang: "es", hyphenate: false)
     show <gozne-llamada>: it => text(font: fuente, weight: 700, fill: acento, it)
 

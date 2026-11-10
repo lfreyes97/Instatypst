@@ -23,6 +23,7 @@
 //   color     "tinta" | "suave" | "acento" | un color
 //   tracking  0pt por defecto
 //   y         auto = reparto automático · un largo = fijo, desde arriba
+#import "pliego.typ": pliego
 #import "curvas.typ" as _cv
 
 // ── curvas de nivel ─────────────────────────────────────────
@@ -152,7 +153,7 @@
     }
   })
 
-  page(width: ancho, height: alto, margin: 0pt, fill: fondo, {
+  pliego(width: ancho, height: alto, margin: 0pt, fill: fondo, {
     set text(font: fuente, fill: tinta, lang: "es")
 
     if decorado != none { decorado }

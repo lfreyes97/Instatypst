@@ -25,6 +25,7 @@
 // base, útiles si escribes markup propio directo (`#palette.primary` en tu
 // documento) — pero NO uses ese patrón para personalizar plantillas.
 
+#import "pliego.typ": pliego
 #import "theme.typ": theme
 
 // ============ 1. TOKENS DE DISEÑO ============
@@ -48,7 +49,7 @@
 
 // ============ 2. FUNDACIONES ============
 
-#let canvas(size, body, theme: theme.base) = page(
+#let canvas(size, body, theme: theme.base) = pliego(
   width: size.at(0) * 1pt,
   height: size.at(1) * 1pt,
   margin: 0pt,
