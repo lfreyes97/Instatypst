@@ -11,7 +11,7 @@
 //  ─────────────────────────────────────────────────────────────
 
 #import "theme.typ": theme
-#import "font-tokens.typ": tokens, token, family, by-category
+#import "font-tokens.typ": tokens, token, family
 
 // ===== BIBLIOTECA — cada pareja mapea roles a claves de font-tokens =====
 #let library = (

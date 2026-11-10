@@ -21,11 +21,8 @@
 #let faint = luma(62%)
 #let borde = 0.5pt + luma(85%)
 
-#let h2(body) = {
-  v(12pt)
-  text(font: theme.base.fonts.display, size: 13pt, weight: 700, fill: primary)[#body]
-  v(2pt)
-}
+#let h2(body) = block(sticky: true, above: 18pt, below: 4pt,
+  text(font: theme.base.fonts.display, size: 13pt, weight: 700, fill: primary)[#body])
 #let h3(body) = {
   v(8pt)
   text(font: theme.base.fonts.body, size: 10pt, weight: 700, fill: luma(18%))[#body]
@@ -217,13 +214,14 @@ src/lib.typ          # entrypoint: re-exporta todo
   font-tokens, font-pairings               # tipografía
   dropcaps, articulo, scripture, idiomas   # texto
   social, carrusel, blockquotes, formas    # plantillas, citas y formas
-  carteles, orlas, escalera, gozne, folio,
+  carteles, carteles/*, orlas, escalera, gozne, folio,
   esquela, linea-tiempo, plano             # carteles (namespace `carteles`)
+  mesa/                                    # hoja fotografiada sobre una mesa de madera
   fleurones, curvas, superbg/              # ornamentos y fondos
   pliego                                   # `page` que cabe en un documento
 examples/            # recetas mínimas; examples/presets/ una por preset
 scripts/             # nueva-plantilla.py
-docs/manual.typ      # este manual · demo.typ: catálogo visual
+docs/manual.typ      # este manual · docs/catalogo.typ: catálogo de presets · demo.typ: catálogo visual
 ```
 
 #note[
@@ -389,11 +387,10 @@ Junta paleta, pareja tipográfica y capitular en un solo tema. El tema activo vi
 Versículos con capitular para el primero y superíndices para los siguientes.
 
 #api-table((
-  ([`scripture[…]`], [Contenedor neutro], [`scripture[#ch[1] En el principio… #vs[2] Y la tierra…]`]),
-  ([`ch[1]`], [Número de capítulo grande], [`ch[1]`]),
-  ([`vs[2]`], [Número de versículo en superíndice], [`vs[2]`]),
+  ([`scripture[…]`], [Contenedor neutro; con `theme:`, usa la tipografía y el fondo del tema], [`scripture(theme: t)[#ch[1] En el principio… #vs[2] Y la tierra…]`]),
+  ([`ch[1]`], [Número de capítulo grande; con tema, en la tipografía de títulos], [`ch[1]`]),
+  ([`vs[2]`], [Número de versículo en superíndice; con tema, en la tipografía del cuerpo], [`vs[2]`]),
   ([`pasaje(ref, version:, paleta:, tipografia:, capitular-alto:)`], [Receta completa: tema + fondo + capitular], [`pasaje("Salmo 1", version: "RVR1960")[…]`]),
-  ([`set-body-font`], [`show:` que fija el cuerpo a Inter], [`#show: set-body-font`]),
 ))
 
 #pasaje("Salmo 1", version: "RVR1960", paleta: "granates", tipografia: "revival-vintage")[
@@ -517,14 +514,6 @@ Cada plantilla es un `canvas` completo: una página, una imagen. Los argumentos 
   ("testimonial-post", ```typ
 #testimonial-post([Cambió cómo publicamos.], "María J.", "Community Manager", "MJ", "@mi_marca")
 ```.text),
-  ("quote-social", ```typ
-#quote-social(
-  [La constancia entrena al algoritmo... y a tu #highlight[audiencia].],
-  "Luis Felipe Reyes de los Reyes",
-  iniciales: "LR",
-  atribucion: "arriba",
-)
-```.text),
   ("versus-post", ```typ
 #versus-post(
   "Sin estrategia", ("Publicar al azar", "Sin identidad visual"),
@@ -555,7 +544,7 @@ Cada plantilla es un `canvas` completo: una página, una imagen. Los argumentos 
   [`stat-card`], [`value, label, caption, handle` · número gigante y `divider`],
   [`event-post`], [`day, month, title, details, handle` · `size:` por defecto `sizes.story`],
   [`testimonial-post`], [`quote, name, role, initials, handle` · `initials` es explícito, no se deriva de `name`],
-  [`quote-social`], [`cita, nombre` · `iniciales:`, `foto:` (ruta desde la raíz del proyecto), `atribucion:` `"abajo"`/`"arriba"`, `comilla:`, `nota-izq:`, `nota-der:` (`(icono:, texto:)`). Para resaltar palabras usa el `#highlight[…]` nativo de Typst],
+  [`quote-social`], [Pasó a ser un preset de carteles: `carteles.cita-social` (cap. 11.7)],
   [`poll-story`], [`question, option-a, option-b, handle` · `size:` por defecto `sizes.story` · `c1:, c2:`],
   [`versus-post`], [`left-title, left-items, right-title, right-items, handle` · los `*-items` son arrays de strings · `bad:, good:` color de ✕ y ✓ · `vs-badge` es el círculo central],
 )
@@ -579,7 +568,7 @@ Un motor y cuatro piezas para armar las diapositivas de un carrusel. *No es auto
 // ═══════════════════════════════════════════════════════════
 = Blockquotes <cap-blockquotes>
 
-Familia de citas con una convención única: el cuerpo va primero, luego `autor:` y `fuente:` por nombre, y `theme:` al final. Están pensadas para un lienzo social y por eso usan cuerpos de 26–44 pt; en el manual se muestran reducidas.
+Familia de citas con una convención única: el cuerpo va primero, luego `autor:` y `fuente:` por nombre (`obra:` es el nombre canónico y `fuente:` su alias), y `theme:` al final. Están pensadas para un lienzo social y por eso usan cuerpos de 26–44 pt; en el manual se muestran reducidas.
 
 #h2[10.1 Control de tamaño — `size:`]
 Todas aceptan `size:` (`auto` por defecto), que fija el cuerpo y escala en la misma proporción la comilla, la atribución y los adornos. Las líneas y reglas son gráficos y no escalan.
@@ -797,6 +786,60 @@ Los presets se construyen con tres piezas que también se usan solas:
 ))
 
 #ejemplo("#carteles.rayar[ir]racional  ·  #carteles.rayar(trazo: \"lapiz\")[tachado a lápiz]")
+
+#h2[11.6 Temas de lámina]
+Los presets nuevos y los de serie (`suizo`, `esquela`, `folio`, `gozne`, `escalera`, `linea-tiempo`, `demostracion`) no fijan colores sueltos: toman un *tema de lámina*, un conjunto de roles `fondo`, `tinta`, `suave` y `acento` (más roles propios, como `amarillo` y `azul` en `bauhaus`). El parámetro `tema:` acepta:
+
+- un *nombre* del registro `carteles.temas-lamina` (por defecto, el del propio preset: `"bauhaus"`, `"mosaico"`, `"vino"`, `"papel"`…);
+- un *diccionario* parcial de roles; los que faltan se derivan de los que das;
+- `carteles.tema-desde-theme(theme.base)`, para pintar la lámina con un tema del paquete.
+
+Además cada rol puede pisarse por nombre (`fondo:`, `tinta:`, `suave:`, `acento:`…); `auto` es el del tema. `carteles.resolver-tema(tema, defecto:)` hace la resolución.
+
+#h2[11.7 Más presets]
+#demo(```typ
+#carteles.bauhaus(
+  [El calvinismo es simplemente la religión en su], [PUREZA.],
+  autor: [B. B. WARFIELD], fechas: [1851 – 1921],
+  etiqueta: [DEL ENSAYO], planteo: [¿Qué es el calvinismo?])
+```.text, opts: (
+  ("carteles.bauhaus(frase, remate, autor:, fechas:, etiqueta:, planteo:, marca:, tema:, cuerpo-frase:, minusculas:, textura:)", "cartel de formas primarias sobre una línea de tierra; el remate sale en minúsculas salvo `minusculas: false`. Roles `amarillo` y `azul`; fuente Jost"),
+))
+
+#demo(```typ
+#carteles.mosaico(variante: "c", autor: [B. B. Warfield], obra: [La imputación])
+```.text, opts: (
+  ("carteles.mosaico(autor:, obra:, marca:, variante:, tema:, frase:, etiqueta:, remate:, cuerpo:, minimo:, area:, ancla:, arte:)", "portada gráfica de arcos concéntricos. `variante:` `\"c\"`, `\"u\"` o `\"u-inversa\"`. Con `frase`, `etiqueta` y `remate` el texto busca su sitio a partir de la geometría del arte; `area`, `ancla` y `arte` acotan el área de trabajo y la escala del dibujo; `guias: true` dibuja obstáculos y cajas para depurar"),
+))
+
+#demo(```typ
+#carteles.teselas(
+  [El que tiene entendimiento, calcule el número de la bestia.],
+  etiqueta: [Apocalipsis 13:18], remate: [Sabiduría], autor: [B. B. Warfield])
+```.text, opts: (
+  ("carteles.teselas(frase, remate:, etiqueta:, autor:, marca:, bloque:, tema:, cuerpo:)", "bloque de teselas con título en negrita, párrafo en gris y una palabra pesada apilada a la derecha. `bloque:` es la lista de teselas; `cuerpo` está en unidades de la lámina de referencia (300 de ancho)"),
+))
+
+#demo(```typ
+#carteles.hojas([Amarillo \ y azul], composicion: "flor", frase: [Una hoja, tres composiciones.])
+```.text, opts: (
+  ("carteles.hojas(titulo, frase:, composicion:, rotulo:, pie:, etiqueta:, nota:, marca:, tema:, fuente:, fuente-texto:, peso:, cuerpo:, lado:)", "una sola pieza, la «hoja» (cuadrado con tres esquinas redondeadas y un anillo), en `composicion:` `\"flor\"`, `\"diagonal\"` o `\"patron\"`. El título sale en mayúsculas y se parte donde pongas `\\`; `frase` admite `*negrita*`"),
+))
+
+#demo(```typ
+#carteles.cita-social(
+  [La constancia entrena al algoritmo… y a tu #highlight[audiencia].],
+  [Luis Felipe Reyes], iniciales: "LR",
+  estilo: "publicacion", usuario: "@luisreyes", verificado: true)
+```.text, opts: (
+  ("carteles.cita-social(cita, nombre, iniciales:, foto:, atribucion:, variante:, estilo:, tema:, formato:, …)", "antes `quote-social`, ahora preset: el cuerpo se ajusta solo al área (hasta `cuerpo`, con mínimo de 22 por cada 1080 de ancho; si no cabe, error con mensaje). `estilo:` elige el aspecto (`\"clasico\"`, `\"publicacion\"`, `\"mensaje\"`, `\"editorial\"`, `\"papel\"` y más; un valor desconocido falla y lista los disponibles). `publicacion` admite `usuario:`, `fecha:`, `verificado:`, `metricas:`, `contexto:` y `respuesta:`"),
+))
+
+#demo(```typ
+#carteles.epigrafe([La fe sin obras está muerta.], autor: [Santiago], obra: [Epístola], estilo: "pergamino")
+```.text, opts: (
+  ("carteles.epigrafe(cita, autor:, obra:, estilo:, formato:, tema:, marca:, guias:)", "despachador de quince estilos de epígrafe: `pergamino`, `portada`, `lapida`, `epistola`, `cartela` (clásicos); `hojas`, `bauhaus`, `arcos`, `malla`, `lineas` (geométricos); `aura`, `pizarra`, `vitral`, `luto`, `amanecer` (atmosféricos). `carteles.estilos-epigrafe` los enumera; cada estilo toma su tema de `temas-lamina`"),
+))
 
 // ═══════════════════════════════════════════════════════════
 = Series de carteles <cap-series>
@@ -1049,6 +1092,11 @@ claude mcp add --scope user instatypst -- uv run --script /ruta/a/Instatypst/mcp
   [`api`, `cobertura_manual`], [Firmas reales de `src/` y qué funciones públicas no menciona este manual],
 )
 
+#h2[15.4 Catálogo de presets y `mesa`]
+`docs/catalogo.typ` muestra cada preset de `examples/presets/` con miniaturas, su descripción y una llamada que lo genera; las miniaturas se renderizan aparte con `python3 scripts/catalogo.py` (añade `--png` para PNG) y no se versionan. Al añadir un preset, añade su entrada en `llamadas` (el script avisa si falta).
+
+`mesa` es un namespace aparte (viene de DeskBook): cada página es el lienzo de una foto con madera a sangre y una hoja de papel con grano, corte irregular, algo de trapecio y luz de ventana. Con `#show: mesa.vertical.with(…)` (o `apaisada`, `cuadrada`) el texto *fluye* por varias hojas; con `mesa.hoja-vertical[…]` (o `-apaisada`, `-cuadrada`) es *una* página y el texto gira con la hoja. Piezas sueltas: `mesa.nota[…]` y `mesa.lamina(contenido, ancho:, angle:, borde:)`. Los parámetros están en la cabecera de `src/mesa/lib.typ`.
+
 // ═══════════════════════════════════════════════════════════
 #[#set heading(numbering: none); #heading(level: 1)[Apéndice A — Referencia rápida de `lib.typ`] <cap-api>]
 
@@ -1063,17 +1111,18 @@ claude mcp add --scope user instatypst -- uv run --script /ruta/a/Instatypst/mcp
   [`color-tokens`, `font-tokens`], [`tokens.typ`, `font-tokens.typ`: `tokens`, `token(key)`, `family(key)`, `by-category` (con espacio de nombres)],
   [`capitular`, `capitular-ornamentada`, `inicial-ornamentada`], [`dropcaps.typ` (cap. 5)],
   [`articulo`, `primer-parrafo`, `make-theme`, `fondo-editorial`], [`articulo.typ` (cap. 6)],
-  [`scripture`, `vs`, `ch`, `pasaje`, `set-body-font`], [`scripture.typ` (cap. 6)],
+  [`scripture`, `vs`, `ch`, `pasaje`], [`scripture.typ` (cap. 6)],
   [`lat`, `gr`, `he`, `translit`, `interlineal`, `orn`], [`idiomas.typ` (cap. 7)],
   [`canvas`, `bg`, `gradient-bg`, `blob`, `sizes`, `page-pad`, `radius`, `palette`, `fonts`, `badge`, `headline`, `subhead`, `footer`, `avatar`, `avatar-row`, `stat`, `progress`, `divider`, `aura-bg`, `cita-canvas`], [`social.typ`: lienzo y componentes (cap. 8)],
-  [`quote-post`, `announce-post`, `tip-card`, `carousel-cover`, `carousel-slide`, `stat-card`, `event-post`, `testimonial-post`, `quote-social`, `poll-story`, `versus-post`], [`social.typ`: plantillas (cap. 9)],
+  [`quote-post`, `announce-post`, `tip-card`, `carousel-cover`, `carousel-slide`, `stat-card`, `event-post`, `testimonial-post`, `poll-story`, `versus-post`], [`social.typ`: plantillas (cap. 9)],
   [`carrusel-slide`, `carrusel-slide-definicion`, `topbar`, `pie-carrusel`, `dots`, `numeral-fondo`, `referencia-carrusel`, `fondo-carrusel`], [`carrusel.typ` (cap. 9.4)],
   [`blockquote-*`, `bq-frame`, `bq-mark`, `bq-rule`, `bq-rule-full`, `bq-attribution`], [`blockquotes.typ` (cap. 10)],
   [`formas`], [`formas.typ`: `bocadillo`, `cinta` (cap. 8.4)],
   [`superbg`], [`superbg/`: fondos componibles (cap. 8.2)],
-  [`carteles`], [`carteles.typ`: `liso`, `suizo`, `demostracion`, `plano`, `escalera`, `gozne`, `llamada`, `folio`, `esquela`, `linea-tiempo`, `curvas-de-nivel`, `lienzo-orlado`, `cita-orlada`, `capitulo-orlado`, `pregunta-orlada`, `reticula`, `cuerpo-al-ancho`, `rayar` (cap. 11 a 13)],
+  [`carteles`], [`carteles.typ`: `liso`, `suizo`, `demostracion`, `plano`, `escalera`, `gozne`, `llamada`, `folio`, `esquela`, `linea-tiempo`, `curvas-de-nivel`, `lienzo-orlado`, `cita-orlada`, `capitulo-orlado`, `pregunta-orlada`, `reticula`, `cuerpo-al-ancho`, `rayar`, `cita-social`, `bauhaus`, `mosaico`, `teselas`, `hojas`, `epigrafe`, `estilos-epigrafe`, `temas-lamina`, `resolver-tema`, `tema-desde-theme` (cap. 11 a 13)],
   [`fleurones`], [`fleurones.typ`: `orla`, `guarda`, `vineta`, `roseta`, `medallon`, `cabecera`, `separador`, `asterismo`, `remate`, `friso`, tablas `cadenas`, `guardas`, `vinetas` (cap. 13)],
   [`curvas`], [`curvas.typ`: `campo`, `ventana`, `panorama` (cap. 14)],
+  [`mesa`], [`mesa/lib.typ`: `vertical`, `apaisada`, `cuadrada`, `hoja-*`, `portada-*`, `nota`, `lamina` (cap. 15.4)],
   [`pliego`, `en-caja`], [`pliego.typ`: `page` que cabe en un documento (cap. 15.2)],
 )
 

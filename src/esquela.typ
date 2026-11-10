@@ -12,8 +12,10 @@
 // ─────────────────────────────────────────────────────────────
 
 #import "pliego.typ": pliego
+#import "carteles/_temas.typ": resolver-tema, temas-lamina
 #import "superbg/lib.typ" as superbg
 #import "fleurones.typ" as fl
+#import "carteles/_base.typ": medida, escala
 
 // Viñeta: auto = el glifo de FLOWERS 2 de la lámina, como texto (`g`
 // de cuerpo, con `bordes` ajustados o no); un nombre de
@@ -25,6 +27,13 @@
     return if bordes { text(top-edge: "bounds", bottom-edge: "bounds", t) } else { t }
   }
   if type(v) == str { fl.vineta(v, cuerpo * 0.7, color) } else { v }
+}
+
+// Color del viñeteado, a partir del `fondo` del tema: con el de "esquela", el
+// sepia de la lámina; con otro, ese fondo muy oscurecido. `papel:` retoca solo
+// el color del papel, como antes.
+#let _vineteado(fondo) = if fondo == temas-lamina.esquela.fondo { rgb("#5a4a32") } else {
+  color.mix((fondo, 35%), (black, 65%))
 }
 
 // ── carteles.esquela ────────────────────────────────────────
@@ -45,6 +54,9 @@
 //
 // Pensado para el retrato 1080×1350; en otros formatos las medidas se
 // escalan con el lado menor relativo (cuadrado ≈ 0,8).
+// tema: nombre de `temas-lamina` (por defecto "esquela"), diccionario de roles
+// (fondo, tinta, suave, acento…) o `carteles.tema-desde-theme(theme.base)`.
+// Los parámetros de color (`papel` (fondo), `luto` (tinta), `sepia` (suave)) pisan al tema; auto = el del tema.
 #let esquela(
   nombre,
   anuncio: none,
@@ -53,9 +65,10 @@
   autor: none,
   obra: none,
   marca: none,
-  papel: rgb("#f3eee3"),
-  luto: rgb("#141210"),
-  sepia: rgb("#4a443c"),
+  tema: "esquela",
+  papel: auto,
+  luto: auto,
+  sepia: auto,
   orla: "luto",
   interior: "filete",
   simbolo: "cruz",
@@ -68,8 +81,12 @@
   cuerpo-nombre: 132pt,
   textura: true,
 ) = {
-  let (ancho, alto) = (formato.at(0) * 1pt, formato.at(1) * 1pt)
-  let k = calc.min(formato.at(0) / 1080, formato.at(1) / 1350)
+  let tm = resolver-tema(tema, defecto: "esquela")
+  let papel = if papel == auto { tm.fondo } else { papel }
+  let luto = if luto == auto { tm.tinta } else { luto }
+  let sepia = if sepia == auto { tm.suave } else { sepia }
+  let (ancho, alto) = medida(formato)
+  let k = escala(formato, base: (1080, 1350))
 
   pliego(width: ancho, height: alto, margin: 0pt, fill: papel, {
     set text(font: fuente, fill: luto, lang: "es", hyphenate: false)
@@ -79,7 +96,7 @@
       superbg.superbg((capas: (
         (tipo: "plano", color: papel),
         (tipo: "ruido", color: luto, opacidad: 6%),
-        (tipo: "vignette", color: rgb("#5a4a32"), intensidad: 18%),
+        (tipo: "vignette", color: _vineteado(tm.fondo), intensidad: 18%),
       )), size: formato)
     }
 
@@ -108,7 +125,7 @@
       let hacer(s) = text(font: fuente-nombre, size: s, tracking: 0.03em, nombre)
       let s = cuerpo-nombre * k
       let w = measure(hacer(s)).width
-      hacer(if w > caja { s * caja / w } else { s })
+      hacer(if w > caja { s * (caja / w) } else { s })
     }
 
     // ── Bloque central, entre la orla y el pie ──

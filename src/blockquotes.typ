@@ -43,7 +43,8 @@
 // `size:` (auto por defecto) controla el tamaño del cuerpo de la cita;
 // la comilla y la línea de atribución escalan con él en la misma
 // proporción (ver nota de escalado al final del archivo).
-#let blockquote-editorial(body, autor: none, fuente: none, color: none, size: auto, theme: theme.base) = {
+#let blockquote-editorial(body, autor: none, fuente: none, obra: none, color: none, size: auto, theme: theme.base) = {
+  let fuente = if obra != none { obra } else { fuente }
   let color = if color == none { theme.colors.primary } else { color }
   let base = 32pt
   let s = if size == auto { base } else { size }
@@ -72,7 +73,8 @@
 // Cita con barra de acento a la izquierda — variante: "default" | "grande" | "acento"
 // `size:` sobreescribe el tamaño del cuerpo (por encima del que ya da
 // `variante`) y escala la línea de atribución en la misma proporción.
-#let blockquote-bar(body, autor: none, fuente: none, color: none, variante: "default", size: auto, theme: theme.base) = {
+#let blockquote-bar(body, autor: none, fuente: none, obra: none, color: none, variante: "default", size: auto, theme: theme.base) = {
+  let fuente = if obra != none { obra } else { fuente }
   let color = if color == none { theme.colors.primary } else { color }
   let base = if variante == "grande" { 44pt } else { 32pt }
   let s = if size == auto { base } else { size }
@@ -98,7 +100,8 @@
 // Tarjeta con barra superior de acento y pie de atribución
 // `size:` controla el tamaño del cuerpo; el pie de autor/fuente escala
 // en la misma proporción.
-#let blockquote-card(body, autor: none, fuente: none, color: none, size: auto, theme: theme.base) = {
+#let blockquote-card(body, autor: none, fuente: none, obra: none, color: none, size: auto, theme: theme.base) = {
+  let fuente = if obra != none { obra } else { fuente }
   let color = if color == none { theme.colors.primary } else { color }
   let base = 32pt
   let s = if size == auto { base } else { size }
@@ -129,7 +132,8 @@
 // Cita dramática, centrada, a todo el ancho — para abrir un slide o sección
 // `size:` controla el tamaño del titular; la comilla y la atribución
 // escalan con él.
-#let blockquote-hero(body, autor: none, fuente: none, color: none, size: auto, theme: theme.base) = {
+#let blockquote-hero(body, autor: none, fuente: none, obra: none, color: none, size: auto, theme: theme.base) = {
+  let fuente = if obra != none { obra } else { fuente }
   let color = if color == none { theme.colors.secondary } else { color }
   let base = 48pt
   let s = if size == auto { base } else { size }
@@ -151,7 +155,8 @@
 // Tarjeta independiente con avatar — reutiliza avatar-row() de la sección 5.
 // `iniciales` es explícito (no se deriva de `autor`): así evitamos el bug
 // que encontramos en cristianamente.typ (crash si autor no era texto plano).
-#let blockquote-avatar(body, autor: none, fuente: none, iniciales: none, color: none, size: auto, theme: theme.base) = {
+#let blockquote-avatar(body, autor: none, fuente: none, obra: none, iniciales: none, color: none, size: auto, theme: theme.base) = {
+  let fuente = if obra != none { obra } else { fuente }
   let color = if color == none { theme.colors.primary } else { color }
   let base = 28pt
   let s = if size == auto { base } else { size }
@@ -254,12 +259,14 @@
 #let blockquote-lateral(
   body,
   autor: none,
-  fuente: none,
+  fuente: none, // alias de `obra` (obra manda si se dan las dos)
+  obra: none,
   n: none,
   color: none,
   size: auto,
   theme: theme.base,
 ) = {
+  let fuente = if obra != none { obra } else { fuente }
   let color = if color == none { theme.colors.primary } else { color }
   let base = 32pt
   let s = if size == auto { base } else { size }
@@ -299,7 +306,8 @@
 // Pull-quote — comilla gigante detrás del texto, filete corto, display 800.
 // Pensado para portadas/carrusel donde `blockquote-hero` centrado se queda corto.
 // `marca: none` lo deja minimal; `color:` controla comilla y filete.
-#let blockquote-pull(body, autor: none, fuente: none, marca: "“", color: none, size: auto, theme: theme.base) = {
+#let blockquote-pull(body, autor: none, fuente: none, obra: none, marca: "“", color: none, size: auto, theme: theme.base) = {
+  let fuente = if obra != none { obra } else { fuente }
   let color = if color == none { theme.colors.primary } else { color }
   let base = 46pt
   let s = if size == auto { base } else { size }
@@ -443,7 +451,8 @@
 // archivo (18-34pt) quedaba ilegible en un canvas social.
 // `size:` escala el modo activo como conjunto (en "pro", autor/fuente
 // mantienen su proporción 20pt/18pt entre sí).
-#let bq-attribution(autor: none, fuente: none, modo: "pro", color: none, size: auto, theme: theme.base) = {
+#let bq-attribution(autor: none, fuente: none, obra: none, modo: "pro", color: none, size: auto, theme: theme.base) = {
+  let fuente = if obra != none { obra } else { fuente }
   let color = if color == none { theme.colors.dark } else { color }
   if modo == "mono" {
     // Brutalista: DM Mono + upper + caja de color

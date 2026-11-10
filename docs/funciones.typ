@@ -760,57 +760,55 @@ Cada función pública de `src/*.typ` (sin prefijo `_`), documentada con qué ha
 
 === `scripture`
 
-`src/scripture.typ:15`
+`src/scripture.typ:35`
 
 ```typ
-#let scripture(body) = {
-  set text(font: family("public-sans"))
+#let scripture(body, theme: auto) = context {
+  let t = _tema(theme)
+  let prev = _tema-pasaje.get()
+  let (fuente, relleno) = if t == none {
+    (family("public-sans"), luma(248))
+  } else {
+    (t.fonts.body, fondo-editorial(t))
+  }
+  set text(font: fuente)
   set par(leading: 1em, hanging-indent: 1em)
   block(
-    fill: luma(248),
+    fill: relleno,
     inset: 8pt,
     radius: 8pt,
-    pad(x: 2em, y: 2em)[#body],
+    pad(x: 2em, y: 2em)[#_con-tema(if theme == auto { none } else { t }, prev, body)],
   )
 }
 ```
 
 === `vs`
 
-`src/scripture.typ:26`
+`src/scripture.typ:54`
 
 ```typ
-#let vs(body) = {
-  set text(font: family("eb-garamond"))
+#let vs(body, theme: auto) = context {
+  let t = _tema(theme)
+  set text(font: if t == none { family("eb-garamond") } else { t.fonts.body })
   super(typographic: true, baseline: -0.4em, size: 8pt)[*#body*]
 }
 ```
 
 === `ch`
 
-`src/scripture.typ:31`
+`src/scripture.typ:61`
 
 ```typ
-#let ch(body) = {
-  set text(font: family("public-sans"), size: 26pt, weight: "bold")
+#let ch(body, theme: auto) = context {
+  let t = _tema(theme)
+  set text(font: if t == none { family("public-sans") } else { t.fonts.display }, size: 26pt, weight: "bold")
   box(inset: (x: 3pt, y: -50%))[#body]
-}
-```
-
-=== `set-body-font`
-
-`src/scripture.typ:36`
-
-```typ
-#let set-body-font(doc) = {
-  set text(font: family("inter"))
-  doc
 }
 ```
 
 === `pasaje`
 
-`src/scripture.typ:58`
+`src/scripture.typ:84`
 
 ```typ
 #let pasaje(
@@ -819,9 +817,11 @@ Cada función pública de `src/*.typ` (sin prefijo `_`), documentada con qué ha
   paleta: none,
   tipografia: none,
   capitular-alto: 2,
+  theme: none,
   doc,
-) = {
-  let t = make-theme(paleta: paleta, tipografia: tipografia)
+) = context {
+  let t = if theme != none { theme } else { make-theme(paleta: paleta, tipografia: tipografia) }
+  let prev = _tema-pasaje.get()
   block(
     fill: fondo-editorial(t),
     stroke: (left: 3pt + t.colors.primary),
@@ -834,7 +834,9 @@ Cada función pública de `src/*.typ` (sin prefijo `_`), documentada con qué ha
     #v(10pt)
     #set text(font: t.fonts.body, fill: t.colors.dark, size: 11pt)
     #set par(justify: true, leading: 0.85em, hanging-indent: 1em)
+    #_tema-pasaje.update(t)
     #(capitular)(doc, font: t.fonts.display, fill: t.colors.primary, alto: capitular-alto)
+    #_tema-pasaje.update(prev)
   ]
 }
 ```
@@ -2487,4 +2489,62 @@ Cada función pública de `src/*.typ` (sin prefijo `_`), documentada con qué ha
     ]
   ])
 }
+```
+
+== Carteles: área de trabajo — `carteles/_base.typ`
+
+Un preset de lámina (como `carteles.mosaico`) no tiene por qué usar la página entera. `area-trabajo` devuelve el rectángulo dentro del que van el arte y el texto (el resto queda en el color de fondo), y `encajar` mete en él una lámina de referencia, escalada por su lado menor y apoyada según `ancla`. Se re-exportan en `carteles` para que otros presets puedan usarlos; por ahora solo `mosaico` los usa.
+
+- `area`: fracción de la página. `1` (o `100%`) es la página entera; un número o un ratio (`0.7`, `70%`) se aplica a los dos lados; un par `(ancho, alto)`, p. ej. `(100%, 70%)`, a cada uno.
+- `ancla`: una alineación (`center + horizon` por defecto, `top`, `bottom + left`…). El eje que no se da queda centrado. Sitúa el área en la página y, en `encajar`, la lámina dentro del área.
+- `escala` (en `encajar`): achica la lámina dentro del rectángulo (`1` = lo llena por su lado menor).
+
+Con los valores por defecto el resultado es exactamente el de antes: la lámina centrada a página completa.
+
+=== `area-trabajo`
+
+`src/carteles/_base.typ:61`
+
+```typ
+#let area-trabajo(formato, area: 1, ancla: center + horizon, quien: "area") = {
+  if type(ancla) != alignment {
+    panic(quien + ": `ancla` es una alineación (center, top, bottom + left…), no " + repr(ancla))
+  }
+  if type(area) == array and area.len() != 2 {
+    panic(quien + ": `area` como par es (ancho, alto), no " + repr(area))
+  }
+  let (ancho, alto) = medida(formato)
+  let (fw, fh) = if type(area) == array { area.map(f => _fraccion(f, quien)) } else {
+    let f = _fraccion(area, quien)
+    (f, f)
+  }
+  let (w, h) = (ancho * fw, alto * fh)
+  let (ax, ay) = _ancla(ancla)
+  ((ancho - w) * ax, (alto - h) * ay, w, h)
+}```
+
+=== `encajar`
+
+`src/carteles/_base.typ:83`
+
+```typ
+#let encajar(rect, base, ancla: center + horizon, escala: 1) = {
+  let (x, y, w, h) = rect
+  let s = calc.min(w / 1pt / base.at(0), h / 1pt / base.at(1)) * escala
+  let (ax, ay) = _ancla(ancla)
+  (x + (w - base.at(0) * s * 1pt) * ax, y + (h - base.at(1) * s * 1pt) * ay, s)
+}```
+
+=== `area`, `ancla` y `arte` en `carteles.mosaico`
+
+- `area` y `ancla`: como arriba. La lámina, los rótulos, la `marca` y la búsqueda de sitio del texto quedan dentro del área; con `guias: true` el área se dibuja en verde, discontinua. El brazo largo de la «U» sigue saliendo por el borde de la página, como en la lámina original.
+- `arte`: el tamaño de la lámina dentro del área (`1` por defecto; `0.8` o `80%` = al 80 %, apoyada según `ancla`). El sitio que deja lo puede usar el texto: `arte: 0.85, ancla: bottom` en la variante `"u"` sube el texto a la banda de arriba, en bandera a la derecha, en vez de abajo y alineado a la derecha.
+- `arte: auto`: prueba escalas de 1 a 0,6 y se queda con la mayor con la que el texto cabe sin que la pila baje del 80 % de su tamaño (el arte cede antes que la pila); si ninguna sirve, la mayor con la que cabe aunque la pila ceda; si ni así, el error de siempre.
+- `minimo` (22 px por cada 1080 de ancho) es en píxeles de la imagen final, no del área: un área chica deja sitio a menos texto. Con `area: 70%` cabe una frase corta (unos 40 caracteres) en todas las variantes y formatos; con ~150 caracteres hace falta `arte: auto` y aun así no cabe en cuadrado ni en la «U» vertical.
+
+```typ
+#carteles.mosaico(variante: "c", area: 70%, frase: [...], etiqueta: [Gracia], remate: [Fe])
+#carteles.mosaico(variante: "u", arte: 0.85, ancla: bottom, frase: [...], etiqueta: [...], remate: [...])
+#carteles.mosaico(variante: "u", formato: sizes.twitter, ancla: right, frase: [...], etiqueta: [...], remate: [...])
+#carteles.mosaico(variante: "c", formato: sizes.instagram, arte: auto, frase: [...], etiqueta: [...], remate: [Entendimiento])
 ```

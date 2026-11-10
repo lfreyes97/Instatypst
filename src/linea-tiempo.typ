@@ -12,6 +12,7 @@
 // ─────────────────────────────────────────────────────────────
 
 #import "pliego.typ": pliego
+#import "carteles/_temas.typ": resolver-tema
 #import "superbg/lib.typ" as superbg
 
 // ── carteles.linea-tiempo ───────────────────────────────────
@@ -30,6 +31,9 @@
 // entre una y otra, todo se achica en la misma proporción (de a 5 %); si
 // sobra mucho (formatos altos), crece hasta 1,25 y el aire no pasa de 4
 // cuerpos: el resto queda como tramo de línea antes de la primera.
+// tema: nombre de `temas-lamina` (por defecto "linea-tiempo"), diccionario de roles
+// (fondo, tinta, suave, acento…) o `carteles.tema-desde-theme(theme.base)`.
+// Los parámetros de color (`fondo`, `tinta`, `acento`, `suave`) pisan al tema; auto = el del tema.
 #let linea-tiempo(
   estaciones,
   origen: none,
@@ -39,10 +43,11 @@
   autor: none,
   obra: none,
   marca: none,
-  fondo: rgb("#f1e9dc"),
-  tinta: rgb("#2a2420"),
-  acento: rgb("#9a3a1c"),
-  suave: rgb("#6b5e52"),
+  tema: "linea-tiempo",
+  fondo: auto,
+  tinta: auto,
+  acento: auto,
+  suave: auto,
   fuente: "Literata",
   fuente-rotulos: "Jost",
   cuerpo: 54pt,
@@ -50,6 +55,11 @@
   textura: true,
   y: auto,
 ) = {
+  let tm = resolver-tema(tema, defecto: "linea-tiempo")
+  let fondo = if fondo == auto { tm.fondo } else { fondo }
+  let tinta = if tinta == auto { tm.tinta } else { tinta }
+  let acento = if acento == auto { tm.acento } else { acento }
+  let suave = if suave == auto { tm.suave } else { suave }
   let (ancho, alto) = (formato.at(0) * 1pt, formato.at(1) * 1pt)
 
   // Geometría de la línea: fija respecto de los bordes

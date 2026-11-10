@@ -17,7 +17,7 @@
 //    scripture, vs, ch, pasaje -> bloques de cita bíblica (scripture.typ)
 //    + todo lo de social.typ: canvas, badge, headline, subhead, footer,
 //      quote-post, announce-post, tip-card, carousel-*, stat-card,
-//      testimonial-post, event-post, poll-story, versus-post, quote-social,
+//      testimonial-post, event-post, poll-story, versus-post,
 //      avatar, avatar-row, stat, progress, divider…
 //    + todo lo de blockquotes.typ: blockquote-*, bq-frame/bq-mark/bq-rule/
 //      bq-attribution (sistema de legos para citas, ver ese archivo)
@@ -32,7 +32,7 @@
 //    superbg -> namespace de fondos componibles (superbg.superbg,
 //      superbg.bg-aura, superbg.bg-malla, …)
 //    carteles -> namespace de presets de color sólido + tipografía
-//      (carteles.liso, .suizo, .demostracion, .plano, .escalera, .gozne,
+//      (carteles.liso, .plano, .suizo, .cita-social, .bauhaus, .mosaico, .teselas, .hojas, .demostracion, .escalera, .gozne,
 //      .linea-tiempo, …) y sus piezas
 //      (carteles.reticula, carteles.cuerpo-al-ancho, carteles.rayar),
 //      ver ese archivo; los de orla de fleurones (carteles.cita-orlada,
@@ -44,6 +44,12 @@
 //    curvas -> fondos de curvas CONTINUOS entre diapositivas:
 //      curvas.campo(tipo, diapositivas: n, …) + curvas.ventana(c, i)
 //      (topo, ondas, flujo, paralelas, cinta, orbitas), ver ese archivo
+//
+//    mesa -> hoja suelta fotografiada sobre madera (de DeskBook):
+//      mesa.vertical / .apaisada / .cuadrada (con `#show: mesa.vertical.with(…)`),
+//      mesa.nota, mesa.portada-vertical / .portada-apaisada, mesa.camara.
+//      Cada página es el lienzo de una foto; el tamaño del papel lo dicta
+//      la cámara (focal, distancia), ver src/mesa/
 //
 //  `color-tokens`/`font-tokens`/`formas` van con nombre en vez de
 //  `import: *` a propósito. `color-tokens`/`font-tokens`: ambos módulos
@@ -72,3 +78,4 @@
 #import "carteles.typ" as carteles
 #import "fleurones.typ" as fleurones
 #import "curvas.typ" as curvas
+#import "mesa/lib.typ" as mesa

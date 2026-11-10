@@ -346,6 +346,35 @@ aplicarlo de una — necesita decisión explícita antes de tocar ~10 archivos.
 
 ---
 
+## 🟣 Pendientes de la refactorización de `carteles` (rama `refactor/arquitectura-capas`)
+
+> **Resuelto (2026-11-04)** — los dos puntos de abajo: los roles extra se derivan cuando el tema
+> cambia los roles de los que dependen (`derivados-lamina` en `src/carteles/_temas.typ`), y la
+> ambientación de `folio` y el viñeteado de `esquela` salen del `fondo` del tema. Detalle en el
+> CHANGELOG. Queda fija la capitular rubricada de `folio` (colores propios de
+> `capitular-ornamentada`).
+
+- **Temas parciales completan con el tema por defecto del preset.** Un `tema:` dado como
+  diccionario parcial (o `carteles.tema-desde-theme(theme.base)`, que solo trae `fondo`, `tinta`,
+  `suave` y `acento`) hereda los roles que le faltan del tema por defecto del *preset*. Efecto
+  visible: en `examples/presets/suizo-temas.typ`, la variante 3 (desde `theme.base`, paleta fría)
+  conserva el `linea` cálido (`#d9d3c7`) de `suizo` para los filetes de la retícula. Es
+  consecuencia de la regla de completar (`resolver-tema(tema, defecto:)` en
+  `src/carteles/_temas.typ`), no un bug. **Decidir más adelante** si los roles extra de un preset
+  (como `linea`) deben derivarse de los cuatro roles base (p. ej. `linea` = `suave` aclarado hacia
+  `fondo`) en vez de heredarse del tema por defecto.
+  Mismo caso en las orlas: un tema parcial (o el de otro preset) hereda de `"vino"` los roles
+  propios de la orla (`malla`, `franja`, `orn`, `fil`, `hondo`), y el resultado puede desentonar
+  (ornamento rojo vino sobre un fondo verde).
+- **`folio` y `esquela` no obedecen del todo al rol `fondo`.** Tienen colores de ambientación
+  fijos fuera de los parámetros: `folio` pinta el pergamino con un degradado radial y una malla de
+  literales (`#f6ecd4`, `#ecdcb6`, `#d6bd8a`, `#c9a86a`…) y `esquela` un viñeteado `#5a4a32`.
+  Efecto visible: `carteles.folio(..., tema: "escalera")` pone la tinta crema sobre un pergamino que
+  sigue siendo claro, y el texto casi no se lee. Para que `tema:` sea de verdad un tema, esos
+  colores deberían derivarse de `fondo` (y de `acento`/`tinta`).
+
+---
+
 ## Prioridad sugerida
 
 1. Arreglar los 3 bugs críticos (#1-3) — cambios pequeños, ya verificados con repros.

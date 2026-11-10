@@ -12,30 +12,56 @@
 #import "articulo.typ": make-theme, fondo-editorial
 #import "dropcaps.typ": capitular
 
-#let scripture(body) = {
-  set text(font: family("public-sans"))
+// ── Tema de las piezas ────────────────────────────────────────
+// `scripture`, `vs` y `ch` tienen dos aspectos:
+//   · neutro (por defecto): Public Sans, EB Garamond para el versículo y un
+//     fondo gris tenue — el de siempre;
+//   · con tema: la tipografía y los colores de un `theme` (theme.typ).
+// El tema sale de, por orden: el `theme:` que se pase a la pieza, el del
+// `pasaje` o `scripture` que la contiene, o ninguno (aspecto neutro).
+//
+// El tema del contenedor viaja en un `state`, no en una variable: `#vs[2]`
+// se escribe dentro del cuerpo, fuera del scope léxico de `pasaje()`, así
+// que un #let no llegaría (mismo problema que `_tema-activo` en articulo.typ).
+// El contenedor lo fija para su cuerpo y lo restituye al terminar.
+#let _tema-pasaje = state("scripture-tema", none)
+#let _tema(theme) = if theme != auto { theme } else { _tema-pasaje.get() }
+
+// Cuerpo de un contenedor con su tema publicado para las piezas de dentro.
+#let _con-tema(t, prev, cuerpo) = if t == none { cuerpo } else {
+  [#_tema-pasaje.update(t)#cuerpo#_tema-pasaje.update(prev)]
+}
+
+#let scripture(body, theme: auto) = context {
+  let t = _tema(theme)
+  let prev = _tema-pasaje.get()
+  let (fuente, relleno) = if t == none {
+    (family("public-sans"), luma(248))
+  } else {
+    (t.fonts.body, fondo-editorial(t))
+  }
+  set text(font: fuente)
   set par(leading: 1em, hanging-indent: 1em)
   block(
-    fill: luma(248),
+    fill: relleno,
     inset: 8pt,
     radius: 8pt,
-    pad(x: 2em, y: 2em)[#body],
+    pad(x: 2em, y: 2em)[#_con-tema(if theme == auto { none } else { t }, prev, body)],
   )
 }
 
-#let vs(body) = {
-  set text(font: family("eb-garamond"))
+// Número de versículo en superíndice. Con tema, en la tipografía del cuerpo.
+#let vs(body, theme: auto) = context {
+  let t = _tema(theme)
+  set text(font: if t == none { family("eb-garamond") } else { t.fonts.body })
   super(typographic: true, baseline: -0.4em, size: 8pt)[*#body*]
 }
 
-#let ch(body) = {
-  set text(font: family("public-sans"), size: 26pt, weight: "bold")
+// Número de capítulo grande. Con tema, en la tipografía de títulos.
+#let ch(body, theme: auto) = context {
+  let t = _tema(theme)
+  set text(font: if t == none { family("public-sans") } else { t.fonts.display }, size: 26pt, weight: "bold")
   box(inset: (x: 3pt, y: -50%))[#body]
-}
-
-#let set-body-font(doc) = {
-  set text(font: family("inter"))
-  doc
 }
 
 // ─────────────────────────────────────────────────────────────
@@ -61,9 +87,11 @@
   paleta: none,
   tipografia: none,
   capitular-alto: 2,
+  theme: none,
   doc,
-) = {
-  let t = make-theme(paleta: paleta, tipografia: tipografia)
+) = context {
+  let t = if theme != none { theme } else { make-theme(paleta: paleta, tipografia: tipografia) }
+  let prev = _tema-pasaje.get()
   block(
     fill: fondo-editorial(t),
     stroke: (left: 3pt + t.colors.primary),
@@ -76,6 +104,8 @@
     #v(10pt)
     #set text(font: t.fonts.body, fill: t.colors.dark, size: 11pt)
     #set par(justify: true, leading: 0.85em, hanging-indent: 1em)
+    #_tema-pasaje.update(t)
     #(capitular)(doc, font: t.fonts.display, fill: t.colors.primary, alto: capitular-alto)
+    #_tema-pasaje.update(prev)
   ]
 }
