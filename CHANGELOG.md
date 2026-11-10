@@ -94,6 +94,27 @@ byte antes y después (PNG a 40 ppi, `cmp`), salvo la lámina 3 de
   Queda fija la capitular rubricada de `folio` (su caja beige con la letra roja
   viene de `capitular-ornamentada`).
 
+### Arreglado
+
+- **`curvas` «topo»: las curvas de nivel se juntan en la frontera entre cumbres.**
+  Cada anillo se filtraba muestra a muestra (cada ~38 pt) y el tramo terminaba en
+  la última muestra que mandaba, así que en cada frontera entre dos cumbres las
+  dos curvas del mismo nivel quedaban a hasta una muestra de distancia por lado:
+  huecos, puntas deshilachadas y «costuras» rectas (visibles en
+  `examples/presets/curvas.typ`, láminas 2 y 3, y en `escalera-deck.typ`). Ahora
+  el tramo se remata bisecando el ángulo hasta el punto exacto donde la cumbre
+  deja de mandar; la vecina hace lo propio y las dos puntas se tocan en un
+  pliegue, como en un mapa (`_tramos-topo` en `src/curvas.typ`; también se
+  remata la transición que da la vuelta al anillo, que antes se perdía). La
+  frontera no depende de la ventana: las diapositivas siguen generando los
+  mismos puntos que el panorama. El Catmull-Rom de `_polilinea` reparte ahora la
+  tangente por el largo de las cuerdas (idéntico con puntos equiespaciados), para
+  que el punto de remate, pegado al anterior, no deje un bigote pasado el
+  pliegue; los trazos de topo llevan remate redondo. `ondas`, `flujo`,
+  `paralelas` y `cinta` salen idénticas píxel a píxel; `orbitas` (elipses, cuerdas
+  no del todo iguales) cambia por debajo del píxel (≤ 12/255 a 40 ppi). Las
+  curvas propias de `carteles.escalera` (`curvas-de-nivel`) no cambian.
+
 ## [sin publicar] — arquitectura de carteles (rama `refactor/arquitectura-capas`)
 
 Sin cambios visuales con los valores por defecto: los ejemplos de
