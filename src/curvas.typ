@@ -40,7 +40,12 @@
 // Una polilínea (lista de (x, y) en pt, sin unidad) corrida en -x0.
 // suave: true = curva de Catmull-Rom por los mismos puntos (cada tramo
 // depende solo de sus 4 puntos vecinos, así que dos cortes distintos de
-// la misma lista dan tramos idénticos lejos de sus extremos).
+// la misma lista dan tramos idénticos lejos de sus extremos). La
+// tangente en cada punto es la diferencia de sus vecinos repartida por
+// el largo de las dos cuerdas, y cada asa mide un tercio de su cuerda:
+// con puntos equiespaciados es el Catmull-Rom de siempre, y con uno
+// muy pegado al anterior (el remate en una frontera de topo) el asa se
+// acorta en vez de pasarse de largo y dejar un bigote.
 #let _polilinea(pts, x0, trazo, cerrar: false, relleno: none, suave: false) = {
   let n = pts.len()
   if n < 2 { return none }
@@ -48,12 +53,16 @@
   let segs = (curve.move(P(pts.at(0))),)
   if suave and n > 2 {
     let q(i) = if cerrar { pts.at(calc.rem-euclid(i, n)) } else { pts.at(calc.clamp(i, 0, n - 1)) }
+    let largo(u, v) = calc.sqrt(calc.pow(v.at(0) - u.at(0), 2) + calc.pow(v.at(1) - u.at(1), 2))
     let ultimo = if cerrar { n } else { n - 1 }
     for i in range(ultimo) {
       let (a, b, c, d) = (q(i - 1), q(i), q(i + 1), q(i + 2))
+      let (lab, lbc, lcd) = (largo(a, b), largo(b, c), largo(c, d))
+      let kb = if lab + lbc > 0 { lbc / (lab + lbc) / 3 } else { 0 }
+      let kc = if lbc + lcd > 0 { lbc / (lbc + lcd) / 3 } else { 0 }
       segs.push(curve.cubic(
-        P((b.at(0) + (c.at(0) - a.at(0)) / 6, b.at(1) + (c.at(1) - a.at(1)) / 6)),
-        P((c.at(0) - (d.at(0) - b.at(0)) / 6, c.at(1) - (d.at(1) - b.at(1)) / 6)),
+        P((b.at(0) + (c.at(0) - a.at(0)) * kb, b.at(1) + (c.at(1) - a.at(1)) * kb)),
+        P((c.at(0) - (d.at(0) - b.at(0)) * kc, c.at(1) - (d.at(1) - b.at(1)) * kc)),
         P(c),
       ))
     }
@@ -62,27 +71,6 @@
   }
   if cerrar { segs.push(curve.close(mode: "straight")) }
   place(top + left, curve(stroke: trazo, fill: relleno, ..segs))
-}
-
-// Como _tramos, para un lazo cerrado (sin repetir el primer punto al
-// final): si todo vale, devuelve (( pts ), true); si no, empieza a
-// cortar desde un punto que no vale, así ningún tramo se parte en el
-// índice 0 sin motivo.
-#let _tramos-lazo(pts, vale) = {
-  let marcas = pts.map(vale)
-  if marcas.all(v => v) { return ((pts,), true) }
-  let i0 = marcas.position(v => not v)
-  let rot = pts.slice(i0) + pts.slice(0, i0)
-  let out = ()
-  let actual = ()
-  for p in rot {
-    if vale(p) { actual.push(p) } else {
-      if actual.len() > 1 { out.push(actual) }
-      actual = ()
-    }
-  }
-  if actual.len() > 1 { out.push(actual) }
-  (out, false)
 }
 
 // Corta una lista de puntos en tramos donde `vale(p)` es verdadero.
@@ -97,6 +85,45 @@
   }
   if actual.len() > 1 { out.push(actual) }
   out
+}
+
+// Tramos de un anillo de curvas de nivel (topo). `muestras` son
+// diccionarios (a: ángulo, p: punto, clase: "mia" | "ajena" | "fuera");
+// `frontera(a-mia, a-ajena)` devuelve el punto exacto donde el anillo
+// cruza a territorio ajeno entre esos dos ángulos, y `da` es el paso
+// angular (el ángulo vecino se calcula sumando o restando `da`, no
+// leyendo el de la muestra: al dar la vuelta, tras el último índice
+// viene el 0). Si `completo` y todo es «mío», es un lazo cerrado (sin
+// repetir el primer punto al final); si no, se empieza a cortar desde
+// una muestra que no vale, así ningún tramo se parte en el índice 0 sin
+// motivo.
+#let _tramos-topo(muestras, frontera, da, completo) = {
+  if completo and muestras.all(s => s.clase == "mia") { return ((muestras.map(s => s.p),), true) }
+  let ms = if completo {
+    let i0 = muestras.position(s => s.clase != "mia")
+    muestras.slice(i0) + muestras.slice(0, i0)
+  } else { muestras }
+  let out = ()
+  let actual = ()
+  let prev = none
+  for s in ms {
+    if s.clase == "mia" {
+      // vuelve de territorio ajeno: la curva arranca en la frontera
+      if actual.len() == 0 and prev != none and prev.clase == "ajena" { actual.push(frontera(s.a, s.a - da)) }
+      actual.push(s.p)
+    } else {
+      // se va a territorio ajeno: la curva llega hasta la frontera
+      if s.clase == "ajena" and actual.len() > 0 { actual.push(frontera(prev.a, prev.a + da)) }
+      if actual.len() > 1 { out.push(actual) }
+      actual = ()
+    }
+    prev = s
+  }
+  // al dar la vuelta, tras la última muestra viene la primera (que en
+  // un lazo es la «no mía» por la que se empezó a cortar)
+  if completo and actual.len() > 0 and ms.at(0).clase == "ajena" { actual.push(frontera(prev.a, prev.a + da)) }
+  if actual.len() > 1 { out.push(actual) }
+  (out, false)
 }
 
 // Muestras de una grilla GLOBAL de paso `h` que cubren [a, b]: la misma
@@ -211,6 +238,28 @@
     (dmin: calc.sqrt(du * du + dv * dv), dmax: dmax, arco: arco)
   })
 
+  // ¿Está (x, y) dentro de la franja de la ventana (con su margen)?
+  let dentro(p) = p.at(0) >= x0 - m and p.at(0) <= x1 + m and p.at(1) >= -m and p.at(1) <= c.H + m
+  // ¿Manda la cumbre j en el punto p? (p ya está dentro de la franja)
+  let manda(j, p) = {
+    let q = cs.at(j)
+    let ci = calc.clamp(int((p.at(0) - xa) / G), 0, gx - 1)
+    let cj = calc.clamp(int((p.at(1) - ya) / G), 0, gy - 1)
+    let cand = celdas.at(cj).at(ci)
+    if cand == (j,) { return true } // solo ella puede mandar acá
+    if j not in cand { return false } // otra la tapa en toda la celda
+    let mio = altura(q, p.at(0), p.at(1))
+    cand.all(i => {
+      if i == j { return true }
+      let otra = cs.at(i)
+      // cota sin senos antes de la cuenta completa
+      let dx = p.at(0) - otra.x
+      let dy = (p.at(1) - otra.y) / otra.e
+      if otra.alto - calc.sqrt(dx * dx + dy * dy) / 1.24 <= mio + 0.5 { return true }
+      altura(otra, p.at(0), p.at(1)) <= mio + 0.5
+    })
+  }
+
   let out = ()
   for (j, q) in cs.enumerate() {
     let vista = vistas.at(j)
@@ -222,6 +271,7 @@
       // dentro de la ventana: ni se recorre
       if r * 1.24 < vista.dmin or r * 0.76 > vista.dmax { continue }
       let pasos = calc.min(360, calc.max(28, int(r / 6)))
+      let da = _tau / pasos
       // índices del arco visible (con uno de holgura a cada lado)
       let indices = if vista.arco == none { range(pasos) } else {
         let (a0, largo) = vista.arco
@@ -230,44 +280,50 @@
         if i1 - i0 + 1 >= pasos { range(pasos) } else { range(i0, i1 + 1).map(i => calc.rem-euclid(i, pasos)) }
       }
       let completo = indices.len() == pasos
-      // descarte barato: si ni el radio mínimo ni el máximo caen en la
-      // franja, el punto tampoco (queda `none`, que corta el tramo)
-      let pts = indices.map(i => {
-        let a = _tau * i / pasos
+      // el punto del anillo a ángulo a
+      let punto(a) = {
+        let f = ond(q, a, r)
+        (q.x + r * f * calc.cos(a), q.y + r * f * q.e * calc.sin(a))
+      }
+      // Cada muestra queda clasificada: "fuera" (de la franja: corta el
+      // tramo y listo), "mia" (dentro y manda q) o "ajena" (dentro, pero
+      // manda otra cumbre). El descarte barato: si ni el radio mínimo ni
+      // el máximo caen en la franja, el punto tampoco.
+      let muestras = indices.map(i => {
+        let a = da * i
         let (ca, sa) = (calc.cos(a), calc.sin(a))
         let xs = (q.x + r * 0.76 * ca, q.x + r * 1.24 * ca)
         let ys = (q.y + r * 0.76 * q.e * sa, q.y + r * 1.24 * q.e * sa)
-        if calc.max(..xs) < x0 - m or calc.min(..xs) > x1 + m or calc.max(..ys) < -m or calc.min(..ys) > c.H + m { return none }
-        let f = ond(q, a, r)
-        (q.x + r * f * ca, q.y + r * f * q.e * sa)
+        if calc.max(..xs) < x0 - m or calc.min(..xs) > x1 + m or calc.max(..ys) < -m or calc.min(..ys) > c.H + m {
+          return (a: a, p: none, clase: "fuera")
+        }
+        let p = punto(a)
+        if not dentro(p) { (a: a, p: p, clase: "fuera") } else if manda(j, p) { (a: a, p: p, clase: "mia") } else { (a: a, p: p, clase: "ajena") }
       })
-      let vale(p) = {
-        if p == none { return false }
-        if p.at(0) < x0 - m or p.at(0) > x1 + m { return false }
-        if p.at(1) < -m or p.at(1) > c.H + m { return false }
-        let ci = calc.clamp(int((p.at(0) - xa) / G), 0, gx - 1)
-        let cj = calc.clamp(int((p.at(1) - ya) / G), 0, gy - 1)
-        let cand = celdas.at(cj).at(ci)
-        if cand == (j,) { return true } // solo ella puede mandar acá
-        if j not in cand { return false } // otra la tapa en toda la celda
-        let mio = altura(q, p.at(0), p.at(1))
-        cand.all(i => {
-          if i == j { return true }
-          let otra = cs.at(i)
-          // cota sin senos antes de la cuenta completa
-          let dx = p.at(0) - otra.x
-          let dy = (p.at(1) - otra.y) / otra.e
-          if otra.alto - calc.sqrt(dx * dx + dy * dy) / 1.24 <= mio + 0.5 { return true }
-          altura(otra, p.at(0), p.at(1)) <= mio + 0.5
-        })
+      // Donde el anillo pasa de «mía» a «ajena» (o al revés) entre dos
+      // muestras, la curva no termina en la última muestra sino en la
+      // frontera misma: se bisecta el ángulo hasta clavar el punto donde
+      // deja de mandar q. La vecina hace lo propio con su anillo del
+      // mismo nivel y las dos puntas se tocan, como en un mapa (sin este
+      // remate quedaban huecos de hasta una muestra por lado en cada
+      // frontera). La frontera no depende de la ventana: sale igual en
+      // el panorama y en cada diapositiva.
+      let frontera(a-mia, a-ajena) = {
+        let (lo, hi) = (a-mia, a-ajena)
+        for _ in range(14) {
+          let mid = (lo + hi) / 2
+          if manda(j, punto(mid)) { lo = mid } else { hi = mid }
+        }
+        punto((lo + hi) / 2)
       }
       let gruesa = calc.rem(k, maestra) == 0
       let trazo = (
         paint: c.color.transparentize(100% - c.opacidad * (if gruesa { 1.6 } else { 1 })),
         thickness: c.grosor * (if gruesa { 2 } else { 1 }),
+        cap: "round",
         join: "round",
       )
-      let (ts, cerrado) = if completo { _tramos-lazo(pts, vale) } else { (_tramos(pts, vale), false) }
+      let (ts, cerrado) = _tramos-topo(muestras, frontera, da, completo)
       for t in ts { out.push(_polilinea(t, x0, trazo, cerrar: cerrado, suave: true)) }
     }
   }
