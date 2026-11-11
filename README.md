@@ -43,6 +43,39 @@ se probó `nix develop` en este repo todavía (revisa que resuelvan los
 paquetes `nerd-fonts.*` — nixpkgs reestructuró ese paquete en 2024, ver
 comentario en `flake.nix` si tu versión de nixpkgs usa otros nombres).
 
+## Instalar las fuentes en el sistema
+
+`Fonts/` está en el repositorio a propósito: son las 49 familias que usan
+los ejemplos y los presets (≈240 MB, con el `OFL.txt` de las que lo traen),
+así que cualquier equipo puede tenerlas sin descargar nada más. Instalarlas
+a nivel de usuario o de sistema evita repetir `--font-path` /
+`TYPST_FONT_PATHS` en cada compilación, y las hace visibles también para
+quien compile por su cuenta: la CLI de `typst-rrss`, un editor con vista
+previa, otro proyecto.
+
+```bash
+# Linux, solo para tu usuario (sin sudo)
+mkdir -p ~/.local/share/fonts/instatypst
+rsync -a --exclude '*_Nerd_Font' Fonts/ ~/.local/share/fonts/instatypst/
+fc-cache -f
+
+# Linux, para todo el sistema
+sudo rsync -a --exclude '*_Nerd_Font' Fonts/ /usr/local/share/fonts/instatypst/
+sudo fc-cache -f
+
+typst fonts | grep -i "EB Garamond"     # comprobar que Typst las ve
+```
+
+Se excluyen las dos Nerd Fonts (`Iosevka_Nerd_Font/`, `ZedMono_Nerd_Font/`):
+no viajan con el repo (ver arriba) y los presets no las necesitan. En macOS
+copia las familias a `~/Library/Fonts/`; en Windows, instálalas desde el
+explorador (selecciona los `.ttf`/`.otf` → «Instalar»). Esas dos rutas no
+se probaron aquí.
+
+Con las fuentes instaladas, `--font-path Fonts` pasa a ser opcional. Sigue
+siendo útil para fijar exactamente estas versiones en un equipo que ya tiene
+otras familias con el mismo nombre.
+
 ## Estructura
 
 ```
@@ -115,7 +148,7 @@ llevarla a otra máquina), ahí sí copiá: `cp -r src typst.toml
 **Fuentes:** el paquete no trae las fuentes consigo — eso no es parte de
 cómo funciona el sistema de paquetes de Typst. Quien lo use necesita pasar
 `--font-path` apuntando a una copia de `Fonts/` (o tener esas familias
-instaladas en el sistema).
+instaladas en el sistema: ver «Instalar las fuentes en el sistema»).
 
 ### Dentro de este repo (desarrollo)
 
