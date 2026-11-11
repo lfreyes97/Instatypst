@@ -128,6 +128,13 @@
   etiqueta: [Apocalipsis 13:18], remate: [Sabiduría],
   autor: [B. B. Warfield])
 ```,
+  "franjas": ```typ
+#carteles.franjas(
+  [Por supuesto, todos los hombres tienen fe. …],
+  titulo: "El autoengaño del incrédulo",
+  marca: marca, pie: [tu-sitio.com],
+  imagen: superbg.superbg("atardecer-malla", size: (1080, 1080)))
+```,
 )
 
 // Función principal, para el índice: la primera llamada de la entrada que

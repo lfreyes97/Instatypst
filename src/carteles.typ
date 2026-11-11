@@ -57,6 +57,9 @@
 //                  (la pieza suelta: carteles.hoja, de carteles/_hojas-piezas.typ)
 //    folio         (11) folio de salterio: pergamino pautado, capitular
 //                  iluminada, glosa al margen — folio.typ
+//    franjas       cita con cabecera de color y marca, título en condensadas,
+//                  regla, y una ilustración a sangre bajo un velo que se disuelve;
+//                  cierra una tira con el pie — carteles/franjas.typ
 //
 //  Presets con orla de fleurones e IM FELL (viven en orlas.typ):
 //    cita-orlada, capitulo-orlado, pregunta-orlada, lienzo-orlado,
@@ -79,6 +82,7 @@
 #import "carteles/mosaico.typ": mosaico
 #import "carteles/teselas.typ": teselas
 #import "carteles/hojas.typ": hojas
+#import "carteles/franjas.typ": franjas
 #import "carteles/epigrafe.typ": epigrafe, estilos-epigrafe
 #import "carteles/cita-social.typ": cita-social
 #import "carteles/_hojas-piezas.typ": hoja

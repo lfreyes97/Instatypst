@@ -29,13 +29,14 @@ Si el usuario no dice el destino, asume feed 4:5.
 | Carrusel | `carousel-cover` + `carousel-slide`, o un preset de `carteles` envuelto en `lamina()` |
 | Cita con aspecto de red social (publicación, mensaje, editorial…) | `carteles.cita-social(cita, nombre, estilo:)` (antes `quote-social`) |
 | Epígrafe con 15 estilos | `carteles.epigrafe(cita, autor:, obra:, estilo:)` |
+| Cita con cabecera de marca, título, y una ilustración al fondo (serie de una cuenta) | `carteles.franjas(cita, titulo:, marca:, imagen:, pie:)` |
 | Portada geométrica | `carteles.bauhaus`, `carteles.mosaico`, `carteles.teselas`, `carteles.hojas` |
 | Hoja fotografiada sobre una mesa | `mesa.hoja-vertical[…]`, `mesa.vertical` |
 | Pasaje bíblico | `pasaje("Salmo 23", version: "RVR1960")[...]` |
 | Letra capital | `capitular(cuerpo, alto: 3)` o `capitular-ornamentada(...)` |
 | Fondo con capas | `superbg.superbg("neon-aura", size: ...)` (22 presets) |
 
-**Antes de escribir una página a mano, revisa `examples/presets/` y `src/carteles.typ`.** Casi siempre ya hay un preset: `liso`, `suizo`, `demostracion`, `plano`, `rayar`, `escalera`, `gozne`, `linea-tiempo`, `esquela`, `folio`, `cita-social`, `epigrafe`, `bauhaus`, `mosaico`, `teselas`, `hojas`. Casi todos toman `tema:` (un nombre de `carteles.temas-lamina`, un diccionario de roles `fondo`/`tinta`/`suave`/`acento` o `carteles.tema-desde-theme(theme.base)`).
+**Antes de escribir una página a mano, revisa `examples/presets/` y `src/carteles.typ`.** Casi siempre ya hay un preset: `liso`, `suizo`, `demostracion`, `plano`, `rayar`, `escalera`, `gozne`, `linea-tiempo`, `esquela`, `folio`, `cita-social`, `epigrafe`, `bauhaus`, `mosaico`, `teselas`, `hojas`, `franjas`. Casi todos toman `tema:` (un nombre de `carteles.temas-lamina`, un diccionario de roles `fondo`/`tinta`/`suave`/`acento` o `carteles.tema-desde-theme(theme.base)`).
 
 Los ejemplos mínimos de cada uno están en `examples/presets/<nombre>.typ`: copia de ahí.
 

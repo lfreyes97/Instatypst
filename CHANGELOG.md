@@ -8,6 +8,21 @@ byte antes y después (PNG a 40 ppi, `cmp`), salvo la lámina 3 de
 
 ### Añadido
 
+- **`carteles.franjas`**, el cartel de cita para el que se pensó el sistema de
+  redes: una cabecera de color con la marca centrada, un título en mayúsculas
+  condensadas sobre una regla, la cita centrada (toma el mayor cuerpo que cabe
+  hasta `texto-hasta`) y una ilustración a sangre (`imagen:`, ya hecha) tapada
+  por un velo del color del cuerpo que se disuelve de arriba abajo
+  (`velo: (desde, hasta)`); cierra una tira con el `pie`. Sin título no hay
+  regla; sin imagen, no hay velo. Contrato de los presets: `formato` y `tema`
+  con los roles `fondo`, `tinta`, `suave`, `acento` (cabecera y regla) y `tira`
+  (rol propio, la tira del pie). Las medidas, tomadas de una lámina de 1080 px,
+  se escalan con el lado menor. Tipografía por defecto, las de `Fonts/`:
+  Bebas Neue para el título y Bricolage Grotesque condensada extraligera para
+  la cita (la de la lámina original es una condensada más fina que no se
+  incluye; `fuente:`, `peso:` y `estiramiento:` la sustituyen). Demo:
+  `examples/presets/franjas.typ`. Sus saltos de línea y posiciones coinciden
+  con los de la lámina de referencia.
 - **`carteles.cita-social`**, el pulido de `quote-social` como preset (y esta
   desaparece de `social.typ`): el cuerpo de la cita se ajusta solo al área (hasta
   `cuerpo`, mínimo 22 por cada 1080 de ancho; si no cabe, error con mensaje), la

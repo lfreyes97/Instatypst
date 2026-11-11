@@ -827,6 +827,15 @@ Además cada rol puede pisarse por nombre (`fondo:`, `tinta:`, `suave:`, `acento
 ))
 
 #demo(```typ
+#carteles.franjas(
+  [Dios no necesita que lo defendamos.],
+  titulo: "La roca de los siglos", marca: [TU MARCA], pie: [tu-sitio.com],
+  imagen: superbg.superbg("aurora", size: (1080, 1080)))
+```.text, opts: (
+  ("carteles.franjas(cita, titulo:, imagen:, marca:, pie:, tema:, velo:, texto-hasta:, fuente:, peso:, estiramiento:, cuerpo-max:)", "cita con cabecera de color y marca, título en mayúsculas condensadas bajo una regla, y una ilustración a sangre (`imagen:`, ya hecha) tapada por un velo del color del cuerpo que se disuelve hacia abajo (`velo: (desde, hasta)`, fracciones del alto); cierra una tira con el pie. La cita toma el mayor cuerpo que cabe hasta `texto-hasta`. Sin título no hay regla; sin imagen, no hay velo. Roles `fondo`, `tinta`, `suave`, `acento` (cabecera y regla) y `tira` (pie)"),
+))
+
+#demo(```typ
 #carteles.cita-social(
   [La constancia entrena al algoritmo… y a tu #highlight[audiencia].],
   [Luis Felipe Reyes], iniciales: "LR",
@@ -1119,7 +1128,7 @@ claude mcp add --scope user instatypst -- uv run --script /ruta/a/Instatypst/mcp
   [`blockquote-*`, `bq-frame`, `bq-mark`, `bq-rule`, `bq-rule-full`, `bq-attribution`], [`blockquotes.typ` (cap. 10)],
   [`formas`], [`formas.typ`: `bocadillo`, `cinta` (cap. 8.4)],
   [`superbg`], [`superbg/`: fondos componibles (cap. 8.2)],
-  [`carteles`], [`carteles.typ`: `liso`, `suizo`, `demostracion`, `plano`, `escalera`, `gozne`, `llamada`, `folio`, `esquela`, `linea-tiempo`, `curvas-de-nivel`, `lienzo-orlado`, `cita-orlada`, `capitulo-orlado`, `pregunta-orlada`, `reticula`, `cuerpo-al-ancho`, `rayar`, `cita-social`, `bauhaus`, `mosaico`, `teselas`, `hojas`, `epigrafe`, `estilos-epigrafe`, `temas-lamina`, `resolver-tema`, `tema-desde-theme` (cap. 11 a 13)],
+  [`carteles`], [`carteles.typ`: `liso`, `suizo`, `demostracion`, `plano`, `escalera`, `gozne`, `llamada`, `folio`, `esquela`, `linea-tiempo`, `curvas-de-nivel`, `lienzo-orlado`, `cita-orlada`, `capitulo-orlado`, `pregunta-orlada`, `reticula`, `cuerpo-al-ancho`, `rayar`, `cita-social`, `bauhaus`, `mosaico`, `teselas`, `hojas`, `franjas`, `epigrafe`, `estilos-epigrafe`, `temas-lamina`, `resolver-tema`, `tema-desde-theme` (cap. 11 a 13)],
   [`fleurones`], [`fleurones.typ`: `orla`, `guarda`, `vineta`, `roseta`, `medallon`, `cabecera`, `separador`, `asterismo`, `remate`, `friso`, tablas `cadenas`, `guardas`, `vinetas` (cap. 13)],
   [`curvas`], [`curvas.typ`: `campo`, `ventana`, `panorama` (cap. 14)],
   [`mesa`], [`mesa/lib.typ`: `vertical`, `apaisada`, `cuadrada`, `hoja-*`, `portada-*`, `nota`, `lamina` (cap. 15.4)],

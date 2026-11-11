@@ -79,6 +79,16 @@
     acento: rgb("#f9c90f"),
     hondo: rgb("#2a3ed3"),
   ),
+  // Franjas: cuerpo casi negro azulado, texto blanco, y un rojo ladrillo para
+  // la cabecera y la regla. `tira` es la franja gris oscuro del pie, rol
+  // propio de este tema. Medidos sobre la lámina de origen.
+  franjas: (
+    fondo: rgb("#00090e"),
+    tinta: rgb("#ffffff"),
+    suave: rgb("#ffffff"),
+    acento: rgb("#9e413a"),
+    tira: rgb("#1a1a1a"),
+  ),
   esquela: (
     fondo: rgb("#f3eee3"),
     tinta: rgb("#141210"),
