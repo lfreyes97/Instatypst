@@ -40,6 +40,24 @@ Si el usuario no dice el destino, asume feed 4:5.
 
 Los ejemplos mínimos de cada uno están en `examples/presets/<nombre>.typ`: copia de ahí.
 
+### Firmas de los presets (fuente única de verdad)
+
+`carteles.firmas` es una tabla con los 19 presets de página: argumentos
+posicionales en orden, `formato` por defecto, `tema`, archivo de origen,
+descripción y alias canónicos. Úsala para escribir una llamada sin adivinar
+la firma (hay presets con 0, 1, 2 y hasta 3 posicionales):
+
+```typst
+#import "@local/instatypst:0.1.0": carteles
+#let f = carteles.firmas.at("franjas")
+// f.pos = ("cita",), f.formato = (1080, 1080)
+```
+
+Desde el MCP: `firmas()` da el resumen legible y `firmas_json()` el contrato
+para una herramienta (CLI, script). La tabla vive en
+`src/carteles/firmas.typ`; si cambia una firma, se actualiza ahí en el mismo
+commit. `tests/firmas.typ` comprueba su coherencia.
+
 ## 3 · Compilar
 
 Fuera del repo (ej. `~/Proyectos/Post`), usa un `env.sh` que fije las fuentes y úsalo así:

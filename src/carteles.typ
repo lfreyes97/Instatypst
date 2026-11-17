@@ -84,6 +84,7 @@
 #import "carteles/hojas.typ": hojas
 #import "carteles/franjas.typ": franjas
 #import "carteles/epigrafe.typ": epigrafe, estilos-epigrafe
+#import "carteles/firmas.typ": firmas
 #import "carteles/cita-social.typ": cita-social
 #import "carteles/_hojas-piezas.typ": hoja
 

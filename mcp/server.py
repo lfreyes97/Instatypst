@@ -76,6 +76,62 @@ def _compilar(typ: Path, salida: Path, ppi: float) -> str:
 # ── descubrimiento (en vivo) ─────────────────────────────────
 
 
+def _firmas_json() -> dict:
+    """Lee carteles.firmas desde el paquete (fuente única: src/carteles/firmas.typ)."""
+    import json
+    import tempfile
+
+    cuerpo = [
+        '#import "@local/instatypst:0.1.0": carteles',
+        "#metadata(carteles.firmas) <firmas>",
+    ]
+    with tempfile.TemporaryDirectory() as t:
+        f = Path(t) / "firmas.typ"
+        f.write_text("\n".join(cuerpo), encoding="utf-8")
+        r = _typst(
+            "eval", "--root", "/",
+            "query(<firmas>).first().value", "--in", str(f), "--format", "json",
+        )
+    if r.returncode != 0:
+        raise RuntimeError("\n".join(l for l in r.stderr.splitlines() if not l.startswith("instatypst:")))
+    return json.loads(r.stdout)
+
+
+@mcp.tool()
+def firmas_json() -> str:
+    """Tabla de firmas de los presets en JSON, tal como la expone el paquete.
+
+    Contrato legible por máquina para la CLI: nombre -> pos, formato, tema,
+    archivo, uso, campo (alias canónicos) y compuesto.
+    """
+    import json
+
+    try:
+        return json.dumps(_firmas_json(), ensure_ascii=False, indent=2)
+    except (RuntimeError, ValueError) as e:
+        return f"ERROR al leer carteles.firmas: {e}"
+
+
+@mcp.tool()
+def firmas() -> str:
+    """Firmas de los 19 presets de carteles: argumentos posicionales y default.
+
+    Para el JSON completo usa `firmas_json`.
+    """
+    try:
+        data = _firmas_json()
+    except (RuntimeError, ValueError) as e:
+        return f"ERROR al leer carteles.firmas: {e}"
+    lineas = [f"{len(data)} presets de carteles (fuente: src/carteles/firmas.typ)", ""]
+    for nombre, f in data.items():
+        pos = ", ".join(f["pos"]) or "— (todo por nombre)"
+        fmt = f["formato"][0], f["formato"][1]
+        tema = f["tema"] if f["tema"] is not None else "sin tema:"
+        lineas.append(f"{nombre}({pos})  formato={fmt[0]}x{fmt[1]}  tema={tema}")
+        lineas.append(f"    {f['uso']}  [{f['archivo']}]")
+    return "\n".join(lineas)
+
+
 @mcp.tool()
 def ayuda() -> str:
     """Guía de uso de Instatypst (SKILL.md del repo). Léela antes de diseñar."""

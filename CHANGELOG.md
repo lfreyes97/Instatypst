@@ -8,6 +8,16 @@ byte antes y después (PNG a 40 ppi, `cmp`), salvo la lámina 3 de
 
 ### Añadido
 
+- **`carteles.firmas`**, tabla de los 19 presets de página con sus argumentos
+  posicionales (en orden), formato por defecto, tema, archivo de origen,
+  descripción y alias de campos canónicos (`src/carteles/firmas.typ`). Es la
+  fuente única de cómo se llama cada preset: la consumen el MCP (herramientas
+  `firmas()` y `firmas_json()`) y, en adelante, la CLI en vez de su tabla
+  `POSICIONALES` hardcodeada, que solo cubría 6 de 19. Incluye el aviso de que
+  `franjas` es el único preset con formato 1:1 por defecto. Sin cambio visual:
+  es un módulo de datos que se importa, no toca ningún preset.
+- **`tests/firmas.typ`** y las herramientas MCP `firmas()` / `firmas_json()`.
+
 - **`carteles.franjas`**, el cartel de cita para el que se pensó el sistema de
   redes: una cabecera de color con la marca centrada, un título en mayúsculas
   condensadas sobre una regla, la cita centrada (toma el mayor cuerpo que cabe
