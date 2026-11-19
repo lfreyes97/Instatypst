@@ -33,7 +33,7 @@
 // ─────────────────────────────────────────────────────────────
 
 #import "../pliego.typ": pliego
-#import "_base.typ": medida, escala, cuerpo-al-ancho, ajustar-alto
+#import "_base.typ": medida, escala, cuerpo-al-ancho, ajustar-alto, resolver-marca
 #import "_temas.typ": resolver-tema
 #import "../superbg/lib.typ" as superbg
 
@@ -81,6 +81,7 @@
   let tm = resolver-tema(tema, defecto: "bauhaus")
   let fondo = if fondo == auto { tm.fondo } else { fondo }
   let tinta = if tinta == auto { tm.tinta } else { tinta }
+  let marca = resolver-marca(marca, tinta, formato)
   let suave = if suave == auto { tm.suave } else { suave }
   let acento = if acento == auto { tm.acento } else { acento }
   let amarillo = if amarillo == auto { tm.amarillo } else { amarillo }

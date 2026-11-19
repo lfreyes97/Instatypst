@@ -15,7 +15,7 @@
 #import "carteles/_temas.typ": resolver-tema, temas-lamina
 #import "superbg/lib.typ" as superbg
 #import "fleurones.typ" as fl
-#import "carteles/_base.typ": medida, escala
+#import "carteles/_base.typ": medida, escala, resolver-marca
 
 // Viñeta: auto = el glifo de FLOWERS 2 de la lámina, como texto (`g`
 // de cuerpo, con `bordes` ajustados o no); un nombre de
@@ -84,6 +84,7 @@
   let tm = resolver-tema(tema, defecto: "esquela")
   let papel = if papel == auto { tm.fondo } else { papel }
   let luto = if luto == auto { tm.tinta } else { luto }
+  let marca = resolver-marca(marca, luto, formato)
   let sepia = if sepia == auto { tm.suave } else { sepia }
   let (ancho, alto) = medida(formato)
   let k = escala(formato, base: (1080, 1350))

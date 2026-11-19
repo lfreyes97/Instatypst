@@ -118,6 +118,40 @@
     acento: rgb("#9a3a1c"),
     suave: rgb("#6b5e52"),
   ),
+  // Contraste: papel cálido; `afirma` (verde) y `niega` (ladrillo) tiñen los
+  // dos lados. Ambos pasan 4,5:1 sobre el fondo (el rótulo va en ellos).
+  contraste: (
+    fondo: rgb("#f4efe6"),
+    tinta: rgb("#1f2328"),
+    suave: rgb("#5f656c"),
+    acento: rgb("#1f2328"),
+    afirma: rgb("#2c6a4a"),
+    niega: rgb("#a23a2c"),
+  ),
+  // Evento: noche azulada y un coral. Todos los roles pasan 4,5:1 sobre el
+  // fondo (la fecha, el filete y la píldora van en `acento`).
+  evento: (
+    fondo: rgb("#101826"),
+    tinta: rgb("#f2ece0"),
+    suave: rgb("#adb6c2"),
+    acento: rgb("#ff8a5c"),
+  ),
+  // Consejo: mostaza sólida y tinta casi negra. `sombra` es el tono del numeral
+  // gigante (la tinta al 14 % en el fondo); es decoración, no texto.
+  consejo: (
+    fondo: rgb("#f0b323"),
+    tinta: rgb("#181818"),
+    suave: rgb("#3a3210"),
+    sombra: rgb("#d29d21"),
+  ),
+  // Lámina de serie: marfil frío, tinta azul marino y un verde azulado. `suave`
+  // (el texto corrido) y `acento` pasan 4,5:1 sobre el fondo.
+  lamina: (
+    fondo: rgb("#f7f7f3"),
+    tinta: rgb("#14213d"),
+    suave: rgb("#454f63"),
+    acento: rgb("#0f766e"),
+  ),
   // Magnalia Dei: cubierta (vino) e interior (papel). Además de los cuatro
   // roles base traen los de la orla: malla, franja, orn, fil y hondo.
   vino: (
@@ -305,6 +339,10 @@
   ),
   "cita-subrayado": (
     linea: (de: ("tarjeta", "tinta"), f: c => _mezcla(c.tarjeta, c.tinta, 10%)),
+  ),
+  // el numeral gigante: la tinta, muy rebajada en el fondo
+  consejo: (
+    sombra: (de: ("fondo", "tinta"), f: c => _mezcla(c.fondo, c.tinta, 14%)),
   ),
   // la afirmación enorme: la tinta del tema, que ya contrasta con su fondo
   demostracion: (

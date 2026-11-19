@@ -31,6 +31,11 @@
 //      sin blockquote-* que la use (ver ese archivo)
 //    superbg -> namespace de fondos componibles (superbg.superbg,
 //      superbg.bg-aura, superbg.bg-malla, …)
+//    marca -> la marca (logo, handle) como función (color, lienzo) → contenido:
+//      marca.texto, marca.svg, marca.imagen (marca.typ); los presets la aceptan
+//      en `marca:` además de un contenido ya hecho
+//    estilo -> ayudas para un estilo propio (una función tuya que recibe la pieza
+//      ya resuelta): estilo.bloque, .bloques, .texto, .formato, .paleta, .marca
 //    carteles -> namespace de presets de color sólido + tipografía
 //      (carteles.liso, .plano, .suizo, .cita-social, .bauhaus, .mosaico, .teselas, .hojas, .franjas, .demostracion, .escalera, .gozne,
 //      .linea-tiempo, …) y sus piezas
@@ -76,6 +81,8 @@
 #import "carrusel.typ": *
 #import "superbg/lib.typ" as superbg
 #import "carteles.typ" as carteles
+#import "marca.typ" as marca
+#import "estilo.typ" as estilo
 #import "fleurones.typ" as fleurones
 #import "curvas.typ" as curvas
 #import "mesa/lib.typ" as mesa

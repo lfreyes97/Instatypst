@@ -8,6 +8,63 @@ byte antes y después (PNG a 40 ppi, `cmp`), salvo la lámina 3 de
 
 ### Añadido
 
+- **`carteles.contraste`**: dos lados enfrentados (antes/después, ley/evangelio)
+  en dos paneles tintados —`niega` y `afirma`, roles nuevos del tema— con un
+  medallón en la juntura. Reescribe el `versus-post` del primer prototipo
+  social con las convenciones de los presets (tema de lámina, ajuste solo del
+  tamaño, pie con autor/obra/marca). En formatos más altos que 4:5 los lados se
+  apilan. Demo: `examples/presets/contraste.typ`.
+- **`carteles.evento`**: la fecha como protagonista tipográfico (el día enorme y
+  el mes en versalitas), un filete, el título —que se achica solo hasta
+  caber—, el detalle y la llamada a la acción en una píldora. Reescribe el
+  `event-post` del primer prototipo social. En formatos más altos que 4:5 la
+  fecha y el título crecen con la proporción. Demo: `examples/presets/evento.typ`.
+- **`carteles.consejo`**: un color sólido y tipografía; el número es una letra
+  gigante en tono sobre tono (`sombra`, rol derivado del tema) que sangra por
+  el borde, con etiqueta en píldora, título en sans pesada y explicación.
+  Reescribe el `tip-card` del primer prototipo social. En formatos altos el
+  numeral y el título crecen con la proporción. Demo: `examples/presets/consejo.typ`.
+- **`carteles.lamina`**: una página de una serie numerada (carrusel): barra de
+  progreso segmentada, «03 / 08», título y texto centrados en el espacio libre,
+  y «Desliza →» al pie salvo en la última. Valida que `numero` esté entre 1 y
+  `total`. Reescribe el `carousel-slide` del primer prototipo social. Demo:
+  `examples/presets/lamina.typ`.
+- **El contrato `instatypst-piece/v1` queda congelado** (2026-11-18). Los bloques de
+  contenido (`bloques-catalogo`: title, subtitle, label, body, quote, epigraph, verse,
+  conclusion, attribution, list, contrast, signature, footer, number, date) y su parentesco
+  (`bloques-padre`: verse → quote → body, epigraph → quote → body) son parte de él y no se
+  tocan sin pasar a v2; las firmas y los estilos sí pueden crecer. Descripción completa en
+  `typst-rrss/docs/contrato-v1.md`.
+- **`estilo`**: ayudas para escribir un estilo propio (`src/estilo.typ`:
+  `estilo.bloque`, `.bloques`, `.texto`, `.formato`, `.paleta`, `.marca`). Un estilo
+  propio es una función tuya que recibe UNA cosa, la pieza ya resuelta (formato en px,
+  paleta en roles, bloques con su tipo real, opciones, marca y la posición en la serie),
+  y dibuja lo que quiera; se declara con `style = { file, fn }` en un documento de
+  piezas. Las claves opcionales de la pieza siempre existen (`none` si no se declaran).
+  El carrusel «La disociación» de `Post/` replicado así sale idéntico, lámina por lámina,
+  al hecho a mano.
+- **`carteles.liso` lleva un epígrafe**: una cita breve que abre la pieza, arriba,
+  más chica y en cursiva, con su fuente (`epigrafe`, `epigrafe-fuente`,
+  `cuerpo-epigrafe`); el texto principal se centra en lo que queda. Sin epígrafe,
+  `liso` sale idéntico a como salía (los 8 demos, byte a byte). El epígrafe es un
+  elemento que cualquier cartel puede llevar —`liso` es el natural—, no un cartel
+  aparte; en el contrato es el bloque `epigraph` (con `source`), y un estilo que
+  lo declara propio lo coloca aparte del `body`. Demo: `examples/presets/liso-epigrafe.typ`.
+- **`marca`**: la marca (handle, logo SVG o imagen) como función
+  `(color, lienzo) → contenido` (`src/marca.typ`: `marca.texto`, `marca.svg`,
+  `marca.imagen`). Los presets aceptan en `marca:` una función además de un
+  contenido ya hecho, y la llaman con su propia tinta —solo ellos saben sobre qué
+  fondo cae—, así el mismo logo sale blanco sobre oscuro y negro sobre claro. El
+  alto es una fracción de √(ancho × alto) (por omisión 1/30), la regla de
+  `trabajos/campana`. Lo aceptan `liso`, `suizo`, `bauhaus`, `esquela`,
+  `contraste`, `evento`, `consejo` y `lamina` (`marca-funcion` en su firma);
+  `epigrafe`, aún no. Los demos existentes renderizan idénticos byte a byte.
+  Demo: `examples/presets/marca.typ`.
+- **Contrato de piezas**: catálogo de bloques de contenido (`bloques-catalogo`,
+  con su parentesco `verse → quote → body`) y, en cada firma, qué bloques
+  acepta (`bloques`). `scripts/exportar-firmas.py` lo publica en
+  `schema/firmas.json`, con las `options` de cada preset derivadas de su código.
+
 - **`carteles.firmas`**, tabla de los 19 presets de página con sus argumentos
   posicionales (en orden), formato por defecto, tema, archivo de origen,
   descripción y alias de campos canónicos (`src/carteles/firmas.typ`). Es la

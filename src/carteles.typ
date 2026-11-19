@@ -36,6 +36,18 @@
 //                  curvas de nivel (curvas-de-nivel) — escalera.typ
 //    gozne, llamada (07) cita con llamadas + diagrama radial — gozne.typ
 //    linea-tiempo  (16) estaciones sobre una línea vertical — linea-tiempo.typ
+//    contraste     dos lados enfrentados (antes/después, ley/evangelio) en dos
+//                  paneles tintados con un medallón en la juntura — contraste.typ
+//                  (reescribe el versus-post del primer prototipo social)
+//    evento        la fecha como protagonista (día enorme, mes en versalitas),
+//                  título, detalle y llamada a la acción — evento.typ
+//                  (reescribe el event-post del primer prototipo social)
+//    consejo       un color sólido y un numeral gigante en tono sobre tono que
+//                  sangra por el borde; etiqueta, título y explicación — consejo.typ
+//                  (reescribe el tip-card del primer prototipo social)
+//    lamina        una página de una serie numerada: barra de progreso
+//                  segmentada, «03 / 08», título, texto y «Desliza →» — lamina.typ
+//                  (reescribe el carousel-slide del primer prototipo social)
 //    esquela       (10) aviso fúnebre de imprenta: orla de luto, cruz, el
 //                  «difunto» en versalitas — esquela.typ
 //    bauhaus       formas primarias y barra diagonal sobre papel crudo,
@@ -73,10 +85,14 @@
 #import "escalera.typ": escalera, curvas-de-nivel
 #import "gozne.typ": gozne, llamada
 #import "linea-tiempo.typ": linea-tiempo
+#import "contraste.typ": contraste
+#import "evento.typ": evento
+#import "consejo.typ": consejo
+#import "lamina.typ": lamina
 #import "esquela.typ": esquela
 #import "folio.typ": folio
 #import "plano.typ": plano
-#import "carteles/_base.typ": medida, escala, area-trabajo, encajar, cuerpo-al-ancho, ajustar-alto
+#import "carteles/_base.typ": medida, escala, area-trabajo, encajar, cuerpo-al-ancho, ajustar-alto, resolver-marca
 #import "carteles/_temas.typ": temas-lamina, resolver-tema, tema-desde-theme
 #import "carteles/bauhaus.typ": bauhaus
 #import "carteles/mosaico.typ": mosaico
@@ -84,7 +100,7 @@
 #import "carteles/hojas.typ": hojas
 #import "carteles/franjas.typ": franjas
 #import "carteles/epigrafe.typ": epigrafe, estilos-epigrafe
-#import "carteles/firmas.typ": firmas
+#import "carteles/firmas.typ": firmas, bloques-catalogo, bloques-padre
 #import "carteles/cita-social.typ": cita-social
 #import "carteles/_hojas-piezas.typ": hoja
 
@@ -191,6 +207,7 @@
   let tm = resolver-tema(tema, defecto: "suizo")
   let papel = if papel == auto { tm.fondo } else { papel }
   let tinta = if tinta == auto { tm.tinta } else { tinta }
+  let marca = resolver-marca(marca, tinta, formato)
   let acento = if acento == auto { tm.acento } else { acento }
   let linea = if linea == auto { tm.linea } else { linea }
   let gris = if gris == auto { tm.suave } else { gris }
@@ -309,6 +326,10 @@
 //            (superbg.tinta-gastada)
 //   alinear  left · center (horizontal; en vertical va al centro óptico,
 //            un poco por encima de la mitad)
+//   epigrafe contenido: una cita breve que abre la pieza, arriba, más chica y
+//            en cursiva; el texto principal se centra en lo que queda
+//   epigrafe-fuente  contenido: de quién es el epígrafe, bajo él
+//   cuerpo-epigrafe  tamaño del epígrafe (la fuente, 0,72 de ese)
 #let liso(
   texto,
   formato: (1080, 1350),
@@ -323,10 +344,14 @@
   alinear: left,
   margen: 96pt,
   desgaste: 0,
+  epigrafe: none,
+  epigrafe-fuente: none,
+  cuerpo-epigrafe: 34pt,
 ) = {
   let (ancho, alto) = (formato.at(0) * 1pt, formato.at(1) * 1pt)
   let base = _color-base(fondo)
   let tinta = if tinta != auto { tinta } else if base != none { readable-on(base, white, black) } else { rgb("#1c1712") }
+  let marca = resolver-marca(marca, tinta, formato)
   let caja = ancho - 2 * margen
   // espacio reservado abajo para la marca, para que el texto no la pise
   let pie = if marca != none { 96pt } else { 0pt }
@@ -347,14 +372,27 @@
     }))
 
     context {
-      let hueco = alto - 2 * margen - pie
+      // El epígrafe, si lo hay: arriba, más chico y en cursiva. Sin él, todo
+      // lo de abajo da lo mismo que siempre (h-ep es 0pt).
+      let ep = if epigrafe != none {
+        block(width: caja, align(alinear, block(width: caja * 0.82, align(alinear, {
+          text(size: cuerpo-epigrafe, style: "italic", weight: 400, fill: tinta.transparentize(22%), epigrafe)
+          if epigrafe-fuente != none {
+            v(cuerpo-epigrafe * 0.4)
+            text(size: cuerpo-epigrafe * 0.72, weight: 600, tracking: 0.04em, fill: tinta.transparentize(38%))[— #epigrafe-fuente]
+          }
+        }))))
+      }
+      let h-ep = if ep != none { measure(ep).height + cuerpo-epigrafe * 1.4 } else { 0pt }
+      let hueco = alto - 2 * margen - pie - h-ep
       let c = if cuerpo == auto { cuerpo-max } else { cuerpo }
       if cuerpo == auto {
         while c > 28pt and measure(bloque(c)).height > hueco { c -= 2pt }
       }
       let b = bloque(c)
       // centro óptico: el aire de arriba es 2/3 del de abajo
-      let y = margen + (hueco - measure(b).height) * 0.4
+      let y = margen + h-ep + (hueco - measure(b).height) * 0.4
+      if ep != none { place(top + left, dx: margen, dy: margen, ep) }
       place(top + left, dx: margen, dy: y, b)
     }
 

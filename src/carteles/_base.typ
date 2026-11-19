@@ -87,6 +87,11 @@
   (x + (w - base.at(0) * s * 1pt) * ax, y + (h - base.at(1) * s * 1pt) * ay, s)
 }
 
+// `marca:` de un preset: un contenido ya hecho, o una función
+// `(color, lienzo) -> contenido` (ver marca.typ). El preset la llama con su
+// propia tinta y el formato en px, porque solo él sabe sobre qué fondo cae.
+#let resolver-marca(marca, color, formato) = if type(marca) == function { marca(color, formato) } else { marca }
+
 // Tamaño de letra con el que `hacer(tamaño)` ocupa exactamente `ancho`.
 // El ancho del texto es lineal en el tamaño: se mide una vez a 100pt y
 // se escala. Usar dentro de `context`.
