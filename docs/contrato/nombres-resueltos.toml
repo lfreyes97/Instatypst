@@ -1,0 +1,76 @@
+# Nombres resueltos (21 nov 2026): respuestas del formulario + desempates a favor de Opus.
+# Propuesta; core/nombres.toml no se ha tocado.
+# Principio: el bloque X se dibuja con el rol de texto X.
+# El contrato es la salida esperada de un writer; no limita a quien escribe Typst a mano.
+
+[bloques]
+"title"              = "main"
+"conclusion"         = "closer"
+"label"              = "kicker"      # antes eyebrow; desempate Opus (mismo nombre que el rol)
+"subtitle"           = "subhead"
+"attribution.author" = "author"
+"attribution.date"   = "dates"
+"attribution.role"   = "role"
+"attribution.work"   = "work"
+"signature"          = "brand"
+"epigraph"           = "epigraph"
+"number"             = "numeral"
+"verse"              = "verse"       # mantener v1
+"list"               = "list"        # mantener v1
+"contrast"           = "versus"
+
+[parametros]
+"formato" = "size"       # atajo dentro de artboard
+"tema"    = "theme"      # solo colores
+"acento"  = "accent"
+"marca"   = "brand"
+
+[suizo]
+"papel"          = "paper"       # desempate Opus (background queda para la capa: backdrop)
+"tinta"          = "ink"
+"linea"          = "guide"
+"gris"           = "quiet"       # desempate Opus
+"fuente"         = "body"
+"fuente-rotulos" = "annotation"  # rol de fuente de etiquetas (Opus)
+"fuente-remate"  = "display"
+"cuerpo-frase"   = "(sin argumento: se elige el paso del rol)"
+"columnas"       = "columns"     # conteo; vrulers/hrulers = qué filetes se dibujan (guides)
+"margen"         = "margin"
+"medianil"       = "gutter"
+"aire"           = "gap"
+"flecha"         = "arrow"
+"frase-y"        = "(sin argumento: put / flow)"
+"flecha-hasta"   = "arrow-to"
+
+[choques]
+"bleed (estirar hasta el borde)" = "extend"
+"rule (color de filete)"         = "guide"
+"display (alias de headline)"    = "retirado"
+"theme"                          = "solo colores"
+"capa tras el contenido"         = "backdrop"
+"capa sobre el contenido"        = "overlay"
+"color del papel"                = "paper"
+"vocabulario de color"           = "paper, ink, quiet, accent, guide"
+
+[tipografia]
+"modelo de escala"                    = "roles + pasos numéricos + alias opcionales"
+"texto: numerar columnas/filas"       = "index"
+"texto: línea sobre el titular"       = "kicker"   # antes lead; desempate Opus (lead/lede casi homófonos)
+"texto: titular"                      = "headline"
+"texto: titular dominante"            = "headline(dominant: true)"
+"texto: frase que explica"            = "lede"
+"texto: texto corrido"                = "prose"
+"texto: dato de servicio"             = "note"
+"texto: dato fuerte destacado"        = "subhead"
+"texto: cifra protagonista"           = "numeral"
+"texto: pie de serie"                 = "colophon"
+"rol de fuente para etiquetas"        = "annotation"
+"rol de fuente principal"             = "main"
+
+[estructura]
+"artboard" = "artboard"
+"medium"   = "medium"
+"preset"   = "preset"
+"variant"  = "variant"
+"type"     = "(reservado)"
+"blank"    = "blank"

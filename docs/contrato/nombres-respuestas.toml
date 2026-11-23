@@ -1,0 +1,80 @@
+# Respuestas del formulario de nombres, tal cual llegaron (21 nov 2026).
+# Copia de referencia; core/nombres.toml no se ha tocado.
+
+# Hijos de contenido
+[bloques]
+"title" = "Main!!!"
+"conclusion" = "closer"
+"label" = "eyebrow"
+"subtitle" = "subhead"
+"attribution.author" = "author"
+"attribution.date" = "dates"
+"attribution.role" = "title-role"
+"attribution.work" = "work"
+"signature" = "brand"
+"epigraph (text, source)" = "epigraph"
+"number (value, total)" = "numeral"
+"verse (lines)" = "mantener v1"
+"list (order, items)" = "mantener v1"
+"contrast (left, right)" = "versus"
+
+# Argumentos de frame
+[parametros]
+"formato" = "size"
+"tema" = "theme"
+"acento" = "accent"
+"marca" = "brand"
+
+# Los 15 parámetros de suizo sin nombre
+[suizo]
+"papel" = "background"
+"tinta" = "ink"
+"linea" = "guide"
+"gris" = "muted"  # quit creo podemos usarlo para texto en watermark [xd]
+"fuente" = "body"
+"fuente-rotulos" = "label"
+"fuente-remate" = "display"
+"cuerpo-frase" = "no entiendo la semantic aqui"
+"columnas" = "vrulers"  # hrulers para la rules horizontales?
+"margen" = "margin"
+"medianil" = "gutter"
+"aire" = "gap"
+"flecha" = "arrow"
+# "frase-y" = "?"
+"flecha-hasta" = "arrow-to"
+
+# Choques por resolver
+[choques]
+"bleed (el nuestro: estirar hasta el borde)" = "extend"
+# "rule (color de filete)" = "?"
+"display (alias de headline en swiss)" = "retirar alias"
+"theme" = "solo colores"
+"capa tras el contenido" = "backdrop"
+"capa sobre el contenido" = "overlay"
+"color del papel" = "paper"
+"vocabulario de color de la pieza" = "opus: paper, ink, quiet, accent, guide"
+
+# Tipografía
+[tipografia]
+"modelo de escala de tamaños" = "roles + pasos numéricos + alias opcionales"
+"texto: numerar columnas/filas" = "index"
+"texto: línea sobre el titular" = "lead"
+"texto: titular" = "headline"
+"texto: titular dominante" = "headline(dominant: true)"
+"texto: frase que explica el titular" = "lede"
+# "texto: texto corrido" = "?"
+"texto: dato de servicio" = "note"
+"texto: dato fuerte destacado" = "subhead"
+"texto: cifra protagonista" = "numeral"
+"texto: pie de serie" = "colophon"
+"rol de fuente para etiquetas" = "annotation"
+"rol de fuente principal" = "main"
+
+# Estructura general (decidida)
+[estructura]
+"artboard" = "artboard"
+"medium" = "medium"
+"preset" = "preset"
+"variant" = "variant"
+"type" = "(reservado)"
+"blank" = "blank"

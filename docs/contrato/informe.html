@@ -1,0 +1,426 @@
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Informe suizo: nombres y recursos</title>
+<style>
+  :root {
+    --bg: #f6f4ef; --fg: #141414; --muted: #6a675f; --rule: #d9d5ca;
+    --card: #fffdf8; --accent: #d52b1e; --code: #ece8dd;
+    --ok: #1f7a4d; --prop: #1b3fa0; --open: #b3500f; --use: #55524a;
+  }
+  @media (prefers-color-scheme: dark) {
+    :root:not([data-theme="light"]) {
+      --bg: #121211; --fg: #ecebe6; --muted: #9b988f; --rule: #2e2d2a;
+      --card: #1a1a18; --accent: #ff5a47; --code: #242421;
+      --ok: #5cc994; --prop: #7da2ff; --open: #f0a15c; --use: #a8a59b;
+    }
+  }
+  :root[data-theme="dark"] {
+    --bg: #121211; --fg: #ecebe6; --muted: #9b988f; --rule: #2e2d2a;
+    --card: #1a1a18; --accent: #ff5a47; --code: #242421;
+    --ok: #5cc994; --prop: #7da2ff; --open: #f0a15c; --use: #a8a59b;
+  }
+  * { box-sizing: border-box; }
+  body { margin: 0; background: var(--bg); color: var(--fg);
+    font: 16px/1.55 "Inter", "Hanken Grotesk", system-ui, sans-serif; }
+  .wrap { max-width: 1040px; margin: 0 auto; padding: 0 16px 80px; }
+  header { padding: 56px 0 24px; border-bottom: 3px solid var(--fg); margin-bottom: 8px; }
+  header .eyebrow { font: 600 12px/1 "DM Mono", ui-monospace, monospace; letter-spacing: .12em;
+    text-transform: uppercase; color: var(--accent); }
+  h1 { font-size: clamp(34px, 7vw, 64px); line-height: 1; margin: 14px 0 12px; letter-spacing: -.02em; }
+  header p { max-width: 62ch; color: var(--muted); margin: 0; }
+  nav { display: flex; flex-wrap: wrap; gap: 6px 18px; padding: 14px 0; font-size: 14px;
+    border-bottom: 1px solid var(--rule); margin-bottom: 8px; }
+  nav a { color: var(--fg); text-decoration: none; border-bottom: 1px solid var(--rule); }
+  nav a:hover { border-color: var(--accent); }
+  section { padding-top: 44px; }
+  h2 { font-size: 26px; margin: 0 0 6px; letter-spacing: -.01em; }
+  h2 .n { font: 500 13px "DM Mono", ui-monospace, monospace; color: var(--accent); margin-right: 10px; }
+  h3 { font-size: 17px; margin: 28px 0 8px; }
+  p.lead { color: var(--muted); max-width: 70ch; margin: 0 0 18px; }
+  table { width: 100%; border-collapse: collapse; font-size: 14px; background: var(--card);
+    border: 1px solid var(--rule); }
+  th, td { text-align: left; padding: 8px 10px; border-bottom: 1px solid var(--rule); vertical-align: top; }
+  th { font: 600 11px/1.2 "DM Mono", ui-monospace, monospace; letter-spacing: .08em;
+    text-transform: uppercase; color: var(--muted); background: var(--bg); }
+  .tw { overflow-x: auto; }
+  code, .c { font: 13px "DM Mono", ui-monospace, monospace; background: var(--code);
+    padding: 1px 5px; border-radius: 3px; }
+  pre { background: var(--code); padding: 14px 16px; overflow-x: auto; font: 13px/1.5 "DM Mono", ui-monospace, monospace;
+    border-left: 3px solid var(--accent); margin: 10px 0; }
+  .b { display: inline-block; font: 600 10.5px/1 "DM Mono", ui-monospace, monospace; letter-spacing: .06em;
+    text-transform: uppercase; padding: 3px 6px; border: 1px solid currentColor; border-radius: 2px; white-space: nowrap; }
+  .b.uso { color: var(--use); } .b.ok { color: var(--ok); } .b.prop { color: var(--prop); } .b.open { color: var(--open); }
+  .layers { display: grid; gap: 0; border: 1px solid var(--rule); background: var(--card); margin: 12px 0; }
+  .layer { display: grid; grid-template-columns: 120px 1fr; border-bottom: 1px solid var(--rule); }
+  .layer:last-child { border-bottom: 0; }
+  .layer > b { padding: 10px 12px; font: 600 13px "DM Mono", ui-monospace, monospace; border-right: 1px solid var(--rule); }
+  .layer > div { padding: 10px 12px; font-size: 14px; }
+  .layer small { color: var(--muted); display: block; }
+  @media (max-width: 560px) { .layer { grid-template-columns: 1fr; } .layer > b { border-right: 0; border-bottom: 1px solid var(--rule); } }
+  .note { background: var(--card); border: 1px solid var(--rule); border-left: 3px solid var(--open);
+    padding: 10px 14px; font-size: 14px; margin: 14px 0; }
+  .vars { display: grid; gap: 18px; }
+  .var { display: grid; grid-template-columns: 1fr; background: var(--card); border: 1px solid var(--rule); }
+  .var .t { padding: 12px 14px; }
+  .var .t h4 { margin: 0 0 4px; font: 600 15px "DM Mono", ui-monospace, monospace; color: var(--accent); }
+  .var .t p { margin: 0; font-size: 14px; color: var(--muted); max-width: 70ch; }
+  .var .imgs { display: flex; gap: 10px; padding: 0 14px 14px; flex-wrap: wrap; }
+  .var figure { margin: 0; width: calc((100% - 20px) / 3); }
+  @media (max-width: 640px) { .var figure { width: calc((100% - 10px) / 2); } }
+  .var img { display: block; width: 100%; aspect-ratio: 1080/1350; object-fit: cover; border: 1px solid var(--rule); background: var(--code); }
+  .var figcaption { font-size: 12px; color: var(--muted); padding-top: 4px; }
+  .th { display: inline-flex; gap: 4px; margin-top: 4px; flex-wrap: wrap; }
+  .th img { width: 54px; aspect-ratio: 1080/1350; object-fit: cover; border: 1px solid var(--rule); display: block; }
+  .gal { display: grid; grid-template-columns: repeat(auto-fill, minmax(168px, 1fr)); gap: 14px; }
+  .gal figure { margin: 0; background: var(--card); border: 1px solid var(--rule); }
+  .gal img { display: block; width: 100%; aspect-ratio: 1080/1350; object-fit: cover; background: var(--code); }
+  .gal figcaption { padding: 7px 9px 9px; font-size: 12.5px; line-height: 1.35; }
+  .gal figcaption b { display: block; font: 600 10.5px "DM Mono", ui-monospace, monospace; color: var(--muted); letter-spacing: .05em; }
+  .sw { display: inline-block; width: 14px; height: 14px; border: 1px solid var(--rule); vertical-align: -2px; margin-right: 3px; }
+  footer { margin-top: 56px; padding-top: 14px; border-top: 1px solid var(--rule); color: var(--muted); font-size: 13px; }
+  ul { padding-left: 20px; } li { margin: 3px 0; }
+</style>
+</head>
+<body>
+<div class="wrap">
+
+<header>
+  <div class="eyebrow">Instatypst · core / v2 · 21 nov 2026</div>
+  <h1>Nombres semánticos y biblioteca de recursos</h1>
+  <p>Resumen de la sesión: cómo quedaría el vocabulario del sistema, qué variantes salen de <code>suizo</code>, y un catálogo de los elementos reutilizables que aparecieron en 20 carteles de prueba (2 rondas, 4 agentes, sin contexto del proyecto).</p>
+</header>
+
+<nav>
+  <a href="#estado">1 Estado</a>
+  <a href="#estructura">2 Estructura</a>
+  <a href="#nombres">3 Nombres</a>
+  <a href="#variantes">4 Variantes</a>
+  <a href="#recursos">5 Biblioteca de recursos</a>
+  <a href="#galeria">6 Galería</a>
+  <a href="#abierto">7 Abierto</a>
+</nav>
+
+<section id="estado">
+  <h2><span class="n">01</span>Estado</h2>
+  <p class="lead">Cada nombre lleva una etiqueta: <span class="b uso">en uso</span> ya está en el código o en <code>nombres.toml</code>; <span class="b ok">acordado</span> lo dijiste tú en esta sesión; <span class="b prop">propuesto</span> es propuesta mía sin confirmar; <span class="b open">abierto</span> falta decidir.</p>
+  <ul>
+    <li><b>Nix → Typst funciona.</b> Experimento fuera del árbol en <code>~/Proyectos/nix-typst-exp/</code>: un <code>contract.nix</code> genera un <code>.typ</code> con validación de tipos por <code>assert</code>; compila con typst 0.15.1 y el caso inválido falla con el mensaje esperado. Falta generar el cuerpo de dibujo de un preset real y comparar PNG contra <code>src/</code>.</li>
+    <li><b><code>artboard</code></b> reemplaza al ambiguo <code>display: format</code>.</li>
+    <li><b><code>preset</code>, <code>variant</code></b> acordados; <code>type</code> queda <b>reservado</b> para otro uso por decidir. <code>style</code> como cajón de ajustes sueltos no te convence; propongo repartirlos en <code>theme</code>, <code>fonts</code> y <code>grid</code>. Todos los nombres semánticos, en inglés.</li>
+    <li><b>Variantes de <code>suizo</code>:</b> hoy no hay ninguna. Lo constante es el remate enorme abajo; las variantes salen de la retícula (§4).</li>
+  </ul>
+</section>
+
+<section id="estructura">
+  <h2><span class="n">02</span>Cómo quedaría estructurado</h2>
+  <p class="lead">Un lienzo y capas opcionales encima. El lienzo es dimensiones y color; todo lo demás se añade. Cada nombre responde una pregunta distinta, así que ninguno hace doble trabajo.</p>
+
+  <div class="layers">
+    <div class="layer"><b>artboard</b><div>¿Sobre qué se dibuja? Tamaño y <code>medium</code> (impreso, pantalla, wallpaper).<small>Atajo de string (<code>"wallpaper-4k"</code>) o diccionario <code>(size:, medium:)</code>. Cada <code>medium</code> aporta sus defaults en <code>auto</code>. No hay colisión con Typst (comprobado); solo evitar <code>medium</code> como paso de escala tipográfica.</small></div></div>
+    <div class="layer"><b>theme</b><div>¿De qué color? Fondo, tinta, acento.<small><code>artboard</code> + <code>theme</code> es el lienzo completo. Eso es <code>blank</code>.</small></div></div>
+    <div class="layer"><b>preset</b><div>¿Qué combinación ya armada de capas? <code>swiss</code>, <code>series</code>, <code>bauhaus</code>…<small><code>preset: auto</code> es <code>blank</code>: el lienzo solo. Hoy esto se llama <code>type</code> en <code>frame.typ</code>. También aceptaría una función propia.</small></div></div>
+    <div class="layer"><b>variant</b><div>¿Qué variante dentro del preset? Solo decisiones de forma.<small>Ej. en <code>swiss</code>: <code>"lines"</code>, <code>"cells"</code>, <code>"shifted"</code>, <code>"baseline"</code>. En <code>blank</code> no hay variantes. El contrato v1 ya tenía un campo <code>variant</code>.</small></div></div>
+    <div class="layer"><b>parts</b><div>¿Qué contenido hay? Los hijos dicen qué está presente.<small><code>statement</code>, <code>headline</code>, <code>eyebrow</code>, <code>question</code>… Si falta <code>statement</code>, la flecha desaparece sola.</small></div></div>
+    <div class="layer"><b>capas</b><div>Lo que se añade sobre el lienzo, todo opcional.<small>Retícula, composición geométrica, epígrafe, estructura de texto, marcas de producción. Es la biblioteca de la sección 5.</small></div></div>
+    <div class="layer"><b>fonts · grid</b><div>¿Con qué valores? Cajas de ajuste sueltas, con nombre o con diccionario de sobreescrituras.<small><code>theme</code> ya cubre el color.</small></div></div>
+  </div>
+
+  <h3><code>blank</code> = <code>auto</code></h3>
+  <p class="lead"><code>blank</code> es el nombre escrito de lo que <code>preset: auto</code> resuelve a cuando no eliges nada: el lienzo con sus dimensiones y su color, sin capas. Es un caso concreto de <code>auto</code>, no su sinónimo en general: <code>theme: auto</code> es el tema del preset, no <code>blank</code>. Reemplaza al nombre <code>liso</code>, que describía el aspecto y no era semántico. El preset <code>liso</code> de <code>src/</code> mantiene su nombre (API pública de v1).</p>
+
+<pre>#frame(artboard: "ig-portrait", theme: "suizo")[…]      // blank (preset: auto)
+
+#frame(
+  preset: "swiss",            // combinación de capas
+  variant: "cells",           // variante de retícula
+  artboard: "ig-portrait",    // tamaño + medium
+  theme: "suizo", accent: red,
+  grid: (columns: 6, gutter: 24pt),
+  brand: [Raah],
+)[
+  #eyebrow[Seminario]  #question[¿Qué decide la retícula?]
+  #statement[…]        #headline[RETÍCULA]
+]</pre>
+
+  <div class="note"><b><code>type</code> queda reservado.</b> Hoy <code>type</code> nombra la familia en <code>frame.typ</code>; pasa a <code>preset</code>, y la variante se llama <code>variant</code>. Dejar libre <code>type</code> evita además que el argumento tape a <code>std.type</code>, que ya dio problemas en las validaciones. El rename rompe la API del laboratorio v2 (no la pública de <code>src/</code>).</div>
+</section>
+
+<section id="nombres">
+  <h2><span class="n">03</span>Tabla de nombres semánticos</h2>
+
+  <h3>Hijos de contenido</h3>
+  <div class="tw"><table>
+    <tr><th>Semántico</th><th>v1 (<code>piece/v1</code>)</th><th>Estado</th><th>Nota</th></tr>
+    <tr><td><code>statement</code></td><td><code>title</code></td><td><span class="b uso">en uso</span></td><td>Frase principal; contenido suelto cae aquí.</td></tr>
+    <tr><td><code>headline</code></td><td><code>conclusion</code></td><td><span class="b uso">en uso</span></td><td>El remate enorme abajo. Es lo constante de <code>swiss</code>.</td></tr>
+    <tr><td><code>display</code></td><td>—</td><td><span class="b open">abierto</span></td><td>Alias de <code>headline</code> en <code>swiss</code>. Sobra si <code>artboard</code> absorbe la idea de pantalla.</td></tr>
+    <tr><td><code>eyebrow</code></td><td><code>label</code></td><td><span class="b uso">en uso</span></td><td>Etiqueta; forma un solo bloque con <code>question</code>.</td></tr>
+    <tr><td><code>question</code></td><td><code>subtitle</code></td><td><span class="b uso">en uso</span></td><td>Planteo.</td></tr>
+    <tr><td><code>author</code></td><td><code>attribution.author</code></td><td><span class="b uso">en uso</span></td><td></td></tr>
+    <tr><td><code>dates</code></td><td><code>attribution.date</code></td><td><span class="b uso">en uso</span></td><td></td></tr>
+    <tr><td><code>brand</code></td><td><code>signature</code></td><td><span class="b uso">en uso</span></td><td><code>none</code> = sin marca.</td></tr>
+  </table></div>
+
+  <h3>Argumentos de <code>frame</code></h3>
+  <div class="tw"><table>
+    <tr><th>Semántico</th><th>v1</th><th>Estado</th><th>Tipo Typst</th><th>Nota</th></tr>
+    <tr><td><code>artboard</code></td><td>—</td><td><span class="b ok">acordado</span></td><td><code>str | dictionary</code></td><td>Nombre aceptado por ti; forma (string o diccionario) propuesta.</td></tr>
+    <tr><td><code>format</code></td><td><code>formato</code></td><td><span class="b prop">propuesto</span></td><td><code>array</code></td><td>Queda como atajo del tamaño dentro de <code>artboard</code>.</td></tr>
+    <tr><td><code>preset</code></td><td>—</td><td><span class="b ok">acordado</span></td><td><code>auto | str | function</code></td><td>Combinación de capas. <code>auto</code> = <code>blank</code>. Hoy <code>type</code>.</td></tr>
+    <tr><td><code>blank</code></td><td><code>liso</code> (preset de src/, nombre v1 se mantiene)</td><td><span class="b ok">acordado</span></td><td>valor de <code>preset</code></td><td>Lo que resuelve <code>preset: auto</code>: artboard + theme, sin capas. Nombre propuesto por mí, confirmado por ti.</td></tr>
+    <tr><td><code>variant</code></td><td><code>variant</code> (campo de la pieza)</td><td><span class="b ok">acordado</span></td><td><code>str</code></td><td>Variante dentro de un preset. Ya existía en el contrato v1.</td></tr>
+    <tr><td><code>type</code></td><td>—</td><td><span class="b open">reservado</span></td><td>—</td><td>Libre para otro uso; por decidir.</td></tr>
+    <tr><td><code>style</code></td><td>—</td><td><span class="b open">abierto</span></td><td><code>dictionary</code></td><td>No convence como cajón. Posible nombre del conjunto <code>theme + fonts + grid</code>.</td></tr>
+    <tr><td><code>theme</code></td><td><code>tema</code></td><td><span class="b uso">en uso</span></td><td><code>auto | str | dictionary</code></td><td><code>auto</code> = el del preset.</td></tr>
+    <tr><td><code>accent</code></td><td><code>acento</code></td><td><span class="b uso">en uso</span></td><td><code>auto | color</code></td><td></td></tr>
+    <tr><td><code>brand</code></td><td><code>marca</code></td><td><span class="b uso">en uso</span></td><td><code>none | content | str</code></td><td></td></tr>
+    <tr><td><code>repeat</code></td><td>—</td><td><span class="b open">abierto</span></td><td><code>none | int | array</code></td><td>Cuerpo como función o datos; total con portada distinta sin resolver.</td></tr>
+  </table></div>
+
+  <h3>Los 15 parámetros de <code>suizo</code> sin nombre</h3>
+  <p class="lead">Los nombres v1 salen de <code>core/recetas/suizo.typ</code>. Los semánticos son propuesta mía; los de color reutilizan las claves que ya usa <code>resolve-theme</code> en v2 (<code>background</code>, <code>ink</code>, <code>rule</code>, <code>muted</code>) y los de retícula, los de <code>columns()</code> (<code>count</code>, <code>margin</code>, <code>gutter</code>).</p>
+  <div class="tw"><table>
+    <tr><th>Caja</th><th>v1</th><th>Semántico propuesto</th><th>Estado</th></tr>
+    <tr><td rowspan="4"><code>theme</code></td><td><code>papel</code></td><td><code>background</code></td><td><span class="b prop">propuesto</span></td></tr>
+    <tr><td><code>tinta</code></td><td><code>ink</code></td><td><span class="b prop">propuesto</span></td></tr>
+    <tr><td><code>linea</code></td><td><code>rule</code></td><td><span class="b prop">propuesto</span></td></tr>
+    <tr><td><code>gris</code></td><td><code>muted</code></td><td><span class="b prop">propuesto</span></td></tr>
+    <tr><td rowspan="4"><code>fonts</code></td><td><code>fuente</code></td><td><code>body</code></td><td><span class="b prop">propuesto</span></td></tr>
+    <tr><td><code>fuente-rotulos</code></td><td><code>label</code></td><td><span class="b prop">propuesto</span></td></tr>
+    <tr><td><code>fuente-remate</code></td><td><code>headline</code></td><td><span class="b prop">propuesto</span></td></tr>
+    <tr><td><code>cuerpo-frase</code></td><td><code>statement-size</code></td><td><span class="b prop">propuesto</span></td></tr>
+    <tr><td rowspan="4"><code>grid</code></td><td><code>columnas</code></td><td><code>columns</code></td><td><span class="b prop">propuesto</span></td></tr>
+    <tr><td><code>margen</code></td><td><code>margin</code></td><td><span class="b prop">propuesto</span></td></tr>
+    <tr><td><code>medianil</code></td><td><code>gutter</code></td><td><span class="b prop">propuesto</span></td></tr>
+    <tr><td><code>aire</code></td><td><code>air</code></td><td><span class="b prop">propuesto</span></td></tr>
+    <tr><td rowspan="3">escape / variante</td><td><code>flecha</code></td><td>deducido de <code>statement</code></td><td><span class="b prop">propuesto</span></td></tr>
+    <tr><td><code>frase-y</code></td><td><code>statement-y</code></td><td><span class="b prop">propuesto</span></td></tr>
+    <tr><td><code>flecha-hasta</code></td><td><code>arrow-to</code></td><td><span class="b prop">propuesto</span></td></tr>
+  </table></div>
+  <div class="note"><b>Aviso.</b> <code>core/v2/swiss.typ</code> hoy no expone ninguno de estos 15: fija fuentes y medidas dentro del preset y solo acepta <code>format, theme, accent, brand, author, dates</code>. Esta tabla describe el contrato al que se podría llegar, no el estado actual.</div>
+</section>
+
+<section id="variantes">
+  <h2><span class="n">04</span>Variantes que salen de <code>swiss</code></h2>
+  <p class="lead">Lo constante es el elemento dominante abajo; la retícula es lo que cambia de modo. Aquí están los 20 carteles. Los que dibujan retícula son variantes de <code>swiss</code>; el resto son otros presets.</p>
+  <h3>Variantes de <code>swiss</code> (retícula visible)</h3>
+  <div class="vars" id="vars"></div>
+  <h3>Lo que no era variante: otros presets</h3>
+  <p class="lead">Los ocho carteles que clasifiqué como «retícula oculta» no eran una variante de <code>swiss</code>. Se reparten en cuatro familias; tres ya existen en <code>src/</code> y los agentes, sin conocer el proyecto, las reinventaron.</p>
+  <div class="vars" id="others"></div>
+  <p class="lead" style="margin-top:12px">Resultado: <code>swiss</code> queda con cuatro variantes (<code>lines</code>, <code>cells</code>, <code>shifted</code>, <code>baseline</code>) y aparecen cuatro presets. «Retícula oculta» desaparece como variante. La clasificación y los nombres siguen siendo lectura mía; la separación en liso, línea de tiempo, bauhaus y letra gigante es tuya.</p>
+</section>
+
+<section id="recursos">
+  <h2><span class="n">05</span>Biblioteca de recursos</h2>
+  <p class="lead">Catálogo de elementos reutilizables sacados de los 20 carteles. Es un inventario de lo que se vio, con el cartel de origen; ninguno está todavía convertido en función de <code>core/</code>.</p>
+
+  <h3>Elementos</h3>
+  <div class="tw"><table>
+    <tr><th>Familia</th><th>Recurso</th><th>Qué es</th><th>Visto en</th><th>Necesita</th></tr>
+    <tr><td rowspan="5">Retícula</td><td><code>col-rules</code></td><td>Filetes en cada borde de columna, con o sin numeración.</td><td>R2 Opus 1, R2 Haiku 5, R1 Haiku 1</td><td>columns, margin, gutter</td></tr>
+    <tr><td><code>cell-grid</code></td><td>Malla cerrada de celdas con rótulos de fila y columna.</td><td>R2 Opus 2</td><td>columns, rows</td></tr>
+    <tr><td><code>shifted-grid</code></td><td>Retícula con desplazamiento por franja y regla de acumulado.</td><td>R2 Opus 3</td><td>columns, step</td></tr>
+    <tr><td><code>density-bands</code></td><td>Franjas con 2, 4, 8… celdas del mismo ancho total.</td><td>R2 Opus 4, R2 Haiku 3</td><td>bands, levels</td></tr>
+    <tr><td><code>baseline-grid</code></td><td>Línea base de 24 px numerada.</td><td>R2 Opus 5</td><td>step, height</td></tr>
+    <tr><td rowspan="4">Marcas de producción</td><td><code>registration-mark</code></td><td>Cruz en círculo en bordes y esquinas.</td><td>R2 Opus 5, R2 Haiku 4</td><td>position</td></tr>
+    <tr><td><code>crop-marks</code></td><td>Marcas de corte en las esquinas.</td><td>R2 Opus 5</td><td>bleed</td></tr>
+    <tr><td><code>color-strip</code></td><td>Tira de control de color CMYK.</td><td>R2 Opus 5, R2 Haiku 4</td><td>steps</td></tr>
+    <tr><td><code>misregister</code></td><td>Texto con planos cian y magenta desfasados.</td><td>R2 Opus 5, R2 Haiku 4</td><td>offset, colors</td></tr>
+    <tr><td rowspan="6">Elemento dominante</td><td><code>giant-glyph</code></td><td>Letra enorme recortada por el borde del lienzo.</td><td>R1 Sonnet 1, R1 Haiku 5</td><td>char, size, anchor</td></tr>
+    <tr><td><code>halftone</code></td><td>Campo de puntos con radio creciente en diagonal.</td><td>R1 Sonnet 4</td><td>cols, rows, r-min, r-max</td></tr>
+    <tr><td><code>growing-bars</code></td><td>Barras cuyo grosor o altura crece, con una que rompe el ritmo.</td><td>R1 Sonnet 5, R2 Opus 1</td><td>count, curve, break-at</td></tr>
+    <tr><td><code>quarter-tiles</code></td><td>Módulo geométrico (cuarto de círculo) en 4 giros.</td><td>R1 Sonnet 2</td><td>cols, rows, seed</td></tr>
+    <tr><td><code>step-matrix</code></td><td>Malla de módulos binarios con voces desplazadas media celda.</td><td>R2 Haiku 2</td><td>cols, rows, pattern</td></tr>
+    <tr><td><code>target</code></td><td>Diana de anillos con cruz.</td><td>R2 Haiku 4</td><td>rings</td></tr>
+    <tr><td rowspan="5">Estructura de texto</td><td><code>rule-table</code></td><td>Tabla de filas separadas por filetes, hora grande y destino.</td><td>R1 Sonnet 3</td><td>rows, columns</td></tr>
+    <tr><td><code>timeline</code></td><td>Regla vertical con nodos y un acento.</td><td>R1 Haiku 4</td><td>entries, highlight</td></tr>
+    <tr><td><code>calendar</code></td><td>Tabla de 7 columnas con celdas marcadas.</td><td>R2 Haiku 1</td><td>month, marked</td></tr>
+    <tr><td><code>text-stairs</code></td><td>Cada línea arranca en una columna distinta.</td><td>R2 Haiku 5</td><td>lines, start-cols</td></tr>
+    <tr><td><code>multi-column</code></td><td>El mismo texto en 1, 2, 4 y 8 columnas.</td><td>R2 Haiku 3</td><td>levels</td></tr>
+    <tr><td rowspan="3">Acento</td><td><code>number-block</code></td><td>Bloque de color con una cifra grande.</td><td>R1 Haiku 1, R2 Haiku 5</td><td>cols, value</td></tr>
+    <tr><td><code>dot</code></td><td>Punto de color como único acento.</td><td>R1 Haiku 5</td><td>size</td></tr>
+    <tr><td><code>odd-one-out</code></td><td>Un elemento de otro color dentro de una serie.</td><td>R1 Sonnet 5, R2 Opus 1</td><td>index, color</td></tr>
+    <tr><td rowspan="2">Metadato</td><td><code>mono-footer</code></td><td>Pie en monoespaciada con numeración «02 / 05 — …».</td><td>R1 Haiku 2–5, R2 Haiku</td><td>index, total, text</td></tr>
+    <tr><td><code>mono-eyebrow</code></td><td>Etiqueta en versalitas monoespaciadas sobre el titular.</td><td>R1 Haiku 2, 4; R2 Haiku</td><td>text</td></tr>
+  </table></div>
+
+  <h3>Tipografías usadas</h3>
+  <p>Todas de <code>typst fonts</code> en esta máquina, extraídas por búsqueda del nombre en los <code>.typ</code> (no exhaustivo: algunas fuentes pueden venir por defecto):</p>
+  <table style="max-width:560px">
+    <tr><th>Rol</th><th>Fuentes vistas</th></tr>
+    <tr><td>Sans neutra</td><td>Inter, Hanken Grotesk, Public Sans, FreeSans, Liberation Sans, TeX Gyre Heros</td></tr>
+    <tr><td>Geométrica</td><td>Jost</td></tr>
+    <tr><td>Monoespaciada (etiquetas)</td><td>DM Mono (la más repetida en rondas 1 y 2)</td></tr>
+    <tr><td>Remate condensado</td><td>Bebas Neue (solo <code>suizo</code>; no la usó ningún agente)</td></tr>
+  </table>
+
+  <h3>Paletas observadas</h3>
+  <p>Hex literales extraídos de los <code>.typ</code>; cada cartel suele usar fondo + tinta + <b>un</b> acento.</p>
+  <p>
+    <span class="sw" style="background:#F2EFE8"></span><code>#F2EFE8</code> papel ·
+    <span class="sw" style="background:#111111"></span><code>#111111</code> tinta ·
+    <span class="sw" style="background:#D52B1E"></span><code>#D52B1E</code> rojo ·
+    <span class="sw" style="background:#E30613"></span><code>#E30613</code> rojo ·
+    <span class="sw" style="background:#F4C20D"></span><code>#F4C20D</code> amarillo ·
+    <span class="sw" style="background:#FFD400"></span><code>#FFD400</code> amarillo ·
+    <span class="sw" style="background:#1B3FA0"></span><code>#1B3FA0</code> azul ·
+    <span class="sw" style="background:#0E2B24"></span><code>#0E2B24</code> verde oscuro ·
+    <span class="sw" style="background:#F26B3A"></span><code>#F26B3A</code> naranja ·
+    <span class="sw" style="background:#FF4A1C"></span><code>#FF4A1C</code> bermellón
+  </p>
+
+  <h3>Cómo guardarlo (propuesta, sin implementar)</h3>
+<pre>core/recursos/
+  reticula/   col-rules.typ  cell-grid.typ  shifted-grid.typ  density-bands.typ  baseline-grid.typ
+  marcas/     registration-mark.typ  crop-marks.typ  color-strip.typ  misregister.typ
+  dominante/  giant-glyph.typ  halftone.typ  growing-bars.typ  quarter-tiles.typ  step-matrix.typ
+  texto/      rule-table.typ  timeline.typ  calendar.typ  text-stairs.typ  multi-column.typ
+  acento/     number-block.typ  dot.typ  odd-one-out.typ
+  meta/       mono-footer.typ  mono-eyebrow.typ</pre>
+  <p>Cada archivo exporta una función y un diccionario <code>meta</code> con <code>kind</code>, <code>needs</code> (parámetros tipados) y <code>seen-in</code>. Como Typst no lista directorios, el índice lo generaría Nix a partir de esos <code>meta</code>, igual que el contrato de cada preset. Mismo modelo shadcn que <code>primitivas.typ</code>: el recurso se copia al proyecto y pasa a ser de quien lo usa.</p>
+  <div class="note"><b>Lo que falta para que sean recursos de verdad:</b> extraer cada uno del cartel donde nació, quitarle el contenido y las medidas fijas, y comprobar que compila solo con sus <code>needs</code>. Los carteles son prototipos con textos y medidas a mano; no se pueden importar tal cual.</div>
+</section>
+
+<section id="galeria">
+  <h2><span class="n">06</span>Galería: las 20 piezas</h2>
+  <p class="lead">Rondas 1 y 2, Haiku frente a Sonnet y Opus. Los agentes recibieron solo «estilo suizo, 1080×1350, Typst»; en la ronda 2, además, ver la ronda 1 y empujar hacia la retícula visible. Las imágenes se cargan con rutas relativas: las imágenes están en <code>img/</code>, junto a este archivo.</p>
+  <div class="gal" id="gal"></div>
+</section>
+
+<section id="abierto">
+  <h2><span class="n">07</span>Abierto</h2>
+  <ul>
+    <li><b><code>artboard</code>:</b> ¿string de perfil, diccionario o ambos? ¿Qué medios y perfiles se declaran primero?</li>
+    <li><b><code>style</code>:</b> ¿se descarta, o nombra el conjunto <code>theme + fonts + grid</code>?</li>
+    <li><b>Rename <code>type</code> → <code>preset</code></b> en <code>core/v2/frame.typ</code>, y <code>variant</code> para las variantes. Decidir para qué se reserva <code>type</code>.</li>
+    <li><b>Modelo Beamer:</b> ¿el mismo contenido re-vestido con otro preset? Afecta a si hace falta un vocabulario común de hijos.</li>
+    <li><b>Fallos de maquetación</b> vistos en los carteles de Opus (texto pisado en «RETÍCULA», «+160 px» pegado al borde en «Desplazamientos»): son de los prototipos, no del motor.</li>
+    <li><b>Verificar</b> los datos históricos del cartel «De la grotesca a la retícula» (R1 Haiku 4) antes de usarlo en nada real; salen de la memoria del modelo.</li>
+  </ul>
+</section>
+
+<footer>Generado en la sesión del 21 nov 2026. Fuentes: <code>core/v2/PENDIENTE.md</code>, <code>core/nombres.toml</code>, <code>core/recetas/suizo.typ</code>, <code>core/v2/swiss.typ</code> y los 20 carteles de prueba (<code>img/</code>).</footer>
+
+</div>
+<script>
+
+  const variants = [
+    ["lines", "Filetes de columna de fondo (el suizo actual).", [
+      ["img/haiku-1.png","R1 Haiku · «Retícula»"],
+      ["img/r2-opus-1.png","R2 Opus · «Boléro»"],
+      ["img/r2-haiku-5.png","R2 Haiku · escalera de texto"]]],
+    ["cells", "Celdas o módulos cerrados; el contenido vive en cada celda y puede romperla.", [
+      ["img/sonnet-2.png","R1 Sonnet · «Forma y módulo»"],
+      ["img/r2-haiku-1.png","R2 Haiku · «Noviembre»"],
+      ["img/r2-haiku-2.png","R2 Haiku · «16 pasos»"],
+      ["img/r2-opus-2.png","R2 Opus · «RETÍCULA»"]]],
+    ["shifted", "La retícula se desplaza o cambia de densidad por franja.", [
+      ["img/r2-haiku-3.png","R2 Haiku · «Densidad»"],
+      ["img/r2-opus-3.png","R2 Opus · «Desplazamientos»"],
+      ["img/r2-opus-4.png","R2 Opus · «Aquiles nunca llega»"]]],
+    ["baseline", "Línea base, columnas en cabeza y pie, marcas de producción.", [
+      ["img/r2-haiku-4.png","R2 Haiku · «Fuera de registro»"],
+      ["img/r2-opus-5.png","R2 Opus · «Imprenta abierta»"]]]
+  ];
+  const others = [
+    ["preset: auto → blank", "Lo que dibuja preset: auto: el lienzo (dimensiones y color) más, a lo sumo, una capa suelta. Cuatro de los ocho carteles «sin retícula» son esto, cada uno lienzo + una capa (halftone, growing-bars, rule-table o solo epígrafe). En v1 se llamaba liso, en src/carteles.typ.", [
+      ["img/haiku-2.png","R1 Haiku · «Una familia tipográfica»"],
+      ["img/sonnet-3.png","R1 Sonnet · «Horarios de salida»"],
+      ["img/sonnet-4.png","R1 Sonnet · «Ruido»"],
+      ["img/sonnet-5.png","R1 Sonnet · «Crescendo»"]]],
+    ["preset: linea-tiempo", "preset existente en src/linea-tiempo.typ. Regla vertical con nodos y un acento.", [
+      ["img/haiku-4.png","R1 Haiku · cronología"]]],
+    ["preset: bauhaus", "preset existente en src/carteles/bauhaus.typ. Composición de formas geométricas a sangre con titular abajo.", [
+      ["img/haiku-3.png","R1 Haiku · «Arte concreto»"]]],
+    ["preset: letra gigante", "No he visto un preset con este nombre en src/. El eje es una letra enorme recortada por el borde.", [
+      ["img/haiku-5.png","R1 Haiku · «S» gigante"],
+      ["img/sonnet-1.png","R1 Sonnet · «Helvetica»"]]]
+  ];
+  function render(id, list, prefix) {
+    const v = document.getElementById(id);
+    for (const [name, desc, imgs] of list) {
+      const d = document.createElement("div"); d.className = "var";
+      const t = document.createElement("div"); t.className = "t";
+      t.innerHTML = '<h4>' + prefix + name + '</h4><p>' + desc + '</p>';
+      const row = document.createElement("div"); row.className = "imgs";
+      for (const [src, cap] of imgs) {
+        const f = document.createElement("figure");
+        f.innerHTML = '<a href="' + src + '"><img loading="lazy" src="' + src + '" alt="' + cap + '"></a><figcaption>' + cap + '</figcaption>';
+        row.append(f);
+      }
+      d.append(t, row); v.append(d);
+    }
+  }
+  render("vars", variants, 'swiss · variant: ');
+  render("others", others, '');
+
+  const seen = {
+    "col-rules": ["img/r2-opus-1","img/r2-haiku-5"], "cell-grid": ["img/r2-opus-2"],
+    "shifted-grid": ["img/r2-opus-3"], "density-bands": ["img/r2-opus-4","img/r2-haiku-3"],
+    "baseline-grid": ["img/r2-opus-5"], "registration-mark": ["img/r2-opus-5","img/r2-haiku-4"],
+    "crop-marks": ["img/r2-opus-5"], "color-strip": ["img/r2-opus-5","img/r2-haiku-4"],
+    "misregister": ["img/r2-opus-5","img/r2-haiku-4"], "giant-glyph": ["img/sonnet-1","img/haiku-5"],
+    "halftone": ["img/sonnet-4"], "growing-bars": ["img/sonnet-5","img/r2-opus-1"],
+    "quarter-tiles": ["img/sonnet-2"], "step-matrix": ["img/r2-haiku-2"], "target": ["img/r2-haiku-4"],
+    "rule-table": ["img/sonnet-3"], "timeline": ["img/haiku-4"], "calendar": ["img/r2-haiku-1"],
+    "text-stairs": ["img/r2-haiku-5"], "multi-column": ["img/r2-haiku-3"],
+    "number-block": ["img/haiku-1","img/r2-haiku-5"], "dot": ["img/haiku-5"],
+    "odd-one-out": ["img/sonnet-5","img/r2-opus-1"], "mono-footer": ["img/haiku-2"], "mono-eyebrow": ["img/haiku-2"]
+  };
+  document.querySelectorAll("#recursos tr").forEach(tr => {
+    const tds = [...tr.children];
+    const i = tds.findIndex(td => td.children.length === 1 && td.firstElementChild.tagName === "CODE" && seen[td.textContent.trim()]);
+    if (i < 0 || !tds[i + 2]) return;
+    const box = document.createElement("div"); box.className = "th";
+    for (const p of seen[tds[i].textContent.trim()]) {
+      const a = document.createElement("a"); a.href = p + ".png";
+      a.innerHTML = '<img loading="lazy" src="' + p + '.png" alt="">'; box.append(a);
+    }
+    tds[i + 2].append(box);
+  });
+  const rounds = [
+    ["R1 · Haiku", "haiku", [
+      "Retícula de 12 columnas como franjas; bloque rojo «12»",
+      "Escalera de tamaños, solo texto, fondo amarillo",
+      "Formas geométricas en 4×4 a sangre; titular abajo",
+      "Cronología 1898–1981 con regla vertical",
+      "«S» gigante recortada por el borde"]],
+    ["R1 · Sonnet", "sonnet", [
+      "«a» blanca gigante sobre rojo; «Helvetica» abajo",
+      "Retícula 6×6 con un cuarto de círculo girado",
+      "Tabla de horarios de salida con filetes",
+      "Semitono rojo de puntos crecientes: «Ruido»",
+      "18 barras que engrosan, una naranja: «Crescendo»"]],
+    ["R2 · Haiku", "ronda2/haiku", [
+      "Calendario de noviembre, celdas rojas",
+      "«16 pasos»: malla con voces desplazadas",
+      "«Densidad»: la misma frase en 1, 2, 4 y 8 columnas",
+      "«Fuera de registro»: diana y planos CMY",
+      "Escalera de texto sobre 12 columnas"]],
+    ["R2 · Opus", "ronda2/opus", [
+      "«Boléro»: 12 columnas como partitura, la última roja",
+      "«RETÍCULA»: una letra por celda, la Í rompe la suya",
+      "«Desplazamientos»: la retícula avanza 32 px por franja",
+      "«Aquiles nunca llega»: densidad que se duplica",
+      "«Imprenta abierta»: pliego con línea base y marcas"]]
+  ];
+  const g = document.getElementById("gal");
+  for (const [label, dir, caps] of rounds) {
+    caps.forEach((c, i) => {
+      const f = document.createElement("figure");
+      const img = document.createElement("img");
+      img.loading = "lazy"; img.alt = label + " cartel " + (i + 1);
+      img.src = "img/" + dir.replace("ronda2/", "r2-") + "-" + (i + 1) + ".png";
+      const cap = document.createElement("figcaption");
+      const b = document.createElement("b"); b.textContent = label + " · " + (i + 1);
+      cap.append(b, c);
+      f.append(img, cap); g.append(f);
+    });
+  }
+</script>
+</body>
+</html>

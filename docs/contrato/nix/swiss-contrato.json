@@ -1,0 +1,171 @@
+{
+    "doc": "Remate enorme abajo a todo lo ancho, sobre ret\u00edcula de 6 columnas visible.",
+    "layers": [
+        {
+            "name": "raster",
+            "uses": "raster-guides(style: rules, extent: canvas)"
+        },
+        {
+            "name": "header",
+            "uses": "rule + kicker + note"
+        },
+        {
+            "name": "flow",
+            "uses": "flow(top, fill, bottom) + fitted + arrow"
+        },
+        {
+            "name": "footer",
+            "uses": "rule + brand"
+        }
+    ],
+    "params": {
+        "accent": {
+            "default": "auto",
+            "doc": "Color del remate y la flecha.",
+            "types": [
+                "auto",
+                "color"
+            ]
+        },
+        "artboard": {
+            "default": "\"feed-portrait\"",
+            "doc": "Tama\u00f1o y destino del lienzo.",
+            "enum": [
+                "feed-portrait",
+                "feed-square",
+                "story",
+                "slide",
+                "wallpaper-uhd"
+            ],
+            "keys": {
+                "medium": [
+                    "str"
+                ],
+                "size": [
+                    "array"
+                ]
+            },
+            "medium": [
+                "print",
+                "screen",
+                "wallpaper"
+            ],
+            "types": [
+                "str",
+                "dictionary"
+            ]
+        },
+        "author": {
+            "default": "none",
+            "doc": "Cabecera, izquierda.",
+            "types": [
+                "none",
+                "content",
+                "str"
+            ]
+        },
+        "brand": {
+            "default": "none",
+            "doc": "Marca del pie: contenido o funci\u00f3n (color, lienzo) => contenido.",
+            "types": [
+                "none",
+                "content",
+                "str",
+                "function"
+            ]
+        },
+        "dates": {
+            "default": "none",
+            "doc": "Cabecera, columna 4.",
+            "types": [
+                "none",
+                "content",
+                "str"
+            ]
+        },
+        "repeat": {
+            "default": "none",
+            "doc": "Una l\u00e1mina por elemento; el cuerpo pasa a ser una funci\u00f3n item => contenido.",
+            "min": 1,
+            "types": [
+                "none",
+                "int",
+                "array"
+            ]
+        },
+        "theme": {
+            "default": "auto",
+            "doc": "Colores: auto = el del preset; nombre del registro; o roles sueltos.",
+            "enum": [
+                "suizo",
+                "lamina"
+            ],
+            "keys": {
+                "accent": [
+                    "color"
+                ],
+                "background": [
+                    "color"
+                ],
+                "ink": [
+                    "color"
+                ],
+                "muted": [
+                    "color"
+                ],
+                "rule": [
+                    "color"
+                ]
+            },
+            "types": [
+                "auto",
+                "str",
+                "dictionary"
+            ]
+        },
+        "variant": {
+            "default": "\"lines\"",
+            "doc": "Modo de la ret\u00edcula visible (las cuatro variantes vistas en los carteles).",
+            "enum": [
+                "lines",
+                "cells",
+                "shifted",
+                "baseline"
+            ],
+            "types": [
+                "str"
+            ]
+        }
+    },
+    "parts": {
+        "eyebrow": {
+            "draws": "kicker en flow.top",
+            "required": false,
+            "types": [
+                "content"
+            ]
+        },
+        "headline": {
+            "draws": "fitted(role: headline, fit: width) en flow.bottom",
+            "required": true,
+            "types": [
+                "content"
+            ]
+        },
+        "question": {
+            "draws": "lede en flow.top",
+            "required": false,
+            "types": [
+                "content"
+            ]
+        },
+        "statement": {
+            "draws": "fitted(role: prose, fit: height) en flow.fill",
+            "fallback": true,
+            "required": true,
+            "types": [
+                "content"
+            ]
+        }
+    }
+}

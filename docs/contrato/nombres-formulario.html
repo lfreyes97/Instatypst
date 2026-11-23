@@ -1,0 +1,299 @@
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Formulario de nombres</title>
+<style>
+  :root {
+    --bg: #f6f4ef; --fg: #141414; --muted: #6a675f; --rule: #d9d5ca; --card: #fffdf8;
+    --accent: #d52b1e; --code: #ece8dd; --uso: #55524a; --mio: #1b3fa0; --opus: #7a3fa0; --user: #1f7a4d;
+  }
+  @media (prefers-color-scheme: dark) {
+    :root:not([data-theme="light"]) {
+      --bg: #121211; --fg: #ecebe6; --muted: #9b988f; --rule: #2e2d2a; --card: #1a1a18;
+      --accent: #ff5a47; --code: #242421; --uso: #a8a59b; --mio: #7da2ff; --opus: #c79bf0; --user: #5cc994;
+    }
+  }
+  * { box-sizing: border-box; }
+  body { margin: 0; background: var(--bg); color: var(--fg); font: 16px/1.5 "Inter", system-ui, sans-serif; }
+  .wrap { max-width: 980px; margin: 0 auto; padding: 0 16px 120px; }
+  header { padding: 44px 0 16px; border-bottom: 3px solid var(--fg); }
+  .eyebrow { font: 600 12px/1 "DM Mono", ui-monospace, monospace; letter-spacing: .12em; text-transform: uppercase; color: var(--accent); }
+  h1 { font-size: clamp(30px, 6vw, 52px); line-height: 1; margin: 12px 0 10px; letter-spacing: -.02em; }
+  header p { color: var(--muted); max-width: 66ch; margin: 0; }
+  .legend { display: flex; flex-wrap: wrap; gap: 6px 14px; margin: 14px 0 0; font-size: 13px; }
+  .tag { font: 600 10px/1 "DM Mono", ui-monospace, monospace; letter-spacing: .06em; text-transform: uppercase;
+    padding: 2px 5px; border: 1px solid currentColor; border-radius: 2px; margin-left: 6px; white-space: nowrap; }
+  .tag.uso { color: var(--uso); } .tag.mio { color: var(--mio); } .tag.opus { color: var(--opus); } .tag.user { color: var(--user); }
+  h2 { font-size: 22px; margin: 40px 0 4px; }
+  h2 .n { font: 500 12px "DM Mono", ui-monospace, monospace; color: var(--accent); margin-right: 8px; }
+  p.sec { color: var(--muted); font-size: 14px; margin: 0 0 12px; max-width: 70ch; }
+  .row { background: var(--card); border: 1px solid var(--rule); margin: 0 0 10px; padding: 12px 14px; }
+  .row.locked { opacity: .85; border-style: dashed; }
+  .row.done { border-left: 3px solid var(--user); }
+  .head { display: flex; flex-wrap: wrap; gap: 4px 12px; align-items: baseline; }
+  .v1 { font: 600 15px "DM Mono", ui-monospace, monospace; }
+  .ctx { color: var(--muted); font-size: 13.5px; flex: 1 1 240px; }
+  .opts { display: flex; flex-wrap: wrap; gap: 6px 8px; margin-top: 8px; }
+  .opts label { display: inline-flex; align-items: center; gap: 5px; font: 13.5px "DM Mono", ui-monospace, monospace;
+    border: 1px solid var(--rule); background: var(--bg); padding: 4px 8px; cursor: pointer; }
+  .opts label:has(input:checked) { border-color: var(--fg); background: var(--code); }
+  .opts input[type=text] { font: 13.5px "DM Mono", ui-monospace, monospace; width: 130px; padding: 2px 4px;
+    border: 1px solid var(--rule); background: var(--card); color: var(--fg); }
+  .note { margin-top: 8px; width: 100%; font: 13.5px/1.4 "Inter", system-ui, sans-serif; padding: 5px 8px;
+    border: 1px solid var(--rule); background: var(--bg); color: var(--fg); }
+  .why { font-size: 13px; color: var(--muted); margin-top: 6px; }
+  code { font: 12.5px "DM Mono", ui-monospace, monospace; background: var(--code); padding: 1px 4px; border-radius: 3px; }
+  .bar { position: fixed; left: 0; right: 0; bottom: 0; background: var(--card); border-top: 2px solid var(--fg);
+    padding: 10px 16px; display: flex; flex-wrap: wrap; gap: 8px 14px; align-items: center; justify-content: center; z-index: 5; }
+  button { font: 600 13px "DM Mono", ui-monospace, monospace; padding: 7px 12px; border: 1px solid var(--fg);
+    background: var(--bg); color: var(--fg); cursor: pointer; }
+  button:hover { background: var(--fg); color: var(--bg); }
+  #out { display: none; margin: 24px 0; }
+  #out textarea { width: 100%; min-height: 260px; font: 13px/1.45 "DM Mono", ui-monospace, monospace; padding: 10px;
+    background: var(--code); color: var(--fg); border: 1px solid var(--rule); }
+  #count { font: 600 13px "DM Mono", ui-monospace, monospace; }
+</style>
+</head>
+<body>
+<div class="wrap">
+<header>
+  <div class="eyebrow">Instatypst · core / v2 · nombres a traducir</div>
+  <h1>Formulario de nombres</h1>
+  <p>Elige el nombre semántico (en inglés) de cada concepto. Las filas con borde discontinuo ya están decididas. Todo se guarda en este navegador; al final, «Generar» te da un TOML en el formato de <code>core/nombres.toml</code> y un JSON.</p>
+  <div class="legend">
+    <span><span class="tag uso">en uso</span> ya está en el código v1/v2</span>
+    <span><span class="tag mio">propuesta</span> mía</span>
+    <span><span class="tag opus">opus</span> salió del sistema derivado de los 20 carteles</span>
+    <span><span class="tag user">decidido</span> por ti</span>
+  </div>
+</header>
+<main id="main"></main>
+
+<section id="out">
+  <h2>Resultado</h2>
+  <p class="sec">Copia el TOML o descarga el JSON. Las filas sin elegir salen comentadas.</p>
+  <textarea id="toml" spellcheck="false" readonly></textarea>
+</section>
+</div>
+
+<div class="bar">
+  <span id="count"></span>
+  <button id="gen">Generar TOML</button>
+  <button id="copy">Copiar</button>
+  <button id="dl">Descargar JSON</button>
+  <button id="reset">Borrar respuestas</button>
+</div>
+
+<script>
+// ---- datos ---------------------------------------------------------------
+// o(valor, etiqueta?)  etiquetas: uso | mio | opus | user
+const o = (v, t) => ({ v, t });
+const SECTIONS = [
+  { id: "bloques", n: "01", title: "Hijos de contenido",
+    desc: "Bloques de piece/v1 → nombre semántico. Es lo que ya recoge [bloques] de nombres.toml.",
+    rows: [
+      { id: "title", v1: "title", ctx: "La frase principal de la pieza.", pick: "statement",
+        opts: [o("statement","uso"), o("lede","opus")] },
+      { id: "conclusion", v1: "conclusion", ctx: "El remate enorme abajo. Opus señala que se lee al final, no primero.",
+        opts: [o("headline","uso"), o("conclusion"), o("closer","mio")], why: "Choque: en el sistema de Opus «headline» es el titular que se lee primero." },
+      { id: "label", v1: "label", ctx: "Línea pequeña encima del titular.", pick: "eyebrow",
+        opts: [o("eyebrow","uso"), o("kicker","opus")] },
+      { id: "subtitle", v1: "subtitle", ctx: "El planteo bajo la etiqueta.", pick: "question",
+        opts: [o("question","uso"), o("subtitle"), o("subhead","opus")] },
+      { id: "attribution.author", v1: "attribution.author", ctx: "Autor.", pick: "author", opts: [o("author","uso")] },
+      { id: "attribution.date", v1: "attribution.date", ctx: "Fecha o fechas.", pick: "dates", opts: [o("dates","uso"), o("date")] },
+      { id: "attribution.role", v1: "attribution.role", ctx: "Cargo o papel del autor. Sin nombre semántico aún.", opts: [o("role"), o("title-role")] },
+      { id: "attribution.work", v1: "attribution.work", ctx: "Obra citada. Sin nombre semántico aún.", opts: [o("work"), o("source")] },
+      { id: "signature", v1: "signature", ctx: "La marca o firma.", pick: "brand", opts: [o("brand","uso"), o("signature"), o("colophon","opus")] },
+      { id: "epigraph", v1: "epigraph (text, source)", ctx: "Cita con fuente. Ya en inglés en v1.", opts: [o("mantener v1"), o("quote")] },
+      { id: "number", v1: "number (value, total)", ctx: "Cifra y total, p. ej. 02 / 05.", opts: [o("mantener v1"), o("numeral","opus"), o("counter")] },
+      { id: "verse", v1: "verse (lines)", ctx: "Versos.", opts: [o("mantener v1")] },
+      { id: "list", v1: "list (order, items)", ctx: "Lista ordenada.", opts: [o("mantener v1")] },
+      { id: "contrast", v1: "contrast (left, right)", ctx: "Dos textos enfrentados.", opts: [o("mantener v1"), o("versus")] },
+    ] },
+  { id: "parametros", n: "02", title: "Argumentos de frame",
+    desc: "Parámetros v1 que no pasan por un bloque.",
+    rows: [
+      { id: "formato", v1: "formato", ctx: "Tamaño del lienzo en px.", pick: "format", opts: [o("format","uso"), o("size","mio")], why: "Dentro de artboard (tamaño + medium) sería size; format queda como atajo." },
+      { id: "tema", v1: "tema", ctx: "Colores del preset.", pick: "theme", opts: [o("theme","uso")] },
+      { id: "acento", v1: "acento", ctx: "Color de acento.", pick: "accent", opts: [o("accent","uso")] },
+      { id: "marca", v1: "marca", ctx: "Marca o logo.", pick: "brand", opts: [o("brand","uso")] },
+    ] },
+  { id: "suizo", n: "03", title: "Los 15 parámetros de suizo sin nombre",
+    desc: "Nombres v1 de core/recetas/suizo.typ. Las propuestas mías reutilizan claves de v2; las de Opus salen de los carteles.",
+    rows: [
+      { id: "papel", v1: "papel", ctx: "Color del fondo.", opts: [o("background","mio"), o("paper","opus")] },
+      { id: "tinta", v1: "tinta", ctx: "Color del texto y las formas.", opts: [o("ink","opus"), o("text")], why: "text es una función de Typst: como parámetro la tapa." },
+      { id: "linea", v1: "linea", ctx: "Color de los filetes de retícula.", opts: [o("rule","mio"), o("guide","opus"), o("line")], why: "line también es una función de Typst. Opus avisa de que rule choca con el componente filete." },
+      { id: "gris", v1: "gris", ctx: "Color del texto discreto.", opts: [o("muted","mio"), o("quiet","opus")] },
+      { id: "fuente", v1: "fuente", ctx: "Fuente del cuerpo.", opts: [o("body","mio"), o("main","opus")] },
+      { id: "fuente-rotulos", v1: "fuente-rotulos", ctx: "Fuente de etiquetas.", opts: [o("label","mio"), o("annotation","opus"), o("mono")], why: "label es una función de Typst." },
+      { id: "fuente-remate", v1: "fuente-remate", ctx: "Fuente del remate.", opts: [o("display","mio"), o("headline")] },
+      { id: "cuerpo-frase", v1: "cuerpo-frase", ctx: "Tamaño de la frase.", opts: [o("statement-size","mio"), o("step","opus")] },
+      { id: "columnas", v1: "columnas", ctx: "Número de columnas.", opts: [o("columns","mio")], why: "columns es una función de Typst; Opus usa raster(columns:)." },
+      { id: "margen", v1: "margen", ctx: "Blanco alrededor.", opts: [o("margin","mio")] },
+      { id: "medianil", v1: "medianil", ctx: "Separación entre columnas.", opts: [o("gutter","mio")] },
+      { id: "aire", v1: "aire", ctx: "Espacio entre frase y remate.", opts: [o("air","mio"), o("gap")] },
+      { id: "flecha", v1: "flecha", ctx: "Mostrar la flecha. Se podría deducir de que exista statement.", opts: [o("arrow","mio"), o("(deducido, sin parámetro)")] },
+      { id: "frase-y", v1: "frase-y", ctx: "Posición vertical manual de la frase.", opts: [o("statement-y","mio")] },
+      { id: "flecha-hasta", v1: "flecha-hasta", ctx: "Hasta dónde baja la flecha.", opts: [o("arrow-to","mio")] },
+    ] },
+  { id: "choques", n: "04", title: "Choques por resolver",
+    desc: "Casos donde dos conceptos quieren la misma palabra, detectados por Opus al integrar.",
+    rows: [
+      { id: "bleed-ours", v1: "bleed (el nuestro: estirar hasta el borde)", ctx: "En Opus, bleed es el sangrado de imprenta.",
+        opts: [o("extend","opus"), o("full-bleed"), o("to-edge")] },
+      { id: "rule-color", v1: "rule (color de filete)", ctx: "Opus tiene rule como componente filete.",
+        opts: [o("guide","opus"), o("rule-color"), o("rule (color) y line (componente)")] },
+      { id: "display-alias", v1: "display (alias de headline en swiss)", ctx: "Opus recomienda retirar el alias; display queda solo como rol de fuente.",
+        opts: [o("retirar alias","opus"), o("mantener alias")] },
+      { id: "theme-scope", v1: "theme", ctx: "En v2 solo colores; en src/theme.typ colores y fuentes.",
+        opts: [o("solo colores"), o("colores y fuentes")] },
+      { id: "background-layer", v1: "capa tras el contenido", ctx: "Capa opcional (superbg) entre el papel y el contenido.",
+        opts: [o("backdrop","opus"), o("background"), o("underlay")] },
+      { id: "overlay-layer", v1: "capa sobre el contenido", ctx: "Pátina o café por encima del texto.",
+        opts: [o("overlay","opus"), o("topcoat")] },
+      { id: "paper-vs-background", v1: "color del papel", ctx: "Opus defiende paper como color obligatorio, distinto de la capa de fondo.",
+        opts: [o("paper","opus"), o("background")] },
+      { id: "palette-vocab", v1: "vocabulario de color de la pieza", ctx: "Hoy hay tres.",
+        opts: [o("v1: background, text, muted, accent, line"), o("v2: background, ink, muted, accent, rule"), o("opus: paper, ink, quiet, accent, guide")],
+        why: "text y line son funciones de Typst." },
+    ] },
+  { id: "tipografia", n: "05", title: "Tipografía",
+    desc: "Roles de texto derivados de los 20 carteles (Opus), modelo de escala y roles de fuente.",
+    rows: [
+      { id: "scale-model", v1: "modelo de escala de tamaños", ctx: "Los datos muestran ~13 pasos (escala 5:4 desde 16); cinco ordinales no alcanzan.",
+        opts: [o("roles + pasos numéricos + alias opcionales","opus"), o("cinco ordinales (tiny…huge)","user"), o("pasos tipo Tailwind (sm, base, lg, xl, 2xl…) con ratio 5:4 + roles","mio"), o("siete ordinales"), o("solo pasos numéricos")] },
+      { id: "role-index", v1: "texto: numerar columnas/filas", ctx: "Mono pequeño, paso −1.", opts: [o("index","opus")] },
+      { id: "role-kicker", v1: "texto: línea sobre el titular", ctx: "Mono mayúscula. Mismo papel que eyebrow.", opts: [o("eyebrow","uso"), o("kicker","opus")] },
+      { id: "role-headline", v1: "texto: titular", ctx: "Paso 8 (76–95).", opts: [o("headline","opus")] },
+      { id: "role-display", v1: "texto: titular dominante", ctx: "Paso 10 (≈150). La distinción más importante del corpus.", opts: [o("display","opus"), o("headline(dominant: true)","opus")] },
+      { id: "role-lede", v1: "texto: frase que explica el titular", ctx: "Paso 3. Mismo papel que statement.", opts: [o("statement","uso"), o("lede","opus")] },
+      { id: "role-prose", v1: "texto: texto corrido", ctx: "Paso 2.", opts: [o("prose","opus"), o("body")] },
+      { id: "role-note", v1: "texto: dato de servicio", ctx: "Paso 1 (≈20), el tamaño más frecuente.", opts: [o("note","opus")] },
+      { id: "role-subhead", v1: "texto: dato fuerte destacado", ctx: "Paso 5.", opts: [o("subhead","opus")] },
+      { id: "role-numeral", v1: "texto: cifra protagonista", ctx: "Paso 11 (≈186).", opts: [o("numeral","opus")] },
+      { id: "role-colophon", v1: "texto: pie de serie", ctx: "«02 / 05 — …».", opts: [o("colophon","opus"), o("footer")] },
+      { id: "font-label-role", v1: "rol de fuente para etiquetas", ctx: "Los agentes usaron DM Mono; swiss usa Inter.", opts: [o("mono"), o("annotation","opus"), o("label")] },
+      { id: "font-main-role", v1: "rol de fuente principal", ctx: "Registro actual: display, body, mono, hand.", opts: [o("body","uso"), o("main","opus")] },
+    ] },
+  { id: "estructura", n: "06", title: "Estructura general (decidida)",
+    desc: "Solo lectura. Sale de tus decisiones.", locked: true,
+    rows: [
+      { id: "artboard", v1: "artboard", ctx: "Tamaño + medium.", pick: "artboard", locked: true, opts: [o("artboard","user")] },
+      { id: "medium", v1: "medium", ctx: "print | screen | wallpaper.", pick: "medium", locked: true, opts: [o("medium","user")] },
+      { id: "preset", v1: "preset", ctx: "Combinación ya armada de capas; auto = blank.", pick: "preset", locked: true, opts: [o("preset","user")] },
+      { id: "variant", v1: "variant", ctx: "Variante dentro de un preset.", pick: "variant", locked: true, opts: [o("variant","user")] },
+      { id: "type", v1: "type", ctx: "Reservado para otro uso.", pick: "(reservado)", locked: true, opts: [o("(reservado)","user")] },
+      { id: "blank", v1: "blank", ctx: "Lo que resuelve preset: auto.", pick: "blank", locked: true, opts: [o("blank","user")] },
+    ] },
+];
+
+// ---- estado --------------------------------------------------------------
+const KEY = "nombres-form-v1";
+let state = {};
+try { state = JSON.parse(localStorage.getItem(KEY) || "{}"); } catch (e) { state = {}; }
+function save() { try { localStorage.setItem(KEY, JSON.stringify(state)); } catch (e) {} }
+
+function chosen(r) {
+  if (r.locked) return r.pick;
+  const s = state[r.id];
+  if (s && s.v) return s.v === "__otro__" ? (s.other || "").trim() : s.v;
+  return r.pick || "";
+}
+
+// ---- render --------------------------------------------------------------
+const main = document.getElementById("main");
+function render() {
+  main.innerHTML = "";
+  for (const sec of SECTIONS) {
+    const h = document.createElement("h2");
+    h.innerHTML = '<span class="n">' + sec.n + "</span>" + sec.title;
+    const p = document.createElement("p"); p.className = "sec"; p.textContent = sec.desc;
+    main.append(h, p);
+    for (const r of sec.rows) main.append(rowEl(r));
+  }
+  counter();
+}
+function rowEl(r) {
+  const el = document.createElement("div");
+  el.className = "row" + (r.locked ? " locked" : "") + (!r.locked && chosen(r) ? " done" : "");
+  const head = document.createElement("div"); head.className = "head";
+  head.innerHTML = '<span class="v1"></span><span class="ctx"></span>';
+  head.querySelector(".v1").textContent = r.v1;
+  head.querySelector(".ctx").textContent = r.ctx;
+  el.append(head);
+  const box = document.createElement("div"); box.className = "opts";
+  const s = state[r.id] || {};
+  const cur = s.v || r.pick || "";
+  for (const op of r.opts) {
+    const lab = document.createElement("label");
+    const inp = document.createElement("input");
+    inp.type = "radio"; inp.name = r.id; inp.value = op.v; inp.disabled = !!r.locked;
+    inp.checked = cur === op.v;
+    inp.addEventListener("change", () => { state[r.id] = Object.assign({}, state[r.id], { v: op.v }); save(); refresh(el, r); });
+    lab.append(inp, document.createTextNode(op.v));
+    if (op.t) { const t = document.createElement("span"); t.className = "tag " + op.t; t.textContent = { uso: "en uso", mio: "propuesta", opus: "opus", user: "decidido" }[op.t]; lab.append(t); }
+    box.append(lab);
+  }
+  if (!r.locked) {
+    const lab = document.createElement("label");
+    const inp = document.createElement("input"); inp.type = "radio"; inp.name = r.id; inp.value = "__otro__"; inp.checked = cur === "__otro__";
+    const txt = document.createElement("input"); txt.type = "text"; txt.placeholder = "otro…"; txt.value = s.other || "";
+    inp.addEventListener("change", () => { state[r.id] = Object.assign({}, state[r.id], { v: "__otro__" }); save(); refresh(el, r); });
+    txt.addEventListener("input", () => { state[r.id] = Object.assign({}, state[r.id], { v: "__otro__", other: txt.value }); inp.checked = true; save(); refresh(el, r); });
+    lab.append(inp, txt); box.append(lab);
+  }
+  el.append(box);
+  if (r.why) { const w = document.createElement("div"); w.className = "why"; w.textContent = r.why; el.append(w); }
+  if (!r.locked) {
+    const n = document.createElement("input"); n.type = "text"; n.className = "note"; n.placeholder = "nota (opcional)";
+    n.value = s.note || "";
+    n.addEventListener("input", () => { state[r.id] = Object.assign({}, state[r.id], { note: n.value }); save(); });
+    el.append(n);
+  }
+  return el;
+}
+function refresh(el, r) { el.classList.toggle("done", !r.locked && !!chosen(r)); counter(); }
+function counter() {
+  let total = 0, done = 0;
+  for (const sec of SECTIONS) for (const r of sec.rows) { if (r.locked) continue; total++; if (chosen(r)) done++; }
+  document.getElementById("count").textContent = done + " / " + total + " respondidos";
+}
+
+// ---- salida --------------------------------------------------------------
+function q(s) { return '"' + String(s).replace(/\\/g, "\\\\").replace(/"/g, '\\"') + '"'; }
+function toml() {
+  const out = ["# Generado por nombres-formulario.html. Formato de core/nombres.toml.", ""];
+  for (const sec of SECTIONS) {
+    out.push("# " + sec.title, "[" + sec.id + "]");
+    for (const r of sec.rows) {
+      const c = chosen(r), note = (state[r.id] || {}).note;
+      const key = q(r.v1);
+      out.push((c ? "" : "# ") + key + " = " + q(c || "?") + (note ? "  # " + note.replace(/\n/g, " ") : ""));
+    }
+    out.push("");
+  }
+  return out.join("\n");
+}
+function json() {
+  const o = {};
+  for (const sec of SECTIONS) { o[sec.id] = {}; for (const r of sec.rows) o[sec.id][r.v1] = { name: chosen(r) || null, note: (state[r.id] || {}).note || null }; }
+  return JSON.stringify(o, null, 2);
+}
+const ta = document.getElementById("toml");
+document.getElementById("gen").onclick = () => { ta.value = toml(); document.getElementById("out").style.display = "block"; ta.scrollIntoView({ behavior: "smooth", block: "center" }); };
+document.getElementById("copy").onclick = () => { ta.value = toml(); document.getElementById("out").style.display = "block"; ta.select(); try { navigator.clipboard.writeText(ta.value); } catch (e) { document.execCommand("copy"); } };
+document.getElementById("dl").onclick = () => {
+  const a = document.createElement("a");
+  a.href = URL.createObjectURL(new Blob([json()], { type: "application/json" }));
+  a.download = "nombres.json"; a.click();
+};
+document.getElementById("reset").onclick = () => { if (confirm("¿Borrar todas las respuestas?")) { state = {}; save(); render(); } };
+
+render();
+</script>
+</body>
+</html>

@@ -1,0 +1,20 @@
+# Nombres semánticos del contrato: la ÚNICA parte de la tabla de traducción
+# que no se puede derivar de schema/firmas.json. Cada línea es una decisión.
+# Lo consume scripts/tabla-traduccion.py. Ver docs/traduccion.md.
+
+# Bloque de instatypst-piece/v1  ->  nombre semántico.
+# "bloque.campo" para los bloques con campos (attribution: author / date).
+[bloques]
+"title"              = "statement"
+"conclusion"         = "headline"
+"label"              = "eyebrow"
+"subtitle"           = "question"
+"attribution.author" = "author"
+"attribution.date"   = "dates"
+"signature"          = "brand"
+
+# Parámetros que no pasan por un bloque: nombre de v1  ->  semántico.
+[parametros]
+formato = "format"
+tema    = "theme"
+acento  = "accent"
