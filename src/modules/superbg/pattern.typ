@@ -1,0 +1,130 @@
+// ─────────────────────────────────────────────────────────────
+//  superbg / pattern.typ — NIVEL 2: patrones SVG + ruido + viñeta
+//  patron: "dots" | "grid" | "diagonal" | "anillos" | "cruz"
+//          | "ruido" | "vignette"
+// ─────────────────────────────────────────────────────────────
+
+#import "_util.typ": sizes, _tcolor, _check-size
+
+// Lado (pt) de la tesela del ruido. Medido: 216 pt da un PDF de ~1,5 MB sin
+// costura visible ni estadística (diferencia entre columnas en el borde = la
+// del resto) y con la misma intensidad de grano que una imagen a página completa.
+// 0, paso, 2·paso… mientras sea menor que `fin`: lo mismo que
+// range(0, fin, step: paso) con enteros, pero también con tamaños no enteros
+// (antes un `size` con decimales hacía fallar el patrón).
+#let _serie(fin, paso) = {
+  let out = ()
+  let x = 0
+  while x < fin { out.push(x); x += paso }
+  out
+}
+
+#let _lado-ruido = 216
+
+#let _svg-patron(w, h, patron, hex, paso, grosor, radio, opacidad-pct, hex-fondo) = {
+  let op = str(opacidad-pct / 100)
+  let base = "<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 " + str(w) + " " + str(h) + "'>"
+  let fondo = if hex-fondo == none { "" } else {
+    "<rect x='0' y='0' width='" + str(w) + "' height='" + str(h) + "' fill='" + hex-fondo + "'/>"
+  }
+  if patron == "dots" {
+    let xs = _serie(w + paso, paso)
+    let ys = _serie(h + paso, paso)
+    let pts = ()
+    for y in ys { for x in xs { pts.push("<circle cx='" + str(x) + "' cy='" + str(y) + "' r='" + str(radio) + "' fill='" + hex + "' fill-opacity='" + op + "'/>") } }
+    (base, fondo, pts.join(""), "</svg>").join("")
+  } else if patron == "grid" {
+    let xs = _serie(w + paso, paso)
+    let ys = _serie(h + paso, paso)
+    let lines = ()
+    for x in xs { lines.push("<line x1='" + str(x) + "' y1='0' x2='" + str(x) + "' y2='" + str(h) + "' stroke='" + hex + "' stroke-opacity='" + op + "' stroke-width='" + str(grosor) + "'/>") }
+    for y in ys { lines.push("<line x1='0' y1='" + str(y) + "' x2='" + str(w) + "' y2='" + str(y) + "' stroke='" + hex + "' stroke-opacity='" + op + "' stroke-width='" + str(grosor) + "'/>") }
+    (base, fondo, lines.join(""), "</svg>").join("")
+  } else if patron == "diagonal" {
+    // Líneas a 45°: barremos c = x - y.
+    let diags = ()
+    let c = -h
+    while c < w + h {
+      diags.push("<line x1='" + str(c) + "' y1='0' x2='" + str(c + h) + "' y2='" + str(h) + "' stroke='" + hex + "' stroke-opacity='" + op + "' stroke-width='" + str(grosor) + "'/>")
+      c += paso
+    }
+    (base, fondo, diags.join(""), "</svg>").join("")
+  } else if patron == "anillos" {
+    let xs = _serie(w + paso, paso)
+    let ys = _serie(h + paso, paso)
+    let rings = ()
+    for y in ys { for x in xs { rings.push("<circle cx='" + str(x) + "' cy='" + str(y) + "' r='" + str(radio) + "' fill='none' stroke='" + hex + "' stroke-opacity='" + op + "' stroke-width='" + str(grosor) + "'/>") } }
+    (base, fondo, rings.join(""), "</svg>").join("")
+  } else if patron == "cruz" {
+    let xs = _serie(w + paso, paso)
+    let ys = _serie(h + paso, paso)
+    let l = radio
+    let marks = ()
+    for y in ys { for x in xs {
+      marks.push("<path d='M " + str(x - l) + " " + str(y) + " H " + str(x + l) + " M " + str(x) + " " + str(y - l) + " V " + str(y + l) + "' stroke='" + hex + "' stroke-opacity='" + op + "' stroke-width='" + str(grosor) + "' stroke-linecap='round'/>")
+    } }
+    (base, fondo, marks.join(""), "</svg>").join("")
+  } else if patron == "ruido" {
+    (
+      base, fondo,
+      "<filter id='n'><feTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='2' stitchTiles='stitch'/><feColorMatrix type='saturate' values='0'/></filter>",
+      "<rect x='0' y='0' width='" + str(w) + "' height='" + str(h) + "' fill='" + hex + "' filter='url(#n)' opacity='" + op + "'/>",
+      "</svg>",
+    ).join("")
+  } else if patron == "vignette" {
+    (
+      base, fondo,
+      "<defs><radialGradient id='v' cx='50%' cy='50%' r='75%'>",
+      "<stop offset='55%' stop-color='" + hex + "' stop-opacity='0'/>",
+      "<stop offset='100%' stop-color='" + hex + "' stop-opacity='" + op + "'/>",
+      "</radialGradient></defs>",
+      "<rect x='0' y='0' width='" + str(w) + "' height='" + str(h) + "' fill='url(#v)'/>",
+      "</svg>",
+    ).join("")
+  } else {
+    panic("bg-patron: patron desconocido \"" + patron + "\" — usa dots | grid | diagonal | anillos | cruz | ruido | vignette")
+  }
+}
+
+#let bg-patron(
+  patron: "dots",
+  color: none,
+  fondo: none,
+  paso: 48,
+  grosor: 1.5,
+  radio: 3,
+  opacidad: 18%,
+  size: sizes.instagram,
+  theme: none,
+) = {
+  let size = _check-size(size)
+  let color = if color == none { _tcolor(theme, "dark", rgb("#111111")) } else { color }
+  let hex-fondo = if fondo == none { none } else { fondo.to-hex() }
+  if patron == "ruido" {
+    // El ruido es un filtro SVG (feTurbulence) y Typst, al exportar a PDF, lo
+    // RASTERIZA: una sola imagen de ~4000×5000 px (más su máscara) por
+    // página, unos 26 MB, y su tamaño no depende del viewBox sino de lo que
+    // mide la imagen en la página. En vez de una imagen del tamaño de la
+    // página, una tesela de `_lado-ruido` pt repetida con `tiling`: el SVG ya
+    // trae `stitchTiles='stitch'`, así que no hay costura, y el grano es el
+    // mismo (mismas unidades, misma frecuencia). El PDF pesa ~1,5 MB.
+    let lado = _lado-ruido
+    let svg = _svg-patron(lado, lado, patron, color.to-hex(), paso, grosor, radio, opacidad / 1%, none)
+    if hex-fondo != none { place(rect(width: 100%, height: 100%, fill: fondo, stroke: none)) }
+    place(rect(
+      width: 100%, height: 100%, stroke: none,
+      fill: tiling(
+        size: (lado * 1pt, lado * 1pt),
+        image(bytes(svg.replace("−", "-")), format: "svg", width: lado * 1pt, height: lado * 1pt),
+      ),
+    ))
+  } else {
+    let svg = _svg-patron(size.at(0), size.at(1), patron, color.to-hex(), paso, grosor, radio, opacidad / 1%, hex-fondo)
+    place(image(bytes(svg.replace("−", "-")), format: "svg", width: 100%, height: 100%))
+  }
+}
+
+// Atajo legible para viñeta (no pide paso/radio).
+#let bg-vignette(color: black, intensidad: 35%, size: sizes.instagram) = {
+  bg-patron(patron: "vignette", color: color, opacidad: intensidad, size: size)
+}
