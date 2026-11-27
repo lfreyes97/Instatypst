@@ -26,7 +26,7 @@
 // documento) — pero NO uses ese patrón para personalizar plantillas.
 
 #import "pliego.typ": pliego
-#import "theme.typ": theme
+#import "modules/theme-v1/theme.typ": theme
 
 // ============ 1. TOKENS DE DISEÑO ============
 

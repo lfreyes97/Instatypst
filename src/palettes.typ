@@ -13,8 +13,8 @@
 //    #palettes.mix("sky-400", "red-500", rgb("#123456"))  // paleta ad-hoc (tokens y/o colores sueltos)
 //  ─────────────────────────────────────────────────────────────
 
-#import "theme.typ": theme
-#import "tokens.typ": tokens, token
+#import "modules/theme-v1/theme.typ": theme
+#import "modules/theme-v1/tokens.typ": tokens, token
 #import "contrast.typ": luminance
 
 // Los tokens (colores individuales nombrados) viven en tokens.typ —

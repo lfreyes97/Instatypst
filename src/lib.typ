@@ -60,8 +60,8 @@
 //  sistema.
 //  ─────────────────────────────────────────────────────────────
 
-#import "theme.typ": theme
-#import "tokens.typ" as color-tokens
+#import "modules/theme-v1/theme.typ": theme
+#import "modules/theme-v1/tokens.typ" as color-tokens
 #import "palettes.typ": palettes
 #import "font-tokens.typ" as font-tokens
 #import "font-pairings.typ": pairings

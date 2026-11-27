@@ -14,7 +14,7 @@
 //    Resto del cuerpo normal, con encabezados == y == si hace falta.
 //  ─────────────────────────────────────────────────────────────
 
-#import "theme.typ": theme
+#import "modules/theme-v1/theme.typ": theme
 #import "palettes.typ": palettes
 #import "font-pairings.typ": pairings
 #import "dropcaps.typ": capitular

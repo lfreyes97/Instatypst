@@ -10,7 +10,7 @@
 //  #pairings.catalog()                                      // carta visual completa (specimen por pareja)
 //  ─────────────────────────────────────────────────────────────
 
-#import "theme.typ": theme
+#import "modules/theme-v1/theme.typ": theme
 #import "font-tokens.typ": tokens, token, family
 
 // ===== BIBLIOTECA — cada pareja mapea roles a claves de font-tokens =====

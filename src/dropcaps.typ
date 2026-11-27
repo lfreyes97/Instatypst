@@ -1,4 +1,4 @@
-#import "theme.typ": theme
+#import "modules/theme-v1/theme.typ": theme
 
 #let _partibles = (strong, emph, underline, stroke, overline, highlight, smallcaps)
 #let _espacio = [ ].func()

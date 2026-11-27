@@ -36,7 +36,7 @@
 #import "_base.typ": medida, escala
 #import "_temas.typ": resolver-tema
 #import "_hojas-piezas.typ": hoja, flor, pareja
-#import "../theme.typ": base as _theme-base
+#import "../modules/theme-v1/theme.typ": base as _theme-base
 
 #let COMPOSICIONES = ("flor", "diagonal", "patron")
 

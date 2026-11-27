@@ -8,7 +8,7 @@
 // dependencia en una sola dirección, igual que palettes.typ depende de
 // theme.typ/tokens.typ. Nada en social.typ llama de vuelta a este archivo.
 
-#import "theme.typ": theme
+#import "modules/theme-v1/theme.typ": theme
 #import "idiomas.typ": gr, he
 #import "social.typ": radius, avatar-row
 

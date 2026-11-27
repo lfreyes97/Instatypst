@@ -17,7 +17,7 @@
 //  #he[בְּרֵאשִׁית]
 //  ─────────────────────────────────────────────────────────────
 
-#import "theme.typ": theme
+#import "modules/theme-v1/theme.typ": theme
 #import "font-tokens.typ": family
 
 // Latín — cursiva, EB Garamond.

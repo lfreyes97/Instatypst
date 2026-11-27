@@ -26,7 +26,7 @@
 //  siguiente y el carrusel se lee como una sola tira.
 // ─────────────────────────────────────────────────────────────
 
-#import "theme.typ": theme
+#import "modules/theme-v1/theme.typ": theme
 #import "social.typ": canvas, sizes, page-pad
 #import "curvas.typ" as _curvas
 

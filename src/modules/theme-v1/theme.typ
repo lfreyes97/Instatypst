@@ -19,7 +19,7 @@
 //  ─────────────────────────────────────────────────────────────
 
 #import "tokens.typ": token
-#import "contrast.typ": luminance, contrast, is-aa, is-aaa, readable-on, auto-pair, auto-pair-tinted
+#import "/src/modules/color/palettes/contrast.typ": luminance, contrast, is-aa, is-aaa, readable-on, auto-pair, auto-pair-tinted
 
 // ===== Claves requeridas =====
 #let required-colors = ("primary", "secondary", "accent", "dark", "light", "white")
