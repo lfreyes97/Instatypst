@@ -583,8 +583,9 @@ lenguas (latín, griego, hebreo); i18n son los nombres de la API.
 
 ## 6. La fase WallTypst
 
-El port está hecho y V2 la absorbe. Vive en `.labs/Walltypst-Framed` del repositorio
-`InstatypstV2` (rama `pre-fusion`), que no se ha traído aquí. Es una fase previa a la
+El port está hecho y V2 la absorbe. Vive en `.labs/Walltypst-Framed`. La referencia
+contra la que se midió la paridad (`.labs/Walltypst/`) sigue solo en el repositorio
+`InstatypstV2` (rama `pre-fusion`) y no se ha traído aquí. Es una fase previa a la
 fusión: lo vendorizado y lo provisional está aislado y se funde después en módulos.
 Hay **37 de los 47 presets** de WallTypst portados, con paridad medida en tres formatos
 (apaisado, vertical y ultra ancho): `timepiece` (7 variantes), `anaglyph` (20),
