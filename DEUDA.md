@@ -248,8 +248,8 @@ No compila: importa archivos que ya no están. Se divide en dos grupos.
 `_cita-social-*`, `_epigrafes-*`, `_hojas-piezas`), `escalera`, `esquela`, `folio`,
 `gozne`, `linea-tiempo`, `orlas` y `plano`. Según `weft callers`, **una sola
 excepción:** `carteles/_temas.typ` lo importa `mesa/` (pendiente), así que se queda
-hasta resolver `mesa`. Los demás solo los importan `examples/` y `trabajos/`, que son
-de v1 y se migran aparte (§5.2). Ningún archivo de V2 importa nada de v1.
+hasta resolver `mesa`. Los demás solo los importan `examples-v1/` (que ya incluye `trabajos/`), que
+son de v1 y se migran aparte (§5.2). Ningún archivo de V2 importa nada de v1.
 
 **Pendiente de traducir** (clasificado con la ontología de §1.1):
 
@@ -323,13 +323,14 @@ En esta rama hay siete pruebas: las de `tests/modules/` (`importa`, `derivadores
   (`color` → `validate`; `typography` → `color`, `validate`; `superbg`, `theme-v1` →
   `color`; `fleurones` → `typography`); `plain` solo importa `core`, `frame`/`elements`
   y los módulos `color` y `typography`. `doctor` da 65/100, y todo lo que resta es v1:
-  **51 imports sin resolver**, todos en `src/` de v1 (48), `examples/` (2) y
+  **51 imports sin resolver**, todos en `src/` de v1 (48), `examples-v1/` (2) y
   `ornamentos/` (1); en V2, 0. Esos 51 son el mapa de lo que rompió quitar los
-  duplicados (§2.2). Los 83 archivos que importan `src/lib.typ` (39 de `examples/`, 37 de
-  `trabajos/`, 3 de `docs/`, `demo`, `svg-lab`, `ornamentos`) **resuelven el import pero
-  fallan por nombre**: ahora es el `lib` de V2. Weft no ve eso. Está pendiente
-  escribir un `scripts/capas.py` que compruebe las reglas de arriba sobre el grafo y
-  falle si alguna se rompe.
+  duplicados (§2.2). Los 83 archivos que importan `src/lib.typ` (los de `examples-v1/` y
+  `examples-v1/trabajos/`, 3 de `docs/`, `demo`, `svg-lab`, `ornamentos`) apuntan al
+  destino equivocado: ahora es el `lib` de V2, y fallan por nombre (`sizes`,
+  `carteles.*`). Por eso viven aparte, en `examples-v1/`. Está pendiente escribir un
+  `scripts/capas.py` que compruebe las reglas de arriba sobre el grafo y falle si
+  alguna se rompe.
 
 ---
 
@@ -534,7 +535,7 @@ además la compatibilidad con v1: `carteles.suizo(…)` seguiría compilando. No
 construye ahora. **`idiomas` (§2.2) no es i18n:** `idiomas` es texto en otras
 lenguas (latín, griego, hebreo); i18n son los nombres de la API.
 
-### 5.4 `ornamentos/`, `scripts/` y `trabajos/`
+### 5.4 `ornamentos/`, `scripts/` y `examples-v1/`
 
 - **`ornamentos/`** es un subsistema aparte, independiente del paquete: el escáner
   de glifos ornamentales de `Fonts/` y su catálogo. V2 no tiene equivalente. Su
@@ -544,10 +545,16 @@ lenguas (latín, griego, hebreo); i18n son los nombres de la API.
 - **`scripts/medir-fleurones.py`** ya escribe en `src/modules/fleurones/assets/` y
   regenera el json byte a byte igual. Otros scripts (`catalogo.py`, `nueva-plantilla.py`,
   `foto-de-lamina.py`) llaman a la API de v1.
-- **`trabajos/`**, **`examples/`**, **`docs/`** y **`mcp/`** usan la API de v1. Son
-  contenido, no código de paquete; se migran cuando se migre lo que usan.
-- **`README.md` y `SKILL.md`** describen v1 y citan `src/lib.typ` como la entrada de
-  v1. Tienen prioridad sobre este documento; hay que decidir si se reescriben.
+- **`examples-v1/`** (los ejemplos de v1 y, dentro, `trabajos/`) es la carpeta
+  explícita de lo que usa la API de v1; se movió con `git mv` el 27 nov 2026. Los
+  ejemplos conservan la profundidad, así que sus imports relativos valen; los de
+  `trabajos/` ganaron un `../`. `examples/` queda libre para los de V2. No compilan
+  contra V2 hasta migrarse, uno a uno. `mcp/server.py` y `scripts/catalogo.py` ya
+  leen de ahí. **`docs/`** y **`mcp/`** también usan la API de v1.
+- **`README.md`, `SKILL.md` y `docs/manual.typ`** describen v1: citan `src/lib.typ`
+  como la entrada de v1 y las rutas `examples/` y `trabajos/`, que ya no existen.
+  `README.md` y `SKILL.md` tienen prioridad sobre este documento; hay que decidir si
+  se reescriben.
 
 ### 5.5 Antes de borrar ramas o worktrees
 
