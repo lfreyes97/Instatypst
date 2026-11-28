@@ -1,81 +1,86 @@
 // ─────────────────────────────────────────────────────────────
-//  instatypst — punto de entrada del paquete
+//  Instatypst v2 — punto de entrada público
 //
-//  #import "@local/instatypst:0.1.0": *
-//  (o, sin instalar el paquete: #import "src/lib.typ": *)
+//    frame(preset:, variant:, artboard:, theme:, accent:, brand:, ..options, body)
 //
-//  Trae todo lo público del sistema:
-//    theme        -> API de temas (theme.typ)
-//    palettes     -> biblioteca de paletas de color (palettes.typ)
-//    pairings     -> biblioteca de parejas tipográficas (font-pairings.typ)
-//    color-tokens.tokens / .token(key)  -> registro de color (tokens.typ)
-//    font-tokens.tokens / .family(key)  -> registro de tipografía (font-tokens.typ)
-//    capitular    -> letra capital automática (dropcaps.typ)
-//    capitular-ornamentada, inicial-ornamentada -> capitular iluminada
-//      de EB Garamond Initials, SVG en dos capas (dropcaps.typ)
-//    articulo, primer-parrafo, make-theme, fondo-editorial -> plantilla editorial (articulo.typ)
-//    scripture, vs, ch, pasaje -> bloques de cita bíblica (scripture.typ)
-//    + todo lo de social.typ: canvas, badge, headline, subhead, footer,
-//      quote-post, announce-post, tip-card, carousel-*, stat-card,
-//      testimonial-post, event-post, poll-story, versus-post,
-//      avatar, avatar-row, stat, progress, divider…
-//    + todo lo de blockquotes.typ: blockquote-*, bq-frame/bq-mark/bq-rule/
-//      bq-attribution (sistema de legos para citas, ver ese archivo)
-//    + todo lo de carrusel.typ: carrusel-slide, carrusel-slide-definicion,
-//      topbar, pie-carrusel, dots, numeral-fondo, referencia-carrusel
-//      (legos + motor para carrusel de Instagram, ver ese archivo — NO
-//      automático, vos seguís armando cada slide a mano)
-//    formas.bocadillo -> formas dibujadas con SVG embebido (formas.typ) —
-//      namespace, no función suelta: "bocadillo" es una geometría entre
-//      varias futuras, no el nombre del sistema. Feature nueva, todavía
-//      sin blockquote-* que la use (ver ese archivo)
-//    superbg -> namespace de fondos componibles (superbg.superbg,
-//      superbg.bg-aura, superbg.bg-malla, …)
-//    carteles -> namespace de presets de color sólido + tipografía
-//      (carteles.liso, .plano, .suizo, .cita-social, .bauhaus, .mosaico, .teselas, .hojas, .franjas, .demostracion, .escalera, .gozne,
-//      .linea-tiempo, …) y sus piezas
-//      (carteles.reticula, carteles.cuerpo-al-ancho, carteles.rayar),
-//      ver ese archivo; los de orla de fleurones (carteles.cita-orlada,
-//      carteles.capitulo-orlado, carteles.pregunta-orlada) en orlas.typ
-//    fleurones -> namespace de orlas, bandas y mallas con IM FELL
-//      FLOWERS. Presets por uso: fleurones.orla (marcos), .guarda
-//      (solo horizontal), .vineta, .roseta, .cabecera, .separador,
-//      .asterismo, .remate; y el motor (.banda, .marco, .diaper…)
-//    curvas -> fondos de curvas CONTINUOS entre diapositivas:
-//      curvas.campo(tipo, diapositivas: n, …) + curvas.ventana(c, i)
-//      (topo, ondas, flujo, paralelas, cinta, orbitas), ver ese archivo
+//  Presets, por nombre (entre paréntesis, el nombre en v1): 22, todos los de
+//  carteles menos lamina.
+//    "plain" (el lienzo; su variante "post" es liso), "swiss" (suizo),
+//    "inscription" (epigrafe; 15 variantes), "bauhaus", "blueprint" (plano),
+//    "bands" (franjas), "proof" (demostracion), "mosaic" (mosaico), "tiles"
+//    (teselas), "leaves" (hojas), "obituary" (esquela), "folio",
+//    "bordered-quote", "bordered-chapter", "bordered-question" (las orlas),
+//    "timeline" (linea-tiempo), "event" (evento), "contrast" (contraste), "tip"
+//    (consejo), "hinge" (gozne), "stairs" (escalera) y "social-quote"
+//    (cita-social; 10 variantes).
+//  Cada preset exporta su frame con su nombre: el frame genérico con el preset
+//  ya puesto (Spec, caso 2).
+//  Elementos: los 26 de elements.typ (`quote` y `list` son los de Typst).
 //
-//    mesa -> hoja suelta fotografiada sobre madera (de DeskBook):
-//      mesa.vertical / .apaisada / .cuadrada (con `#show: mesa.vertical.with(…)`),
-//      mesa.nota, mesa.portada-vertical / .portada-apaisada, mesa.camara.
-//      Cada página es el lienzo de una foto; el tamaño del papel lo dicta
-//      la cámara (focal, distancia), ver src/mesa/
-//
-//  `color-tokens`/`font-tokens`/`formas` van con nombre en vez de
-//  `import: *` a propósito. `color-tokens`/`font-tokens`: ambos módulos
-//  exportan un dict llamado `tokens` con significados distintos (colores
-//  vs. fuentes); aplanarlos de golpe colisionaría. `formas`: es un
-//  namespace de geometrías (formas.bocadillo, y a futuro formas.circulo,
-//  formas.cinta...) — aplanarlo escondería que todas viven bajo el mismo
-//  sistema.
-//  ─────────────────────────────────────────────────────────────
+//  lib es el único que conoce todos los presets: aquí está la tabla de nombres.
+//  Ningún archivo del paquete importa lib.
+// ─────────────────────────────────────────────────────────────
 
-#import "modules/theme-v1/theme.typ": theme
-#import "modules/theme-v1/tokens.typ" as color-tokens
-#import "palettes.typ": palettes
-#import "font-tokens.typ" as font-tokens
-#import "font-pairings.typ": pairings
-#import "dropcaps.typ": capitular, capitular-ornamentada, inicial-ornamentada
-#import "articulo.typ": articulo, primer-parrafo, make-theme, fondo-editorial
-#import "scripture.typ": scripture, vs, ch, pasaje
-#import "idiomas.typ": lat, gr, he, translit, interlineal, orn
-#import "formas.typ" as formas
-#import "pliego.typ": pliego, en-caja
-#import "social.typ": *
-#import "blockquotes.typ": *
-#import "carrusel.typ": *
-#import "superbg/lib.typ" as superbg
-#import "carteles.typ" as carteles
-#import "fleurones.typ" as fleurones
-#import "curvas.typ" as curvas
-#import "mesa/lib.typ" as mesa
+#import "frame.typ" as _frame
+#import "elements.typ": *
+#import "/src/core/artboard.typ": formats
+#import "/src/plain/plain.typ": plain, preset as _plain
+#import "/src/presets/swiss/swiss.typ": swiss, preset as _swiss
+#import "/src/presets/inscription/inscription.typ": inscription, preset as _inscription
+#import "/src/presets/bauhaus/bauhaus.typ": bauhaus, preset as _bauhaus
+#import "/src/presets/blueprint/blueprint.typ": blueprint, preset as _blueprint
+#import "/src/presets/bands/bands.typ": bands, preset as _bands
+#import "/src/presets/proof/proof.typ": proof, preset as _proof
+#import "/src/presets/mosaic/mosaic.typ": mosaic, preset as _mosaic
+#import "/src/presets/tiles/tiles.typ": tiles, preset as _tiles
+#import "/src/presets/leaves/leaves.typ": leaves, preset as _leaves
+#import "/src/presets/obituary/obituary.typ": obituary, preset as _obituary
+#import "/src/presets/folio/folio.typ": folio, preset as _folio
+#import "/src/presets/timeline/timeline.typ": timeline, preset as _timeline
+#import "/src/presets/bordered-quote/bordered-quote.typ": bordered-quote, preset as _bordered-quote
+#import "/src/presets/bordered-chapter/bordered-chapter.typ": bordered-chapter, preset as _bordered-chapter
+#import "/src/presets/bordered-question/bordered-question.typ": bordered-question, preset as _bordered-question
+#import "/src/presets/event/event.typ": event, preset as _event
+#import "/src/presets/contrast/contrast.typ": contrast, preset as _contrast
+#import "/src/presets/tip/tip.typ": tip, preset as _tip
+#import "/src/presets/hinge/hinge.typ": hinge, preset as _hinge
+#import "/src/presets/stairs/stairs.typ": stairs, preset as _stairs
+#import "/src/presets/social-quote/social-quote.typ": social-quote, preset as _social-quote
+
+#let _presets = (
+  plain: _plain,
+  swiss: _swiss,
+  inscription: _inscription,
+  bauhaus: _bauhaus,
+  blueprint: _blueprint,
+  bands: _bands,
+  proof: _proof,
+  mosaic: _mosaic,
+  tiles: _tiles,
+  leaves: _leaves,
+  obituary: _obituary,
+  folio: _folio,
+  timeline: _timeline,
+  bordered-quote: _bordered-quote,
+  bordered-chapter: _bordered-chapter,
+  bordered-question: _bordered-question,
+  event: _event,
+  contrast: _contrast,
+  tip: _tip,
+  hinge: _hinge,
+  stairs: _stairs,
+  social-quote: _social-quote,
+)
+
+// El frame público: el genérico, con los nombres resueltos. `preset: auto` es plain.
+#let frame(preset: auto, ..args) = {
+  let p = if preset == auto { _presets.plain } else if type(preset) == str {
+    if preset not in _presets {
+      panic("frame: preset desconocido " + repr(preset) + " (hay: " + _presets.keys().join(", ") + "; o pasa una función)")
+    }
+    _presets.at(preset)
+  } else { preset }
+  _frame.frame(preset: p, ..args)
+}
+
+#let version = "0.1.0"
