@@ -1,4 +1,4 @@
-# Mide los glifos de IM FELL FLOWERS 1 y 2 para src/fleurones.typ.
+# Mide los glifos de IM FELL FLOWERS 1 y 2 para src/modules/fleurones/fleurones.typ.
 #
 # Por cada carácter del cmap guarda (avance, ymin, ymax) en unidades de
 # 1000/em: el avance horizontal y el alto real de la tinta. Con eso
@@ -16,7 +16,7 @@ FUENTES = {
     'IM FELL FLOWERS 1': 'Fonts/IM_Fell_Flowers/IMFeFlow1.otf',
     'IM FELL FLOWERS 2': 'Fonts/IM_Fell_Flowers/IMFeFlow2.otf',
 }
-SALIDA = 'src/assets/fleurones.json'
+SALIDA = 'src/modules/fleurones/assets/fleurones.json'
 
 datos = {}
 for familia, ruta in FUENTES.items():
