@@ -10,10 +10,10 @@ Piezas de v1 que hoy solo usan los 15 estilos de `inscription`
   cuando los estilos usen `modules/color`.
 
 Procedencia: `Instatypst-rework`, commit `09e5fff` —la misma referencia fija
-que usa el harness—, antes en `src/engine/carteles/`. En la mudanza del 26 nov
+con la que se midió la paridad—, antes en `src/engine/carteles/`. En la mudanza del 26 nov
 2026 solo cambiaron las rutas de los imports.
 
-Los estilos son **variantes de `frame`** (Spec §5); `inscription.typ` traduce
+Los estilos son **variantes de `frame`** (`DEUDA.md` §1.8); `inscription.typ` traduce
 `variant` al estilo de v1. Desde el 26 nov 2026 cada uno está en su archivo
 (partidos de `_epigrafes-a/b/c.typ` sin cambiar el código; las 15 paridades con
 v1 siguen en 0 px). El paso siguiente es que dejen de dibujar su propia página y

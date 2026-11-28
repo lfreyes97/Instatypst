@@ -189,6 +189,6 @@
   rules: ctx => _rules(ctx, margin),
 )
 
-// El preset y su frame (Spec, caso 2): una línea, sin firma propia.
+// El preset y su frame (`DEUDA.md` §1.5, caso 2): una línea, sin firma propia.
 #let preset = (name: "event", make: make, variants: ())
 #let event = frame.with(preset: preset)

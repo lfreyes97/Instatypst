@@ -211,6 +211,6 @@
   rules: ctx => _rules(ctx, lowercase),
 )
 
-// El preset y su frame (Spec, caso 2): una línea, sin firma propia.
+// El preset y su frame (`DEUDA.md` §1.5, caso 2): una línea, sin firma propia.
 #let preset = (name: "bauhaus", make: make, variants: ())
 #let bauhaus = frame.with(preset: preset)

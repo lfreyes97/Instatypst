@@ -2,8 +2,8 @@
 
 Un **módulo** es un subsistema autónomo que no sabe nada de Instatypst: tiene su
 propia API, no importa nada fuera de su carpeta salvo otro módulo declarado, y
-podría publicarse como paquete aparte. Las dependencias entre módulos son datos
-del harness (`tests/harness/manifest.toml`, caso `capas-sin-imports-laterales`):
+podría publicarse como paquete aparte. Las dependencias entre módulos las comprueba Weft sobre el grafo de imports
+(`DEUDA.md` §2.5):
 
 | Módulo | Puede importar | Origen |
 |---|---|---|

@@ -366,7 +366,7 @@
   rules: ctx => _rules(ctx, angles, positions),
 )
 
-// El preset y su frame (Spec, caso 2): una línea, sin firma propia. El formato por
+// El preset y su frame (`DEUDA.md` §1.5, caso 2): una línea, sin firma propia. El formato por
 // defecto de v1 era 1600×900.
 #let preset = (name: "hinge", make: make, variants: (), artboard: "twitter")
 #let hinge = frame.with(preset: preset)

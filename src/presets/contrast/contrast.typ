@@ -247,6 +247,6 @@
   rules: ctx => _rules(ctx, layout, margin),
 )
 
-// El preset y su frame (Spec, caso 2): una línea, sin firma propia.
+// El preset y su frame (`DEUDA.md` §1.5, caso 2): una línea, sin firma propia.
 #let preset = (name: "contrast", make: make, variants: ())
 #let contrast = frame.with(preset: preset)

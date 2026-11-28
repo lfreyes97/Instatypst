@@ -16,10 +16,10 @@
 //
 //  Cada preset del paquete exporta su frame, y es una sola línea:
 //    #let swiss = frame.with(preset: preset)
-//  Así el azúcar es la forma explícita por construcción (Spec, caso 2). Que
-//  ningún preset del paquete se desvíe lo vigila el harness; lo que haga quien
+//  Así el azúcar es la forma explícita por construcción (`DEUDA.md` §1.5, caso 2). Que
+//  ningún preset del paquete se desvíe lo vigilan las reglas de capas (`DEUDA.md` §2.5); lo que haga quien
 //  usa el paquete en su propio espacio es cosa suya.
-//  `repeat` no está (Spec, Anexo B).
+//  `repeat` no está (`DEUDA.md` §2.1).
 // ─────────────────────────────────────────────────────────────
 
 #import "/src/core/artboard.typ": resolve-artboard

@@ -217,6 +217,6 @@
   rules: ctx => _rules(ctx, highlight, step, major-every, scale, sheet, margin),
 )
 
-// El preset y su frame (Spec, caso 2): una línea, sin firma propia.
+// El preset y su frame (`DEUDA.md` §1.5, caso 2): una línea, sin firma propia.
 #let preset = (name: "blueprint", make: make, variants: ())
 #let blueprint = frame.with(preset: preset)

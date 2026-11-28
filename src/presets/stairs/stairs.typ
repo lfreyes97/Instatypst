@@ -301,6 +301,6 @@
   rules: ctx => _rules(ctx, step, margin, summit),
 )
 
-// El preset y su frame (Spec, caso 2): una línea, sin firma propia.
+// El preset y su frame (`DEUDA.md` §1.5, caso 2): una línea, sin firma propia.
 #let preset = (name: "stairs", make: make, variants: (), artboard: "story") // escalera era 1080×1920 en v1
 #let stairs = frame.with(preset: preset)

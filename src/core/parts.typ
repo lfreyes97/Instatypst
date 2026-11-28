@@ -8,7 +8,7 @@
 //    loose   el contenido sin nombre, junto; un elemento que el preset NO
 //            reconoce también es contenido suelto: su cuerpo, en su lugar
 //  `known: auto` reconoce todos los elementos.
-//  Nada es obligatorio y nada da error (Spec §1.4).
+//  Nada es obligatorio y nada da error (`DEUDA.md` §1.4).
 //
 //  `show-parts` es la regla de base: un elemento sin reglas que lo configuren se
 //  dibuja como su cuerpo, igual que un `h1` sin estilar. `#main[Hola]` y

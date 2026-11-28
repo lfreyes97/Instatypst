@@ -19,8 +19,8 @@
 //    · main: 4 columnas; se achica de 2 en 2 pt hasta caber en el hueco
 //      menos 48 pt de aire; el aire se encoge antes que la letra
 //    · flecha de 14 pt bajo la frase hasta la mitad del aire sobre el remate
-//    · sin conclusion no hay remate ni flecha: la frase baja hasta la base (Spec,
-//      caso 4); el cuerpo vacío da la retícula, la cabecera y el pie
+//    · sin conclusion no hay remate ni flecha: la frase baja hasta la base
+//      (`DEUDA.md` §1.5, caso 4); el cuerpo vacío da la retícula, la cabecera y el pie
 //    · pie: filete a 112 pt del borde inferior; brand abajo a la izquierda
 //  Las medidas son las de v1; los números de la API siguen siendo pt aquí.
 // ─────────────────────────────────────────────────────────────
@@ -113,7 +113,7 @@
       let base = height - 150pt
 
       // remate: ancho útil, con tope del 55 % del hueco. Sin `conclusion` no hay
-      // remate: la frase baja hasta la base (Spec, caso 4)
+      // remate: la frase baja hasta la base (`DEUDA.md` §1.5, caso 4)
       let remate-box = if cp != none {
         let word(s) = text(font: fuente-remate, size: s, fill: accent,
           top-edge: "cap-height", bottom-edge: "baseline", remate)
@@ -179,6 +179,6 @@
   rules: _rules,
 )
 
-// El preset y su frame (Spec, caso 2): una línea, sin firma propia.
+// El preset y su frame (`DEUDA.md` §1.5, caso 2): una línea, sin firma propia.
 #let preset = (name: "swiss", make: make, variants: ())
 #let swiss = frame.with(preset: preset)

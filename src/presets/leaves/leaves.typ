@@ -26,7 +26,7 @@
 //
 //  Escala: la de v1, k = mín(ancho/380, alto/475) (en apaisado, alto/400): las
 //  cotas de las variantes están en unidades de una lámina de 380 de ancho. Se
-//  conserva k para la paridad. Un número en `prose.size` es u (Spec §3) y se
+//  conserva k para la paridad. Un número en `prose.size` es u (`DEUDA.md` §1.6) y se
 //  pasa a unidades de lámina; por defecto 8,3 unidades, como v1.
 //
 //  Fuentes: Poppins para títulos y rótulo, Inter para párrafo y nota (los tokens
@@ -61,7 +61,7 @@
   let k = if w > h { calc.min(w / 380, h / 400) } else { calc.min(w / 380, h / 475) }
   let p = ctx.parts
   let part(name) = { let x = p.at(name, default: none); if x == none { none } else { x.body } }
-  // Nada es obligatorio (Spec §1.4): sin `headline`, el contenido suelto es el
+  // Nada es obligatorio (`DEUDA.md` §1.4): sin `headline`, el contenido suelto es el
   // título; con `headline`, el suelto sigue a la prosa, en otro párrafo.
   let loose = if ctx.has-loose { ctx.loose } else { none }
   let headline = part("headline")
@@ -126,13 +126,13 @@
   default-fonts: none,
   extra-roles: ("deep",),
   // `footer`, `tag` y `note` son de "flower": en las otras variantes no se
-  // reconocen y llegan como contenido suelto (Spec §1.4), sin error
+  // reconocen y llegan como contenido suelto (`DEUDA.md` §1.4), sin error
   known: ("headline", "prose", "caption", "brand") + if variant == "flower" { ("footer", "tag", "note") } else { () },
   fn: "leaves",
   elements: elements,
   rules: ctx => _rules(ctx, variant, side, ring-radius, hole-radius, guides),
 )
 
-// El preset y su frame (Spec, caso 2): una línea, sin firma propia.
+// El preset y su frame (`DEUDA.md` §1.5, caso 2): una línea, sin firma propia.
 #let preset = (name: "leaves", make: make, variants: _variants.keys())
 #let leaves = frame.with(preset: preset)

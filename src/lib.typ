@@ -14,7 +14,7 @@
 //    (consejo), "hinge" (gozne), "stairs" (escalera) y "social-quote"
 //    (cita-social; 10 variantes).
 //  Cada preset exporta su frame con su nombre: el frame genérico con el preset
-//  ya puesto (Spec, caso 2).
+//  ya puesto (`DEUDA.md` §1.5, caso 2).
 //  Elementos: los 26 de elements.typ (`quote` y `list` son los de Typst).
 //
 //  lib es el único que conoce todos los presets: aquí está la tabla de nombres.

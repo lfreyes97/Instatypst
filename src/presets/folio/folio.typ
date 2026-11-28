@@ -243,6 +243,6 @@
   rules: ctx => _rules(ctx, header, fill),
 )
 
-// El preset y su frame (Spec, caso 2): una línea, sin firma propia.
+// El preset y su frame (`DEUDA.md` §1.5, caso 2): una línea, sin firma propia.
 #let preset = (name: "folio", make: make, variants: (), artboard: "cuadrado") // folio era cuadrado en v1
 #let folio = frame.with(preset: preset)

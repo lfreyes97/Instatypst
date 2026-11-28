@@ -74,6 +74,6 @@
   }
 }
 
-// El preset y su frame (Spec, caso 2): una línea, sin firma propia.
+// El preset y su frame (`DEUDA.md` §1.5, caso 2): una línea, sin firma propia.
 #let preset = (name: "plain", make: make, variants: variants)
 #let plain = frame.with(preset: preset)

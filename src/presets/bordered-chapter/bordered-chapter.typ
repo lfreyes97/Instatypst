@@ -126,7 +126,7 @@
   rules: ctx => _rules(ctx, borders.base-of(theme, "vino"), border, chain),
 )
 
-// El preset y su frame (Spec, caso 2): una línea, sin firma propia. El formato
+// El preset y su frame (`DEUDA.md` §1.5, caso 2): una línea, sin firma propia. El formato
 // por defecto de v1 era el cuadrado.
 #let preset = (name: "bordered-chapter", make: make, variants: (), artboard: "cuadrado")
 #let bordered-chapter = frame.with(preset: preset)

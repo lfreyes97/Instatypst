@@ -21,7 +21,7 @@
 //    body            el cuerpo tal cual (para quien no lo desarma)
 //    parts, loose, has-loose   lo que reconoce (`known`) y el resto (core/parts)
 //    width, height, u          el artboard medido; u = lado corto / 1080
-//    len(v)          número = u, longitud = absoluta (Spec §3)
+//    len(v)          número = u, longitud = absoluta (`DEUDA.md` §1.6)
 //    tm              el tema: los cinco roles (paper, ink, quiet, accent, guide)
 //                    y los roles extra que declare el preset (`extra-roles`)
 //    fonts           rol → familia (display, body, mono, annotation, main…);

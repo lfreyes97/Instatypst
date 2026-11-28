@@ -2,24 +2,24 @@
 //  inscription.typ — el preset `inscription` (en v1, `epigrafe`)
 //
 //  Los 15 estilos son VARIANTES de frame, no un argumento `style:` propio:
-//  la tabla de traducción dice `estilo` → `preset:style`, pero la Spec (§5)
+//  la tabla de traducción dice `estilo` → `preset:style`, pero `DEUDA.md` (§1.8)
 //  fija que los 15 estilos de `epigrafe` son `variant`. Aquí se corrige esa
 //  desalineación semántica.
 //
 //  Se llama `inscription` y no `epigraph` porque `epigraph` es el elemento de la
-//  cita (Spec, caso 2: un preset y un elemento no comparten nombre).
+//  cita (`DEUDA.md` §1.5, caso 2: un preset y un elemento no comparten nombre).
 //
 //  Elementos del cuerpo: epigraph (la cita), author, work, brand.
 //  Todos están en elements.typ y se leen por su clave.
 //  Todavía no es plain + reglas: cada estilo de v1 dibuja su propia página
-//  (Spec, Anexo B).
+//  (`DEUDA.md` §3.1).
 //  Argumentos: artboard, theme, variant, brand, guides.
 //
 //  Cada estilo es una variante en su archivo, `variants/<nombre>.typ`, que
 //  exporta `variant`; lo común de cada tanda de v1 está en
 //  `variants/_comun-a/b/c.typ`, y las piezas de v1 que solo usan estos estilos,
 //  en `_legado/`. Todavía no es plain + reglas: cada estilo dibuja su propia
-//  página (Spec, Anexo B).
+//  página (`DEUDA.md` §3.1).
 // ─────────────────────────────────────────────────────────────
 
 #import "/src/core/parts.typ": read-parts
@@ -112,6 +112,6 @@
   )
 }
 
-// El preset y su frame (Spec, caso 2): una línea, sin firma propia.
+// El preset y su frame (`DEUDA.md` §1.5, caso 2): una línea, sin firma propia.
 #let preset = (name: "inscription", make: make, variants: variants)
 #let inscription = frame.with(preset: preset)

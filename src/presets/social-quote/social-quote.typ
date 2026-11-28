@@ -45,7 +45,7 @@
 //                 (v1 `comilla`).
 //
 //  Escala: la de v1, k = mín(ancho/1080, alto/1350); se conserva para la paridad.
-//  Un número en `main.size` es u (Spec §3) y se pasa a unidades de lámina.
+//  Un número en `main.size` es u (`DEUDA.md` §1.6) y se pasa a unidades de lámina.
 //
 //  Fuentes: cada variante trae las suyas; `fonts:` (rol body) las sobreescribe
 //  todas, como `fuente` en v1.
@@ -170,6 +170,6 @@
   )
 }
 
-// El preset y su frame (Spec, caso 2): una línea, sin firma propia.
+// El preset y su frame (`DEUDA.md` §1.5, caso 2): una línea, sin firma propia.
 #let preset = (name: "social-quote", make: make, variants: _variants.keys())
 #let social-quote = frame.with(preset: preset)
