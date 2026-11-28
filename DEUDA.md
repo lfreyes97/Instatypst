@@ -243,12 +243,13 @@ hueco que dejan márgenes, epígrafe y marca: el aire de arriba es 2/3 del de ab
 
 No compila: importa archivos que ya no están. Se divide en dos grupos.
 
-**Ya traducido a V2 (se puede borrar cuando se quiera; v1 vive en `main`):**
-`carteles.typ` y `carteles/` (los presets de v1 y sus piezas `_arcos`, `_base`,
-`_huecos`, `_temas`, `_texto`, `_cita-social-*`, `_epigrafes-*`, `_hojas-piezas`),
-`escalera`, `esquela`, `folio`, `gozne`, `linea-tiempo`, `orlas` y `plano`. Antes de
-borrar, `_base` y `_temas` son el núcleo que `inscription` (legado) todavía copia
-(§3.1).
+**Ya traducido a V2 (borrable; v1 vive en `main`):** `carteles.typ` y `carteles/`
+(los presets de v1 y sus piezas `_arcos`, `_base`, `_huecos`, `_temas`, `_texto`,
+`_cita-social-*`, `_epigrafes-*`, `_hojas-piezas`), `escalera`, `esquela`, `folio`,
+`gozne`, `linea-tiempo`, `orlas` y `plano`. Según `weft callers`, **una sola
+excepción:** `carteles/_temas.typ` lo importa `mesa/` (pendiente), así que se queda
+hasta resolver `mesa`. Los demás solo los importan `examples/` y `trabajos/`, que son
+de v1 y se migran aparte (§5.2). Ningún archivo de V2 importa nada de v1.
 
 **Pendiente de traducir** (clasificado con la ontología de §1.1):
 
@@ -314,6 +315,21 @@ En esta rama hay siete pruebas: las de `tests/modules/` (`importa`, `derivadores
   vez escogido y descartado, los `std` existen, los choques son exactamente
   `choques-std`) no existe. `choques-std` es `()`.
 - Los casos 6, 7 y 8 de §1.5 no tienen cobertura.
+- **Weft** (`../Weft/target/release/weft`; `weft index .` y después `weft doctor`,
+  `weft graph --format json`, `weft impact`, `weft callers`) sustituye lo que antes
+  hacía el caso de capas del harness. Medido el 27 nov 2026 sobre esta rama: **0
+  ciclos**; ningún archivo de V2 importa v1; **ningún preset importa otro preset**;
+  ningún módulo importa fuera de su carpeta salvo otro módulo
+  (`color` → `validate`; `typography` → `color`, `validate`; `superbg`, `theme-v1` →
+  `color`; `fleurones` → `typography`); `plain` solo importa `core`, `frame`/`elements`
+  y los módulos `color` y `typography`. `doctor` da 65/100, y todo lo que resta es v1:
+  **51 imports sin resolver**, todos en `src/` de v1 (48), `examples/` (2) y
+  `ornamentos/` (1); en V2, 0. Esos 51 son el mapa de lo que rompió quitar los
+  duplicados (§2.2). Los 83 archivos que importan `src/lib.typ` (39 de `examples/`, 37 de
+  `trabajos/`, 3 de `docs/`, `demo`, `svg-lab`, `ornamentos`) **resuelven el import pero
+  fallan por nombre**: ahora es el `lib` de V2. Weft no ve eso. Está pendiente
+  escribir un `scripts/capas.py` que compruebe las reglas de arriba sobre el grafo y
+  falle si alguna se rompe.
 
 ---
 

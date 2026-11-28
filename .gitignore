@@ -23,3 +23,6 @@ _to_delete/
 # `python3 scripts/catalogo.py`
 docs/catalogo/
 examples/salidas/
+
+# Índice de Weft (se regenera con `weft index .`)
+.weft/
