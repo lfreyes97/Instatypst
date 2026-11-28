@@ -291,6 +291,12 @@ decisión sobre `brand` (§4).
 - **§1.6:** los escalones de tamaño (`tiny`, `small`… `giga`) como azúcar.
 - **§1.7:** `ramp-theme(seed)`. El constructor de rampas está en `modules/color`, pero
   nada lo expone con ese nombre.
+- **Catálogo evaluable.** Qué presets existen, con qué variantes, formato por defecto,
+  elementos y opciones no está como dato: se reparte entre `_presets` en `lib.typ`, el
+  descriptor de cada preset y los scaffolds. Hace falta un `src/catalog.typ` que lo
+  exporte con `#metadata(...) <catalogo>`, derivado de los descriptores y no escrito
+  a mano. Lo consumen el MCP (`spec/mcp.md` §6), la documentación comprobable y el
+  módulo i18n.
 - **Roles extra de los temas:** el mecanismo está; falta nombrar en inglés los de
   cada preset que se migre (21 de los 28 temas de v1 los traen, con 15 roles
   distintos: `hondo`, `claro`, `tarjeta`…).
@@ -550,7 +556,10 @@ lenguas (latín, griego, hebreo); i18n son los nombres de la API.
   ejemplos conservan la profundidad, así que sus imports relativos valen; los de
   `trabajos/` ganaron un `../`. `examples/` queda libre para los de V2. No compilan
   contra V2 hasta migrarse, uno a uno. `mcp/server.py` y `scripts/catalogo.py` ya
-  leen de ahí. **`docs/`** y **`mcp/`** también usan la API de v1.
+  leen de ahí. **`docs/`** también usa la API de v1.
+- **`mcp/server.py`** es el MCP de v1: está escrito contra `carteles` y no figura en
+  ningún `mcpServers`. El nuevo vive en `instatypst-cli` (repositorio `typst-rrss`) y su
+  spec es `spec/mcp.md`. Se retira de aquí cuando el nuevo exista.
 - **`README.md`, `SKILL.md` y `docs/manual.typ`** describen v1: citan `src/lib.typ`
   como la entrada de v1 y las rutas `examples/` y `trabajos/`, que ya no existen.
   `README.md` y `SKILL.md` tienen prioridad sobre este documento; hay que decidir si
