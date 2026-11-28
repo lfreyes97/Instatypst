@@ -96,15 +96,15 @@ def listar_paletas() -> str:
 @mcp.tool()
 def listar_plantillas() -> str:
     """Presets de carteles y ejemplos disponibles (archivos .typ mínimos para copiar)."""
-    pres = sorted(p.stem for p in (REPO / "examples" / "presets").glob("*.typ"))
-    ej = sorted(p.stem for p in (REPO / "examples").glob("*.typ"))
-    return f"examples/presets/: {', '.join(pres)}\nexamples/: {', '.join(ej)}"
+    pres = sorted(p.stem for p in (REPO / "examples-v1" / "presets").glob("*.typ"))
+    ej = sorted(p.stem for p in (REPO / "examples-v1").glob("*.typ"))
+    return f"examples-v1/presets/: {', '.join(pres)}\nexamples-v1/: {', '.join(ej)}"
 
 
 @mcp.tool()
 def ver_plantilla(nombre: str) -> str:
     """Devuelve el código de un preset o ejemplo (ej. 'liso', 'suizo') para copiarlo."""
-    for base in (REPO / "examples" / "presets", REPO / "examples"):
+    for base in (REPO / "examples-v1" / "presets", REPO / "examples-v1"):
         p = base / f"{_slug(nombre)}.typ"
         if p.exists():
             return p.read_text(encoding="utf-8")
@@ -222,10 +222,10 @@ def _compilar_pdf(typ: Path, tmp: Path) -> tuple[Path, bool, str]:
 
 
 @mcp.tool()
-def verificar(carpeta: str = "examples", filtro: str = "") -> str:
+def verificar(carpeta: str = "examples-v1", filtro: str = "") -> str:
     """Prueba de regresión: compila los .typ de una carpeta del repo y reporta cuáles fallan.
 
-    `carpeta`: relativa al repo (por defecto `examples`; incluye `examples/presets`).
+    `carpeta`: relativa al repo (por defecto `examples-v1`; incluye `examples-v1/presets`).
     `filtro`: texto que debe contener el nombre del archivo. Los PDF van a un
     directorio temporal, no al repo. Las láminas pesadas pueden tardar minutos.
     """

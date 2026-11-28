@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 """
-catalogo.py — renderiza cada preset de examples/presets/*.typ a miniaturas
+catalogo.py — renderiza cada preset de examples-v1/presets/*.typ a miniaturas
 PNG y compila docs/catalogo.typ, la página de catálogo que las muestra en
 cuadrícula con el nombre del preset y la llamada que lo genera.
 
@@ -34,7 +34,7 @@ from concurrent.futures import ThreadPoolExecutor
 from pathlib import Path
 
 RAIZ = Path(__file__).resolve().parent.parent
-PRESETS = RAIZ / "examples" / "presets"
+PRESETS = RAIZ / "examples-v1" / "presets"
 CATALOGO_TYP = RAIZ / "docs" / "catalogo.typ"
 SALIDA = RAIZ / "docs" / "catalogo"
 MINIATURAS = SALIDA / "miniaturas"
