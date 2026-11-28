@@ -1,0 +1,14 @@
+# Fase 2 — adaptación a V2. Lo primero, también aquí, es compilar.
+#
+# Mismos valores que en ../Walltypst, del propio proyecto:
+#   w/h  = 1920x1080, de render.sh
+#   now  = 2026-11-19T09:48, de batch.sh
+#   seed = 1, fijo para que la referencia sea reproducible
+# Todos se pueden cambiar: just ref w=1080 h=1080 seed=2
+# Para un solo preset: PRESETS='cartel-capas' just ref
+
+ref w="1920" h="1080" seed="1" now="2026-11-19T09:48":
+    python3 harness/referencias.py --w {{w}} --h {{h}} --seed {{seed}} --now {{now}} {{env_var_or_default('PRESETS', '')}}
+
+clean:
+    rm -rf out referencias.sha256
