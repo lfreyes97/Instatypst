@@ -80,45 +80,27 @@ otras familias con el mismo nombre.
 
 ```
 src/                  código del paquete (entrypoint: src/lib.typ)
-  theme.typ           API de temas — colores + fuentes, validación, derivación
-  contrast.typ        contraste WCAG 2.x (luminance, contrast, auto-pair...)
-  tokens.typ          registro de 81 colores con nombre semántico (no familia-NNN)
-  palettes.typ        15 paletas curadas + auto-asignación de roles
-  font-tokens.typ     registro de 49+ fuentes verificadas (familia real, ejes variables)
-  font-pairings.typ   8 parejas tipográficas curadas (display/body/mono)
-  dropcaps.typ        letra capital automática (capitular())
-  articulo.typ        plantilla editorial: paleta + pareja + capitular en un tema
-  scripture.typ       bloques de cita bíblica (pasaje(), vs(), ch())
-  idiomas.typ         lat/gr/he, translit e interlineal
-  social.typ          plantillas de canvas (Instagram/stories/etc.)
-  blockquotes.typ     legos bq-* + 14 blockquote-* (bloques, no canvas)
-  superbg/            fondos componibles: presets, constructores y motor por capas
+  lib.typ             frame, elementos y la tabla de presets
+  frame.typ           el lienzo genérico
+  elements.typ        los elementos de texto
+  core/               formatos de lienzo y lectura de elementos
+  plain/              la base de todos los presets
+  presets/            un preset por carpeta, con sus variantes
+  resources/          lo que consumen los presets: capitulares, motivos, orlas
+  modules/            subsistemas autónomos
+    validate/           validación de argumentos
+    color/              temas, paletas, derivación y contraste
+    typography/         fuentes, tokens y parejas tipográficas
+    superbg/            fondos componibles
+    fleurones/          orlas, guardas y viñetas
+spec/                 vocabulario de elementos, decisiones, protocolo y spec del MCP
+tests/                pruebas de los módulos y del núcleo
 demo.typ              catálogo visual (no forma parte del paquete)
 docs/manual.typ       manual narrativo (no forma parte del paquete)
-examples/             ejemplos de uso de cada módulo (no forman parte del paquete)
-ornamentos/           catálogo de ornamentos de Fonts/ — typ + json + escáner (no forma parte del paquete)
+ornamentos/           catálogo de ornamentos de Fonts/ (no forma parte del paquete)
 Fonts/                fuentes usadas por el proyecto (no forman parte del paquete)
-cristianamente.typ    paquete aparte, no integrado — conservado como referencia
+DEUDA.md              contrato, deuda y lo abierto
 ```
-
-## Generar un archivo desde una plantilla
-
-`scripts/nueva-plantilla.py` escribe un `.typ` de arranque para cualquiera
-de las 12 plantillas (10 de `social.typ` + `articulo` + `pasaje`), con
-marcadores de posición listos para editar:
-
-```bash
-python3 scripts/nueva-plantilla.py --listar
-python3 scripts/nueva-plantilla.py announce-post mi-post.typ \
-  --paleta terracota --tipografia editorial-clasico \
-  --campo tagline=NUEVO --campo title="Mi título"
-```
-
-Por defecto genera `#import "@local/instatypst:0.1.0": *` (asume el
-paquete instalado, ver abajo); usa `--repo` para un import relativo si
-vas a dejar el archivo dentro de `examples/` de este mismo repo. Con
-`--compilar` lo compila de una vez (usa `Fonts/` de este repo por
-defecto; `--fonts <ruta>` para otra).
 
 ## Uso
 
@@ -156,73 +138,70 @@ instaladas en el sistema: ver «Instalar las fuentes en el sistema»).
 #import "src/lib.typ": *
 ```
 
-Los archivos de `examples/` ya están así. Como importan hacia arriba
-(`../src/lib.typ`), hace falta fijar la raíz del proyecto al compilarlos:
+Desde una subcarpeta el import sube (`../src/lib.typ`) y hace falta fijar la raíz
+del proyecto al compilar:
 
 ```bash
-typst compile --root . --font-path Fonts examples/articulo.typ
+typst compile --root . --font-path Fonts carpeta/pieza.typ
 ```
 
 ## `lib.typ` — qué expone
 
-- `theme` — API de temas (`theme.define`, `theme.with`, `theme.color`, `theme.contrast`, …)
-- `palettes` — biblioteca de paletas (`palettes.get`, `palettes.mix`, `palettes.as-theme`, `palettes.catalog`)
-- `pairings` — biblioteca de parejas tipográficas (mismo patrón que `palettes`)
-- `color-tokens` / `font-tokens` — los dos registros de tokens, con nombre en vez de aplanados (ambos exportan un dict `tokens`, así que se mantienen namespaced para no chocar)
-- `capitular` — letra capital (de `dropcaps.typ`)
-- `articulo`, `primer-parrafo`, `make-theme`, `fondo-editorial` — plantilla editorial
-- `scripture`, `vs`, `ch`, `pasaje` — bloques de cita bíblica
-- todo lo de `social.typ`: `canvas`, `badge`, `headline`, `subhead`, `footer`, `quote-post`, `announce-post`, `tip-card`, `carousel-cover`, `carousel-slide`, `stat-card`, `event-post`, `testimonial-post`, `poll-story`, `versus-post`, `avatar`, `avatar-row`, `stat`, `progress`, `divider`
-- todo lo de `blockquotes.typ`: `bq-frame`/`bq-mark`/`bq-rule`/`bq-attribution` (legos) + 14 `blockquote-*` (incluye `blockquote-grid`/`blockquote-paralelo`/`blockquote-lateral`)
-- `lat`, `gr`, `he`, `translit`, `interlineal`, `orn` — capa de idiomas (`idiomas.typ`)
-- `superbg` — namespace para fondos: `superbg.superbg()`, `superbg.bg-aura()`, `superbg.bg-malla()`, `superbg.sizes`, etc.
+- `frame(preset:, variant:, artboard:, theme:, accent:, brand:, ..options)[…]` — el
+  lienzo. `preset` es un nombre o una función, y `auto` es `plain`.
+- un frame por preset, con su nombre: `plain`, `swiss`, `inscription`, `bauhaus`,
+  `blueprint`, `bands`, `proof`, `mosaic`, `tiles`, `leaves`, `obituary`, `folio`,
+  `bordered-quote`, `bordered-chapter`, `bordered-question`, `timeline`, `event`,
+  `contrast`, `tip`, `hinge`, `stairs`, `social-quote` — es `frame` con el preset ya
+  puesto
+- los elementos de `elements.typ` (`spec/vocabulario.md`) y `formats`, los nombres
+  de artboard
+- `version`
+
+Los recursos no salen de `lib.typ`: `capitular`, `fleurones`, `superbg` y las
+paletas se importan desde su módulo, por ejemplo
+`#import "/src/modules/superbg/lib.typ": superbg`.
 
 ## Fondos componibles con superbg
 
-`superbg` vive dentro de Instatypst como namespace para convivir con los
-constructores existentes `bg()`, `gradient-bg()`, `blob()` y `aura-bg()`.
-Los fondos se insertan como primer hijo de `canvas()`, igual que los
-fondos nativos del sistema:
+`superbg` es un módulo independiente (`src/modules/superbg/`): no importa nada del
+resto del paquete. Tiene tres niveles, con una sola puerta: fondos preconstruidos
+por nombre, constructores por tipo (`bg-aura`, `bg-malla`, `bg-olas`, `bg-topo`,
+`bg-patron`, `bg-papel`…) y un motor que mezcla capas en una llamada.
+`superbg-page` lo pone en una página con el contenido encima:
 
 ```typst
-#import "@local/instatypst:0.1.0": *
+#import "/src/modules/superbg/lib.typ": superbg-page, sizes
 
-#canvas(sizes.instagram, theme: theme.base)[
-  #superbg.superbg("neon-aura", theme: theme.base, size: sizes.instagram)
-  #pad(page-pad)[
-    #headline([Fondo de marca], color: white, theme: theme.base)
-  ]
+#superbg-page("neon-aura", size: sizes.instagram)[
+  #text(fill: white, size: 80pt)[Fondo de marca]
+]
+
+#superbg-page((capas: (
+  (tipo: "gradiente", from: rgb("#1c1917"), to: rgb("#7c2d12")),
+  (tipo: "aura", colores: (rgb("#f59e0b"), rgb("#ea580c"))),
+  (tipo: "patron", patron: "dots", color: white, opacidad: 12%),
+  (tipo: "vignette", intensidad: 28%),
+)), size: sizes.instagram)[
+  #text(fill: white, size: 80pt)[Fondo de marca]
 ]
 ```
 
-El motor de capas permite mezclar fondos y patrones en una misma llamada:
-
-```typst
-#superbg.superbg((capas: (
-  (tipo: "gradiente", from: theme.base.colors.dark, to: theme.base.colors.primary),
-  (tipo: "aura", colores: (theme.base.colors.secondary, theme.base.colors.accent)),
-  (tipo: "patron", patron: "dots", color: white, opacidad: 12%),
-  (tipo: "vignette", intensidad: 28%),
-)), size: sizes.instagram, theme: theme.base)
-```
-
-La implementación y un ejemplo compilable están en `src/superbg/` y
-`examples/superbg-n3.typ`. Para ver preset, tema real y composición N3:
-
-```bash
-typst compile --root . --font-path Fonts examples/superbg-n3.typ
-```
+Los presets lo usan por dentro; no hace falta llamarlo para usar un preset. Sus
+pruebas están en `tests/modules/superbg-*.typ`.
 
 ## Nota sobre temas y `theme:`
 
-Cada función que depende de color o tipografía acepta un parámetro
-`theme:` explícito (por defecto `theme.base`). **No** sombrees
-`palette`/`fonts` reasignándolos después de importar — no tiene efecto:
-las funciones de este paquete resuelven esos nombres por closure contra
-su propio archivo en el momento en que se definieron, no contra lo que
-reasignes en tu documento. Pasa el tema por parámetro:
+`theme` se pasa por parámetro a `frame` o a su atajo, y es un diccionario de colores
+con cinco roles: `paper`, `ink`, `quiet`, `accent` y `guide`. Un tema parcial se
+completa con el del preset: si solo cambias `paper`, el preset conserva el `quiet`
+y el `guide` que traía. Cada color acepta un valor de Typst, el nombre de un rol o
+una referencia al catálogo de paletas (`tw4-amber-400`, `rx-tomato-9-dark`,
+`oc-grape-5`). Algunos presets declaran roles propios además de los cinco; otro
+preset los rechaza.
 
 ```typst
-#let marca = theme.define("marca", colors: (primary: rgb("#0EA5E9")))
-#announce-post("...", [...], [...], "@handle", theme: marca)
+#swiss(theme: (paper: rgb("#f3ece2"), accent: "tw4-amber-600"))[
+  #main[Todo es gracia.]
+]
 ```
